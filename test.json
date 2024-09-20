@@ -1,0 +1,29 @@
+{
+  "foto_kamar_tidur": [],
+  "nama": "rumah maul",
+  "tanggalBangun": "2024-09-04",
+  "tanggalSiapSewa": "2024-09-04",
+  "jenisKelaminSewa": "Keudanya",
+  "deskripsi": "test tambah deskripsi",
+  "aturanSewa": [5, 6, 7],
+  "lokasi": {
+    "latitude": -6.92046250968232,
+    "longitude": 107.61280059814455
+  },
+  "provinsi": "JAWA BARAT",
+  "kota": "KOTA BANDUNG",
+  "kecamatan": "BANDUNG WETAN",
+  "noteAlamat": "test isi catatan",
+
+  "fasilitas": "furnised",
+  "luasTanah": 120,
+  "luasRumah": 120,
+  "dayaListrik": 1300,
+  "sumberAir": "true",
+  "total_kamar": 2,
+  "fasilitas": [1, 2, 6, 5, 4, 3, 7, 8],
+  "waktuMinimumSewa": "1",
+  "hargaProperti": 1800000,
+  "bank": "bca",
+  "rekening": 1231231230
+}
