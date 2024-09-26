@@ -1,8 +1,6 @@
 import { HStack, Image, Stack, Text } from "@chakra-ui/react";
-import {
-  primaryTextColor,
-  secondaryTextColor,
-} from "../../../../components/theme";
+import { primaryTextColor, secondaryTextColor } from "../../../../components/theme";
+import { Link } from "react-router-dom";
 
 export const ChooseRole = (props: { setLoginState: any }) => {
   return (
@@ -17,12 +15,7 @@ export const ChooseRole = (props: { setLoginState: any }) => {
       zIndex={"2"}
     >
       <Stack gap={"20px"}>
-        <Text
-          fontSize={"2xl"}
-          fontWeight={"bold"}
-          alignSelf={"center"}
-          color={primaryTextColor()}
-        >
+        <Text fontSize={"2xl"} fontWeight={"bold"} alignSelf={"center"} color={primaryTextColor()}>
           Masuk Ke Livinhome
         </Text>
 
@@ -39,8 +32,7 @@ export const ChooseRole = (props: { setLoginState: any }) => {
           cursor={"pointer"}
           boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px;"}
           _hover={{
-            boxShadow:
-              "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px",
+            boxShadow: "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px",
           }}
           onClick={() => props.setLoginState("Login Penyewa")}
         >
@@ -56,13 +48,22 @@ export const ChooseRole = (props: { setLoginState: any }) => {
           cursor={"pointer"}
           boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px;"}
           _hover={{
-            boxShadow:
-              "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px",
+            boxShadow: "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px",
           }}
           onClick={() => props.setLoginState("Login Pemilik Properti")}
         >
           <Image src="/login-pemilik-properti.png" />
           <Text color={primaryTextColor()}>Pemilik Properti</Text>
+        </HStack>
+        <HStack flexWrap={"wrap"} justifyContent={"center"} lineHeight={"4"} gap={"5px"} marginTop={"10px"}>
+          <Text textAlign={"center"} fontSize={"sm"} color={primaryTextColor()}>
+            Belum Punya Akun?
+          </Text>
+          <Link to={"/auth/register"}>
+            <Text textAlign={"center"} fontSize={"sm"} color={primaryTextColor()} fontWeight={"bold"}>
+              Daftar sini
+            </Text>
+          </Link>
         </HStack>
       </Stack>
     </Stack>

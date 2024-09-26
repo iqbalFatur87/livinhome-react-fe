@@ -1,15 +1,16 @@
 import { Button, HStack, Input, Stack, Text, useToast } from "@chakra-ui/react";
-import { borderRadius, primaryTextColor, secondaryTextColor } from "../../../../components/theme";
+import { borderRadius, primaryTextColor, primaryTextTitleColor, secondaryTextColor } from "../../../../components/theme";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { BASE_API } from "../../../../utils/constant/api";
 import { useState } from "react";
-import { TOKEN } from "../../../../utils/constant/localStorage";
+import { DATA } from "../../../../utils/constant/localStorage";
+import { encrypt } from "../../../../utils/helper/helper";
 
-export const FormPemilikProperti = () => {
+export const FormPemilikProperti = (props: { setLoginState: any }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [emailInput, setEmailInput] = useState<any>(null);
-  const [passwordInput, setPasswordInput] = useState<any>(null);
+  const [emailInput, setEmailInput] = useState<any>("");
+  const [passwordInput, setPasswordInput] = useState<any>("");
   const toast = useToast();
 
   const login = async () => {
@@ -27,8 +28,17 @@ export const FormPemilikProperti = () => {
           duration: 9000,
           isClosable: true,
         });
-        localStorage[TOKEN] = `${res.data.meta.token_type} ${res.data.meta.access_token}`;
-        window.location.href = "/owner/daftar-properti";
+
+        const newLocalStorage = {
+          TOKEN: `${res.data.meta.token_type} ${res.data.meta.access_token}`,
+          ROLE: res.data.data,
+        };
+        localStorage[DATA] = encrypt(newLocalStorage);
+        localStorage.token = `${res.data.meta.token_type} ${res.data.meta.access_token}`;
+
+        setTimeout(() => {
+          window.location.href = "/owner/management-properti";
+        }, 700);
       })
       .catch((e) => {
         toast({
@@ -115,6 +125,16 @@ export const FormPemilikProperti = () => {
               </Text>
             </HStack>
           </Stack>
+          <Text
+            onClick={() => props.setLoginState("Login Penyewa")}
+            textAlign={"center"}
+            fontSize={"sm"}
+            color={primaryTextTitleColor()}
+            fontWeight={"bold"}
+            cursor={"pointer"}
+          >
+            Masuk sebagai Penyewa
+          </Text>
         </Stack>
       </form>
     </Stack>
