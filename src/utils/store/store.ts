@@ -30,6 +30,6 @@ export const useStore = create<storeInterface>()((set) => ({
     }));
   },
 
-  username: "hilmi",
+  username: "iqbal",
   changeUsername: (username: string) => set({ username: username }),
 }));
