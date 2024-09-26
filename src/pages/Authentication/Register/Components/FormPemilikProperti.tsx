@@ -1,25 +1,12 @@
-import {
-  Button,
-  HStack,
-  Input,
-  Radio,
-  RadioGroup,
-  Stack,
-  Text,
-  useToast,
-} from "@chakra-ui/react";
-import {
-  borderRadius,
-  primaryTextColor,
-  secondaryTextColor,
-} from "../../../../components/theme";
+import { Button, HStack, Input, Radio, RadioGroup, Stack, Text, useToast } from "@chakra-ui/react";
+import { borderRadius, primaryTextColor, primaryTextTitleColor, secondaryTextColor } from "../../../../components/theme";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { BASE_API } from "../../../../utils/constant/api";
 import { REGISTER_TOKEN } from "../../../../utils/constant/localStorage";
 
-export const FormPemilikProperti = () => {
+export const FormPemilikProperti = (props: { setRegisterState: any }) => {
   const [jenisKelaminInput, setJenisKelaminInput] = useState<any>(null);
   const [namaLengkapInput, setNamaLengkapInput] = useState<any>(null);
   const [emailInput, setEmailInput] = useState<any>(null);
@@ -67,9 +54,7 @@ export const FormPemilikProperti = () => {
           duration: 9000,
           isClosable: true,
         });
-        localStorage[
-          REGISTER_TOKEN
-        ] = `${res.data.meta.token_type} ${res.data.meta.access_token}`;
+        localStorage[REGISTER_TOKEN] = `${res.data.meta.token_type} ${res.data.meta.access_token}`;
         window.location.reload();
       })
       .catch((e) => {
@@ -104,12 +89,7 @@ export const FormPemilikProperti = () => {
         }}
       >
         <Stack gap={"20px"} margin={"auto"}>
-          <Text
-            fontSize={"2xl"}
-            fontWeight={"bold"}
-            alignSelf={"center"}
-            color={primaryTextColor()}
-          >
+          <Text fontSize={"2xl"} fontWeight={"bold"} alignSelf={"center"} color={primaryTextColor()}>
             Buat Akun Pemilik Properti
           </Text>
           <Input
@@ -118,12 +98,7 @@ export const FormPemilikProperti = () => {
             borderRadius={borderRadius()}
             placeholder="Nama Lengkap"
           />
-          <Input
-            value={emailInput}
-            onChange={(e) => setEmailInput(e.target.value)}
-            borderRadius={borderRadius()}
-            placeholder="Email"
-          />
+          <Input value={emailInput} onChange={(e) => setEmailInput(e.target.value)} borderRadius={borderRadius()} placeholder="Email" />
           <RadioGroup onChange={setJenisKelaminInput} value={jenisKelaminInput}>
             <Stack direction="row">
               <Radio value="1">Laki-laki</Radio>
@@ -132,20 +107,10 @@ export const FormPemilikProperti = () => {
           </RadioGroup>
           <HStack justifyContent={"space-between"}>
             <Text color={secondaryTextColor()}>Tanggal</Text>
-            <Input
-              value={tanggalInput}
-              onChange={(e) => setTanggalInput(e.target.value)}
-              type="date"
-              borderRadius={borderRadius()}
-            />
+            <Input value={tanggalInput} onChange={(e) => setTanggalInput(e.target.value)} type="date" borderRadius={borderRadius()} />
           </HStack>
 
-          <Input
-            value={noHandphone}
-            onChange={(e) => setNoHandphone(e.target.value)}
-            borderRadius={borderRadius()}
-            placeholder="No Handphone"
-          />
+          <Input value={noHandphone} onChange={(e) => setNoHandphone(e.target.value)} borderRadius={borderRadius()} placeholder="No Handphone" />
           <Input
             value={passwordInput}
             onChange={(e) => setPasswordInput(e.target.value)}
@@ -160,55 +125,25 @@ export const FormPemilikProperti = () => {
           /> */}
 
           <Stack marginTop={"40px"}>
-            <Text
-              textAlign={"center"}
-              lineHeight={"4"}
-              fontSize={"sm"}
-              color={primaryTextColor()}
-            >
-              Penting untuk Memahami Ketentuan Kami. Mohon Setujui Syarat dan
-              Ketentuan Livinhome.Saya telah membaca dan menyetujui Syarat dan
+            <Text textAlign={"center"} lineHeight={"4"} fontSize={"sm"} color={primaryTextColor()}>
+              Penting untuk Memahami Ketentuan Kami. Mohon Setujui Syarat dan Ketentuan Livinhome.Saya telah membaca dan menyetujui Syarat dan
               Ketentuan Livinhome
             </Text>
 
-            <HStack
-              flexWrap={"wrap"}
-              justifyContent={"center"}
-              lineHeight={"4"}
-              gap={"3px"}
-              marginTop={"10px"}
-            >
-              <Text
-                textAlign={"center"}
-                fontSize={"sm"}
-                color={primaryTextColor()}
-              >
+            <HStack flexWrap={"wrap"} justifyContent={"center"} lineHeight={"4"} gap={"3px"} marginTop={"10px"}>
+              <Text textAlign={"center"} fontSize={"sm"} color={primaryTextColor()}>
                 Saya telah membaca dan menyetujui
               </Text>
-              <Text
-                textAlign={"center"}
-                fontSize={"sm"}
-                color={primaryTextColor()}
-                fontWeight={"bold"}
-              >
+              <Text textAlign={"center"} fontSize={"sm"} color={primaryTextColor()} fontWeight={"bold"}>
                 Syarat dan Ketentuan
               </Text>
-              <Text
-                textAlign={"center"}
-                fontSize={"sm"}
-                color={primaryTextColor()}
-              >
+              <Text textAlign={"center"} fontSize={"sm"} color={primaryTextColor()}>
                 Livinhome
               </Text>
             </HStack>
           </Stack>
 
-          {jenisKelaminInput &&
-          namaLengkapInput &&
-          emailInput &&
-          tanggalInput &&
-          noHandphone &&
-          passwordInput ? (
+          {jenisKelaminInput && namaLengkapInput && emailInput && tanggalInput && noHandphone && passwordInput ? (
             <Button
               type="submit"
               color={"white"}
@@ -222,31 +157,32 @@ export const FormPemilikProperti = () => {
             </Button>
           ) : null}
 
-          <HStack
-            flexWrap={"wrap"}
-            justifyContent={"center"}
-            lineHeight={"4"}
-            gap={"5px"}
-            marginTop={"10px"}
-          >
-            <Text
-              textAlign={"center"}
-              fontSize={"sm"}
-              color={primaryTextColor()}
-            >
+          <HStack flexWrap={"wrap"} justifyContent={"center"} lineHeight={"4"} gap={"5px"} marginTop={"10px"}>
+            <Text textAlign={"center"} fontSize={"sm"} color={primaryTextColor()}>
               Akun kamu sudah terdaftar?
             </Text>
             <Link to={"/auth/login"}>
-              <Text
-                textAlign={"center"}
-                fontSize={"sm"}
-                color={primaryTextColor()}
-                fontWeight={"bold"}
-              >
+              <Text textAlign={"center"} fontSize={"sm"} color={primaryTextColor()} fontWeight={"bold"}>
                 Masuk sini
               </Text>
             </Link>
           </HStack>
+
+          <Text
+            onClick={() =>
+              props.setRegisterState((prev: any) => ({
+                ...prev,
+                currentState: "Form Penyewa",
+              }))
+            }
+            textAlign={"center"}
+            fontSize={"sm"}
+            color={primaryTextTitleColor()}
+            fontWeight={"bold"}
+            cursor={"pointer"}
+          >
+            Buat Akun sebagai Penyewa
+          </Text>
         </Stack>
       </form>
     </Stack>

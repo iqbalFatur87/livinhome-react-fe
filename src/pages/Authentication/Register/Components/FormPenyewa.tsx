@@ -1,12 +1,12 @@
 import { Button, HStack, Input, Radio, RadioGroup, Stack, Text, useToast } from "@chakra-ui/react";
-import { borderRadius, primaryTextColor, secondaryTextColor } from "../../../../components/theme";
+import { borderRadius, primaryTextColor, primaryTextTitleColor, secondaryTextColor } from "../../../../components/theme";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { BASE_API } from "../../../../utils/constant/api";
 import { SUCCESS_REGISTER } from "../../../../utils/constant/localStorage";
 
-export const FormPenyewa = () => {
+export const FormPenyewa = (props: { setRegisterState: any }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [jenisKelaminInput, setJenisKelaminInput] = useState<any>(null);
   const [namaLengkapInput, setNamaLengkapInput] = useState<any>(null);
@@ -98,7 +98,7 @@ export const FormPenyewa = () => {
       >
         <Stack gap={"20px"} margin={"auto"}>
           <Text fontSize={"2xl"} fontWeight={"bold"} alignSelf={"center"} color={primaryTextColor()}>
-            Buat Akun Pemilik Penyewa
+            Buat Akun Penyewa
           </Text>
           <Input
             value={namaLengkapInput}
@@ -176,6 +176,21 @@ export const FormPenyewa = () => {
               </Text>
             </Link>
           </HStack>
+          <Text
+            onClick={() =>
+              props.setRegisterState((prev: any) => ({
+                ...prev,
+                currentState: "Form Pemilik Properti",
+              }))
+            }
+            textAlign={"center"}
+            fontSize={"sm"}
+            color={primaryTextTitleColor()}
+            fontWeight={"bold"}
+            cursor={"pointer"}
+          >
+            Buat Akun sebagai Pemilik Properti
+          </Text>
         </Stack>
       </form>
     </Stack>

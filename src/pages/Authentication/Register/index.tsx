@@ -46,9 +46,9 @@ const index = () => {
       {registerState.currentState == "Choose Role" ? (
         <ChooseRole registerState={registerState} setRegisterState={setRegisterState} />
       ) : registerState.currentState == "Form Penyewa" ? (
-        <FormPenyewa />
+        <FormPenyewa setRegisterState={setRegisterState} />
       ) : registerState.currentState == "Form Pemilik Properti" ? (
-        <FormPemilikProperti />
+        <FormPemilikProperti setRegisterState={setRegisterState} />
       ) : registerState.currentState == "Unggah KTP" ? (
         <UnggahKTP />
       ) : registerState.currentState == "Success Register" ? (

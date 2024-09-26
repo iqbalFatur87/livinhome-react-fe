@@ -8,69 +8,76 @@ import { TbCloudUpload } from "react-icons/tb";
 import { BASE_API } from "../../../../utils/constant/api";
 
 export const UnggahKTP = () => {
-  const [preview, setPreview] = useState<any>(localStorage[REGISTER_UPLOAD]);
+  const [file, setFile] = useState<File | null>(null); // State to hold the file
+  const [preview, setPreview] = useState<string | null>(null); // State to hold the file preview
   const [loading, setLoading] = useState<boolean>(false);
   const toast = useToast();
-  // const [hover, setHover] = useState<boolean>(false);
+  const stackRef = useRef<HTMLDivElement | null>(null);
+  const [marginTop, setMarginTop] = useState("150px");
 
-  const onDrop = useCallback(async (acceptedFiles: any) => {
-    setLoading(true);
-    const file = new FileReader();
-    file.readAsDataURL(acceptedFiles[0]);
-    if (!file) {
-      return;
-    }
-    var formData = new FormData();
-    formData.append("image", acceptedFiles[0]);
-    const fileType = acceptedFiles[0].type;
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      const selectedFile = acceptedFiles[0];
+      setFile(selectedFile);
 
-    if (fileType.includes("image")) {
-      await axios
-        .post(
-          `${BASE_API}/auth/upload-ktp/owner`,
-
-          formData,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: localStorage[REGISTER_TOKEN],
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        )
-
-        .then(async (res: any) => {
-          setPreview(res.data.data);
-          localStorage[REGISTER_UPLOAD] = res.data.data;
-          localStorage[SUCCESS_REGISTER] = true;
-          setLoading(false);
-          window.location.reload();
-        })
-        .catch((e) => {
-          toast({
-            description: e.response.data.meta.message.join(", "),
-            status: "error",
-            variant: "subtle",
-            duration: 9000,
-            isClosable: true,
-          });
-        });
-    } else {
-      toast({
-        title: `Hanya dapat mengunggah file gambar`,
-        status: "error",
-        duration: 2500,
-        variant: "subtle",
-        isClosable: true,
-      });
-      setLoading(false);
+      // Generate preview
+      const fileReader = new FileReader();
+      fileReader.onloadend = () => {
+        setPreview(fileReader.result as string);
+      };
+      fileReader.readAsDataURL(selectedFile);
     }
   }, []);
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const submit = async () => {
+    if (!file) {
+      toast({
+        title: "No file selected",
+        status: "warning",
+        duration: 1500,
+        variant: "subtle",
+        isClosable: true,
+      });
+      return;
+    }
 
-  const [marginTop, setMarginTop] = useState("150px");
-  const stackRef = useRef<HTMLDivElement | null>(null);
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await axios.post(`${BASE_API}/auth/upload-ktp/owner`, formData, {
+        headers: {
+          Accept: "application/json",
+          Authorization: localStorage[REGISTER_TOKEN],
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setPreview(response.data.data);
+      localStorage[REGISTER_UPLOAD] = response.data.data;
+      localStorage[SUCCESS_REGISTER] = true;
+      toast({
+        title: "Upload successful",
+        status: "success",
+        duration: 1500,
+        variant: "subtle",
+        isClosable: true,
+      });
+      window.location.reload();
+    } catch (e: any) {
+      toast({
+        description: e.response?.data?.meta?.message?.join(", ") || "Upload failed",
+        status: "error",
+        variant: "subtle",
+        duration: 9000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const handleResize = () => {
       if (stackRef.current) {
@@ -94,6 +101,9 @@ export const UnggahKTP = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
   return (
     <Stack
       width={{ md: "100%", base: "95%" }}
@@ -132,22 +142,14 @@ export const UnggahKTP = () => {
         <input {...getInputProps()} />
 
         {preview ? (
-          <Image
-            margin={"auto"}
-            maxWidth={"100%"}
-            height={"100%"}
-            objectFit={"contain"}
-            src={preview}
-            borderRadius={borderRadius()}
-            // onMouseEnter={() => setHover(true)}
-          />
+          <Image margin={"auto"} maxWidth={"100%"} height={"100%"} objectFit={"contain"} src={preview} borderRadius={borderRadius()} />
         ) : loading ? (
           <Button margin={"auto"} isLoading></Button>
         ) : (
           <Stack fontSize={"28px"} margin={"auto"} justifyContent={"center"} alignItems={"center"}>
             <TbCloudUpload />
             <Button
-              type="submit"
+              type="button"
               color={"white"}
               backgroundColor={"black"}
               borderRadius={"30px"}
@@ -163,12 +165,15 @@ export const UnggahKTP = () => {
           </Stack>
         )}
       </Stack>
+      <Button onClick={submit} color={"white"} backgroundColor={"black"} borderRadius={"30px"} size={"md"} _hover={{ backgroundColor: "black" }}>
+        Submit
+      </Button>
 
       <HStack justifyContent={"space-between"} width={"100%"}>
         {localStorage[REGISTER_UPLOAD] && localStorage[REGISTER_TOKEN] ? null : (
           <Button
             borderRadius={"16"}
-            colorScheme="yellow"
+            colorScheme="orange"
             onClick={() => {
               localStorage.removeItem(REGISTER_TOKEN);
               window.location.reload();
@@ -177,21 +182,6 @@ export const UnggahKTP = () => {
             Kembali
           </Button>
         )}
-
-        {/* {preview ? (
-          <Link to={"/auth/login"}>
-            <Button
-              borderRadius={"16"}
-              colorScheme="blue"
-              onClick={() => {
-                localStorage.removeItem(REGISTER_TOKEN);
-                localStorage.removeItem(REGISTER_UPLOAD);
-              }}
-            >
-              Lanjutkan
-            </Button>
-          </Link>
-        ) : null} */}
       </HStack>
     </Stack>
   );
