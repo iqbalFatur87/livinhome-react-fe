@@ -27,7 +27,7 @@ const DaftarProperti = (props: { dataState: any; setDataState: any; listRules: a
         const { lat, lng } = event.latlng;
         onClick({ lat, lng });
         // console.log({ latitude: lat, longitude: lng });
-        props.setDataState((prev: any) => ({ ...prev, latitude: lat, longtite: lng }));
+        props.setDataState((prev: any) => ({ ...prev, latitude: lat, longitude: lng }));
       },
     });
 
@@ -66,10 +66,10 @@ const DaftarProperti = (props: { dataState: any; setDataState: any; listRules: a
         </HStack>
         <RadioGroup value={props.dataState?.kategori} onChange={(e) => props.setDataState((prev: any) => ({ ...prev, kategori: e }))}>
           <Stack direction="row">
-            <Radio colorScheme="yellow" value="kontrakan">
+            <Radio colorScheme="orange" value="kontrakan">
               Kontrakan
             </Radio>
-            <Radio colorScheme="yellow" value="kost">
+            <Radio colorScheme="orange" value="kost">
               Kost
             </Radio>
           </Stack>
@@ -89,8 +89,8 @@ const DaftarProperti = (props: { dataState: any; setDataState: any; listRules: a
           backgroundColor={inputBackgroundColor()}
           border={customBorder()}
           color={inputColor()}
-          value={props.dataState?.tanggal_dibangun}
-          onChange={(e) => props.setDataState((prev: any) => ({ ...prev, tanggal_dibangun: e.target.value }))}
+          value={props.dataState?.tanggal_dibuat}
+          onChange={(e) => props.setDataState((prev: any) => ({ ...prev, tanggal_dibuat: e.target.value }))}
         />
       </Stack>
 
@@ -120,14 +120,14 @@ const DaftarProperti = (props: { dataState: any; setDataState: any; listRules: a
         </HStack>
         <RadioGroup value={props.dataState?.sewa_untuk} onChange={(e) => props.setDataState((prev: any) => ({ ...prev, sewa_untuk: e }))}>
           <Stack direction="row">
-            <Radio colorScheme="yellow" value="Pria">
+            <Radio colorScheme="orange" value="Pria">
               Pria
             </Radio>
-            <Radio colorScheme="yellow" value="Wanita">
+            <Radio colorScheme="orange" value="Wanita">
               Wanita
             </Radio>
-            <Radio colorScheme="yellow" value="Keudanya">
-              Keudanya
+            <Radio colorScheme="orange" value="Keduanya">
+              Keduanya
             </Radio>
           </Stack>
         </RadioGroup>
@@ -161,7 +161,7 @@ const DaftarProperti = (props: { dataState: any; setDataState: any; listRules: a
             {props.listRules.map((i: any, index: number) => (
               <Checkbox
                 key={index}
-                colorScheme="yellow"
+                colorScheme="orange"
                 isChecked={props.dataState?.rules?.includes(i.id) || false}
                 onChange={(e) => {
                   const isChecked = e.target.checked;
@@ -227,8 +227,8 @@ const DaftarProperti = (props: { dataState: any; setDataState: any; listRules: a
           value={props.dataState?.provinsi}
           onChange={(e) => {
             props.setDataState((prev: any) => ({ ...prev, provinsi: e.target.value }));
-            props.setDataState((prev: any) => ({ ...prev, kota: null }));
-            props.setDataState((prev: any) => ({ ...prev, kecamatan: null }));
+            props.setDataState((prev: any) => ({ ...prev, kota: "" }));
+            props.setDataState((prev: any) => ({ ...prev, kecamatan: "" }));
           }}
         >
           <option>Pilih Provinsi</option>
@@ -240,7 +240,7 @@ const DaftarProperti = (props: { dataState: any; setDataState: any; listRules: a
         </Select>
       </Stack>
 
-      {props.dataState?.provinsi ? (
+      {(props.dataState?.provinsi || null) && props.indonesia.length > 0 ? (
         <Stack>
           <Text color={primaryTextColor()} fontWeight={"bold"}>
             Kota
@@ -252,7 +252,7 @@ const DaftarProperti = (props: { dataState: any; setDataState: any; listRules: a
             value={props.dataState?.kota}
             onChange={(e) => {
               props.setDataState((prev: any) => ({ ...prev, kota: e.target.value }));
-              props.setDataState((prev: any) => ({ ...prev, kecamatan: null }));
+              props.setDataState((prev: any) => ({ ...prev, kecamatan: "" }));
             }}
           >
             <option>Pilih Kota</option>
@@ -267,7 +267,7 @@ const DaftarProperti = (props: { dataState: any; setDataState: any; listRules: a
         </Stack>
       ) : null}
 
-      {props.dataState?.kota ? (
+      {(props.dataState?.kota || null) && props.indonesia.length > 0 ? (
         <Stack>
           <Text color={primaryTextColor()} fontWeight={"bold"}>
             Kecamatan

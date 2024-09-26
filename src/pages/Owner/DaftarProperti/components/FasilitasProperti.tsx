@@ -3,8 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import Dropzone from "./Dropzone";
 import { BASE_API } from "../../../../utils/constant/api";
-import { AUTHORIZATION_HEADERS } from "../../../../utils/constant/localStorage";
-import { authorityCheck } from "../../../../utils/helper/helper";
+import { authorityCheck, AUTHORIZATION_HEADERS } from "../../../../utils/helper/helper";
 import {
   customBorder,
   inputBackgroundColor,
@@ -103,14 +102,14 @@ const FasilitasProperti = (props: { dataState: any; setDataState: any }) => {
         </HStack>
         <RadioGroup value={props.dataState?.fasilitas} onChange={(e) => props.setDataState((prev: any) => ({ ...prev, fasilitas: e }))}>
           <Stack direction="row">
-            <Radio colorScheme="yellow" value="kosongan">
+            <Radio colorScheme="orange" value="kosongan">
               Kosongan
             </Radio>
-            <Radio colorScheme="yellow" value="semi-furnised">
-              Semi Furnised
+            <Radio colorScheme="orange" value="semi-furnished">
+              Semi furnished
             </Radio>
-            <Radio colorScheme="yellow" value="furnised">
-              Furnised
+            <Radio colorScheme="orange" value="furnished">
+              furnished
             </Radio>
           </Stack>
         </RadioGroup>
@@ -204,10 +203,10 @@ const FasilitasProperti = (props: { dataState: any; setDataState: any }) => {
 
       <Stack>
         <Text color={primaryTextColor()} fontWeight={"bold"} marginTop={"20px"}>
-          Lemari
+          Jumlah Lemari
         </Text>
         <HStack flexWrap={"wrap"}>
-          <Text color={primaryTextColor()}>Lemari</Text>
+          <Text color={primaryTextColor()}>Jumlah Lemari</Text>
           <Text color={primaryTextTitleColor()}>*Wajib diisi</Text>
         </HStack>
         <Input
@@ -225,10 +224,10 @@ const FasilitasProperti = (props: { dataState: any; setDataState: any }) => {
 
       <Stack>
         <Text color={primaryTextColor()} fontWeight={"bold"} marginTop={"20px"}>
-          Meja
+          Jumlah Meja
         </Text>
         <HStack flexWrap={"wrap"}>
-          <Text color={primaryTextColor()}>Meja</Text>
+          <Text color={primaryTextColor()}>Jumlah Meja</Text>
           <Text color={primaryTextTitleColor()}>*Wajib diisi</Text>
         </HStack>
         <Input
@@ -246,10 +245,10 @@ const FasilitasProperti = (props: { dataState: any; setDataState: any }) => {
 
       <Stack>
         <Text color={primaryTextColor()} fontWeight={"bold"} marginTop={"20px"}>
-          Kasur
+          Jumlah Kasur
         </Text>
         <HStack flexWrap={"wrap"}>
-          <Text color={primaryTextColor()}>Kasur</Text>
+          <Text color={primaryTextColor()}>Jumlah Kasur</Text>
           <Text color={primaryTextTitleColor()}>*Wajib diisi</Text>
         </HStack>
         <Input
@@ -316,7 +315,7 @@ const FasilitasProperti = (props: { dataState: any; setDataState: any }) => {
             {listFacility.map((i: any, index: number) => (
               <Checkbox
                 key={index}
-                colorScheme="yellow"
+                colorScheme="orange"
                 isChecked={props.dataState?.fasilitas_lain?.includes(i.id) || false}
                 onChange={(e) => {
                   const isChecked = e.target.checked;
