@@ -1,16 +1,18 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { TOKEN } from "../constant/localStorage";
+import { LOCAL_STORAGE } from "../helper/helper";
 
 const AuthMiddleware = () => {
+  console.log(LOCAL_STORAGE());
+  // return <Outlet />;
   try {
-    if (!localStorage.getItem(TOKEN.toString())) {
+    if (!LOCAL_STORAGE()?.TOKEN) {
       return <Outlet />;
     } else {
-      // console.log("sudah login");
+      console.log("sudah login");
       return <Navigate to="/dashboard" />;
     }
   } catch (error) {
-    // console.log("error");
+    console.log("error");
     return <Navigate to="/dashboard" />;
   }
 };

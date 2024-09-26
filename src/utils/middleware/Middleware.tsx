@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation, useParams } from "react-router-dom";
-import { TOKEN } from "../constant/localStorage";
+
+import { LOCAL_STORAGE, logout } from "../helper/helper";
 
 const Middleware = () => {
   const params = useParams();
@@ -8,21 +9,22 @@ const Middleware = () => {
   const parts = pathname.split("/");
   const pageName: number | string = params.id ? parts[parts.length - 2] : parts[parts.length - 1];
 
-  // const navigate = useNavigate();
   if (pageName) {
     try {
-      if (localStorage.getItem(TOKEN)) {
+      if (LOCAL_STORAGE()?.TOKEN) {
         return <Outlet />;
       } else {
-        localStorage.clear();
-        return <Navigate to="/auth/login" />;
+        logout();
       }
     } catch (error) {
-      localStorage.clear();
-      return <Navigate to="/auth/login" />;
+      logout();
     }
   } else {
-    return <Navigate to="/dashboard" />;
+    if (LOCAL_STORAGE()?.ROLE == "owner") {
+      return <Navigate to="/owner/management-properti" />;
+    } else {
+      return <Navigate to="/dashboard" />;
+    }
   }
 };
 
