@@ -1,21 +1,5 @@
-import {
-  HStack,
-  Stack,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
-import {
-  backgroundContainer,
-  customBorder,
-  borderRadius,
-  primaryColor,
-  primaryTextColor,
-  secondaryTextColor,
-} from "./theme";
+import { HStack, Stack, Table, Tbody, Td, Text, Thead, Tr } from "@chakra-ui/react";
+import { backgroundContainer, customBorder, borderRadius, primaryTextColor } from "./theme";
 
 const TableCompo = (props: {
   tableName: String;
@@ -27,7 +11,7 @@ const TableCompo = (props: {
   setCurrentlimit?: any;
   additionalComponent?: any;
 }) => {
-  return props.data.data ? (
+  return props.data ? (
     <Stack
       maxWidth={"1440px"}
       width={{ base: "100vw", md: "100%" }}
@@ -38,46 +22,36 @@ const TableCompo = (props: {
       backgroundColor={backgroundContainer()}
       border={customBorder()}
     >
-      <HStack
-        justifyContent={"space-between"}
-        flexWrap={"wrap"}
-        padding={"20px"}
-      >
-        <Stack lineHeight={"1"}>
-          <Text fontSize={"2xl"} color={primaryColor()} as={"b"}>
-            {props.tableName}
-          </Text>
-          <Text color={secondaryTextColor()} fontSize={"12px"}>
-            {props.description}
-          </Text>
-        </Stack>
-        {props.additionalComponent}
-      </HStack>
+      {!props.tableName && !props.description ? null : (
+        <HStack justifyContent={"space-between"} flexWrap={"wrap"} padding={"20px"}>
+          <Stack lineHeight={"1"}>
+            <Text fontSize={"2xl"} color={primaryTextColor()} as={"b"}>
+              {props.tableName}
+            </Text>
+            <Text color={primaryTextColor()} fontSize={"12px"}>
+              {props.description}
+            </Text>
+          </Stack>
+          {props.additionalComponent}
+        </HStack>
+      )}
+
       <Stack overflowX={"scroll"}>
         <Table>
-          <Thead color={secondaryTextColor()} fontSize={"md"}>
+          <Thead color={primaryTextColor()} fontSize={"md"}>
             <Tr border={"none"}>
               {props.columns.map((cel: any, index: number) => (
-                <Td
-                  borderBottom={customBorder()}
-                  key={index}
-                  isNumeric={cel?.align === "right" ? true : false}
-                >
+                <Td fontWeight={"bold"} borderBottom={customBorder()} key={index} isNumeric={cel?.align === "right" ? true : false}>
                   {cel.title}
                 </Td>
               ))}
             </Tr>
           </Thead>
           <Tbody color={primaryTextColor()} fontSize={"md"}>
-            {props.data.data.map((row: any, index: number) => (
+            {props.data.map((row: any, index: number) => (
               <Tr key={index}>
                 {props.columns.map((column: any, index: number) => (
-                  <Td
-                    border={"none"}
-                    key={index}
-                    isNumeric={column?.align === "right" ? true : false}
-                    whiteSpace={"nowrap"}
-                  >
+                  <Td border={"none"} key={index} isNumeric={column?.align === "right" ? true : false} whiteSpace={"nowrap"}>
                     {column.render ? column?.render(row) : row[column.key]}
                   </Td>
                 ))}
