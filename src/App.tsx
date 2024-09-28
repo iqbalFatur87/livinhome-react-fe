@@ -2,9 +2,24 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 // import { Suspense, lazy } from "react";
 
 import { createContext, useEffect, useState } from "react";
-import { DaftarProperti, Dashboard, Login, ManagementProperti, PengajuanSewa, Register, ResetPassword } from "./pages";
+import {
+  DaftarProperti,
+  Dashboard,
+  DashboardOwner,
+  DetailProperti,
+  InfoCalonPenyewaSewa,
+  KonfirmasiPenyewa,
+  ListPengajuanSewa,
+  Login,
+  ManagementProperti,
+  PengajuanSurvei,
+  Register,
+  ResetPassword,
+} from "./pages";
 import AuthMiddleware from "./utils/middleware/AuthMiddleware";
 import Middleware from "./utils/middleware/Middleware";
+import LayoutOwner from "./pages/Owner/Layout";
+import LayoutPengajuanSewa from "./pages/Owner/PengajuanSewa/Layout";
 
 // const Dashboard = lazy((): any => import("./pages/Dashboard"));
 export const ThemeContext: any = createContext(null);
@@ -25,32 +40,33 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        {/* <Route path="/" element={<Middleware />}>
-          <Route path="/" element={<Layout />}>
-            <Route path="/">
-              <Route index element={<Dashboard />} />
-            </Route>
-
-            <Route path="/about">
-              <Route index element={<h1>About Page</h1>} />
-              <Route
-                path="About-child-page"
-                element={<h1>About Child Page</h1>}
-              />
-            </Route>
-          </Route>
-        </Route> */}
-
         <Route path="/" element={<Middleware />}>
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="/owner">
-            <Route path="daftar-properti" element={<DaftarProperti />} />
-            <Route path="management-properti" element={<ManagementProperti />} />
-            <Route path="pengajuan-sewa" element={<PengajuanSewa />} />
+
+          {/* {localStorage?.role === "owner" ? ( */}
+          <Route path="/" element={<LayoutOwner />}>
+            <Route path="owner">
+              <Route path="dashboard">
+                <Route index element={<DashboardOwner />} />
+              </Route>
+              <Route path="pengajuan-survei" element={<PengajuanSurvei />} />
+              <Route path="daftar-properti" element={<DaftarProperti />} />
+              <Route path="management-properti">
+                <Route index element={<ManagementProperti />} />
+                <Route path="detail/:id" element={<DetailProperti />} />
+              </Route>
+
+              <Route path="pengajuan-sewa" element={<LayoutPengajuanSewa />}>
+                <Route path="list" element={<ListPengajuanSewa />} />
+                <Route path="info-pengajuan-sewa/:id" element={<InfoCalonPenyewaSewa />} />
+                <Route path="konfirmasi-pengajuan-sewa" element={<KonfirmasiPenyewa />} />
+              </Route>
+            </Route>
           </Route>
+          {/* ) : null} */}
         </Route>
-        <Route path="/auth" element={<AuthMiddleware />}>
+        <Route path="auth" element={<AuthMiddleware />}>
           <Route path="login" element={<Login />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="register" element={<Register />} />

@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import CryptoAES from "crypto-js/aes";
+import CryptoENC from "crypto-js/enc-utf8";
+import { DATA, SECRET_KEY } from "../constant/localStorage";
 
 export const generateTimestamp = (year: number, month: number = 1, date: number = 1): number => {
   const timestamp = new Date(year, month - 1, date).getTime();
@@ -49,6 +52,10 @@ export const getDaysName = (epoc: number): string => {
 export const getHours = (epoc: number): string => {
   return `${("0" + new Date(epoc).getHours()).slice(-2)}:${("0" + new Date(epoc).getMinutes()).slice(-2)}`;
 };
+export const logout = () => {
+  localStorage.clear();
+  location.href = "/auth/login";
+};
 
 export const authorityCheck = (errorStatus: number): void => {
   if (errorStatus === 401) {
@@ -59,7 +66,29 @@ export const authorityCheck = (errorStatus: number): void => {
   }
 };
 
-export const logout = () => {
-  localStorage.clear();
-  location.reload();
+export const encrypt = (originalData: any) => {
+  return CryptoAES.encrypt(JSON.stringify(originalData), SECRET_KEY).toString();
+};
+export const decrypt = (originalData: string) => {
+  if (typeof originalData == "string") {
+    const decrypted = JSON.parse(CryptoAES.decrypt(originalData, SECRET_KEY).toString(CryptoENC));
+    return decrypted;
+  } else {
+    return null;
+  }
+};
+
+export const LOCAL_STORAGE = () => {
+  try {
+    return decrypt(localStorage[DATA.toString()]);
+  } catch (error) {
+    return null;
+  }
+};
+
+export const AUTHORIZATION_HEADERS = {
+  headers: {
+    Accept: "application/json",
+    Authorization: `${localStorage.token}`,
+  },
 };
