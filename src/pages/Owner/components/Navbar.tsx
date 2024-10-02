@@ -13,20 +13,16 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const sections = [
     {
-      title: "Beranda",
+      title: "Homepage",
       url: "/owner/dashboard",
     },
     {
-      title: "Management Properti",
+      title: "Properti",
       url: "/owner/management-properti",
     },
     {
-      title: "Pengajuan Sewa",
-      url: "/owner/pengajuan-sewa/list",
-    },
-    {
-      title: "Survei",
-      url: "/owner/pengajuan-survei",
+      title: "Pesan",
+      url: "/404",
     },
   ];
 
@@ -77,7 +73,16 @@ const Navbar = () => {
             </Link>
           ))}
 
-          <Image src="/avatar.png" width={"50px"} height={"50px"} objectFit={"contain"} />
+          <Image
+            onClick={() => {
+              navigate("/owner/profil");
+            }}
+            cursor={"pointer"}
+            src="/avatar.png"
+            width={"50px"}
+            height={"50px"}
+            objectFit={"contain"}
+          />
           <Button onClick={logout} colorScheme={"red"}>
             Logout
           </Button>
@@ -109,7 +114,19 @@ const Navbar = () => {
         </HStack>
 
         <Stack gap="5px" my="30px">
-          <Image marginBottom={"30px"} src="/avatar.png" width={"50px"} height={"50px"} objectFit={"contain"} alignSelf={"center"} />
+          <Image
+            onClick={() => {
+              navigate("/owner/profil");
+              setShowSidebar(false);
+            }}
+            cursor={"pointer"}
+            src="/avatar.png"
+            marginBottom={"30px"}
+            width={"50px"}
+            height={"50px"}
+            objectFit={"contain"}
+            alignSelf={"center"}
+          />
           {sections.map((section: { title: string; url: string }) => (
             <Button
               key={section.title}
