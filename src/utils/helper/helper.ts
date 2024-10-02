@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import CryptoAES from "crypto-js/aes";
 import CryptoENC from "crypto-js/enc-utf8";
-import { DATA, SECRET_KEY } from "../constant/localStorage";
+import { DATA } from "../constant/localStorage";
+import { SECRET_KEY } from "../constant/secretKey";
 
 export const generateTimestamp = (year: number, month: number = 1, date: number = 1): number => {
   const timestamp = new Date(year, month - 1, date).getTime();
