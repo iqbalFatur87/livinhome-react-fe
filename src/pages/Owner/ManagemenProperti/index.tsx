@@ -98,7 +98,6 @@ const index = () => {
           .map((i: any, index: number) => (
             <HStack key={index} height={"240px"} width={"450px"} padding={"0px"}>
               <Image width={{ base: "48%", sm: "220px" }} aspectRatio={"1/1"} objectFit={"cover"} src={i.image} borderRadius={borderRadius()} />
-
               <Stack
                 boxShadow={"-2px -2px 8px 0px rgba(0, 0, 0, 0.1)"}
                 padding={"12px"}

@@ -10,29 +10,77 @@ import {
   ModalOverlay,
   Stack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { primaryTextColor } from "../../../../components/theme";
 import { useState } from "react";
+import axios from "axios";
+import { BASE_API } from "../../../../utils/constant/api";
+import { AUTHORIZATION_HEADERS } from "../../../../utils/helper/helper";
 
-const ModalKonfirmasi = (props: { isOpen: boolean; onOpen: any; onClose: any }) => {
+const ModalKonfirmasi = (props: { getDataTolakSSurvei: any; getData: any; selectedId: number; onClose: any }) => {
+  const toast = useToast();
   const [loading, setLoading] = useState(false);
   const [statusKonfirmasi, setStatusKonfirmasi] = useState<null | boolean>(null);
   const submit = async (statusKonfirmasiInput: boolean) => {
     setLoading(true);
-    setTimeout(() => {
-      setStatusKonfirmasi(statusKonfirmasiInput);
-      setLoading(false);
-    }, 2000);
+    if (statusKonfirmasiInput) {
+      await axios
+        .post(
+          `${BASE_API}/survey/confirm-survey`,
+          {
+            survey_id: props.selectedId,
+          },
+          AUTHORIZATION_HEADERS
+        )
+        .then(() => {
+          setStatusKonfirmasi(statusKonfirmasiInput);
+        })
+        .catch((e) => {
+          toast({
+            description: e.response.data.meta.message.join(", "),
+            status: "error",
+            variant: "subtle",
+            duration: 9000,
+            isClosable: true,
+          });
+        });
+    } else {
+      await axios
+        .post(
+          `${BASE_API}/survey/reject-survey`,
+          {
+            survey_id: props.selectedId,
+          },
+          AUTHORIZATION_HEADERS
+        )
+        .then(() => {
+          setStatusKonfirmasi(statusKonfirmasiInput);
+        })
+        .catch((e) => {
+          toast({
+            description: e.response.data.meta.message.join(", "),
+            status: "error",
+            variant: "subtle",
+            duration: 9000,
+            isClosable: true,
+          });
+        });
+    }
+
+    setLoading(false);
   };
 
   return (
     <>
       {statusKonfirmasi !== null ? (
         <Modal
-          isOpen={props.isOpen}
+          isOpen={true}
           onClose={() => {
             props.onClose();
             setStatusKonfirmasi(null);
+            props.getData();
+            props.getDataTolakSSurvei();
           }}
           isCentered
         >
@@ -50,6 +98,8 @@ const ModalKonfirmasi = (props: { isOpen: boolean; onOpen: any; onClose: any }) 
                   onClick={() => {
                     props.onClose();
                     setStatusKonfirmasi(null);
+                    props.getData();
+                    props.getDataTolakSSurvei();
                   }}
                   color={"white"}
                   backgroundColor={"black"}
@@ -63,7 +113,7 @@ const ModalKonfirmasi = (props: { isOpen: boolean; onOpen: any; onClose: any }) 
         </Modal>
       ) : (
         <Modal
-          isOpen={props.isOpen}
+          isOpen={true}
           onClose={() => {
             props.onClose();
           }}

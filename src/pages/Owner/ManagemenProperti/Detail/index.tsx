@@ -72,7 +72,7 @@ const index = () => {
     dataToSubmit.tanggal_mulai_sewa = new Date(dataState.tanggal_mulai_sewa).getTime();
 
     await axios
-      .post(`${BASE_API}/property/register`, dataToSubmit, AUTHORIZATION_HEADERS)
+      .post(`${BASE_API}/property/update-property`, dataToSubmit, AUTHORIZATION_HEADERS)
       .then(() => {
         toast({
           description: "Berhasil edit Properti",

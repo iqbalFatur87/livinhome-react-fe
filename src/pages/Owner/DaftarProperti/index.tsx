@@ -6,7 +6,7 @@ import FasilitasProperti from "./components/FasilitasProperti";
 import HargaProperti from "./components/HargaProperti";
 import axios from "axios";
 import { BASE_API } from "../../../utils/constant/api";
-import { AUTHORIZATION_HEADERS, authorityCheck, logout } from "../../../utils/helper/helper";
+import { AUTHORIZATION_HEADERS, authorityCheck } from "../../../utils/helper/helper";
 import LoadingComponent from "../../../components/LoadingComponent";
 
 const index = () => {
@@ -97,9 +97,6 @@ const index = () => {
           </Button>
         ) : null}
       </HStack>
-      <Button onClick={logout} position={"fixed"} top={"0"} right={0} colorScheme={"red"}>
-        Logout
-      </Button>
     </Stack>
   );
 };
