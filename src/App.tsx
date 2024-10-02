@@ -13,6 +13,7 @@ import {
   Login,
   ManagementProperti,
   PengajuanSurvei,
+  Profil,
   Register,
   ResetPassword,
 } from "./pages";
@@ -62,6 +63,8 @@ function App() {
                 <Route path="info-pengajuan-sewa/:id" element={<InfoCalonPenyewaSewa />} />
                 <Route path="konfirmasi-pengajuan-sewa" element={<KonfirmasiPenyewa />} />
               </Route>
+
+              <Route path="profil" element={<Profil />} />
             </Route>
           </Route>
           {/* ) : null} */}
