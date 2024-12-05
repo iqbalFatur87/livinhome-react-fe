@@ -3,7 +3,7 @@ import { Button, HStack, Image, Stack, Text } from "@chakra-ui/react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
 import { primaryTextColor, primaryTextTitleColor } from "../../../components/theme";
-import { logout } from "../../../utils/helper/helper";
+import { LOCAL_STORAGE, logout } from "../../../utils/helper/helper";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -22,7 +22,7 @@ const Navbar = () => {
     },
     {
       title: "Pesan",
-      url: "/404",
+      url: "/owner/chat",
     },
   ];
 
@@ -78,10 +78,11 @@ const Navbar = () => {
               navigate("/owner/profil");
             }}
             cursor={"pointer"}
-            src="/avatar.png"
+            src={LOCAL_STORAGE()?.AVATAR || "/No_Image_Available.jpg"}
             width={"50px"}
             height={"50px"}
-            objectFit={"contain"}
+            objectFit={"cover"}
+            borderRadius={"100%"}
           />
           <Button onClick={logout} colorScheme={"red"}>
             Logout
@@ -114,19 +115,23 @@ const Navbar = () => {
         </HStack>
 
         <Stack gap="5px" my="30px">
-          <Image
-            onClick={() => {
-              navigate("/owner/profil");
-              setShowSidebar(false);
-            }}
-            cursor={"pointer"}
-            src="/avatar.png"
-            marginBottom={"30px"}
-            width={"50px"}
-            height={"50px"}
-            objectFit={"contain"}
-            alignSelf={"center"}
-          />
+          <Stack gap={"5px"} marginBottom={"30px"}>
+            <Image
+              onClick={() => {
+                navigate("/owner/profil");
+                setShowSidebar(false);
+              }}
+              cursor={"pointer"}
+              src={LOCAL_STORAGE()?.AVATAR || "/No_Image_Available.jpg"}
+              width={"50px"}
+              height={"50px"}
+              objectFit={"cover"}
+              alignSelf={"center"}
+              borderRadius={"100%"}
+            />
+            <Text textAlign={"center"}>Profil</Text>
+          </Stack>
+
           {sections.map((section: { title: string; url: string }) => (
             <Button
               key={section.title}

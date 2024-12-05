@@ -37,7 +37,7 @@ const index = () => {
   }, [localStorage[SUCCESS_REGISTER]]);
 
   return (
-    <Stack width={"100vw"} height={"100vh"} alignItems={"center"} justifyContent={"center"}>
+    <Stack width={"100vw"} height={"100vh"} alignItems={"center"} justifyContent={"center"} overflowY={"scroll"}>
       <Stack width={"100%"} height={"100%"} position={"fixed"}>
         <Image width={"90%"} maxWidth={"483px"} src={"/bg-login-1.png"} position={"absolute"} zIndex={"1"} top={"0"} left={"0"} />
         <Image width={"90%"} maxWidth={"483px"} src={"/bg-login-2.png"} position={"absolute"} zIndex={"0"} bottom={"0"} right={"0"} />

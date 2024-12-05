@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BASE_API } from "../../../../utils/constant/api";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { AUTHORIZATION_HEADERS, authorityCheck } from "../../../../utils/helper/helper";
+import { AUTHORIZATION_HEADERS, Get_Epoc_Date, authorityCheck } from "../../../../utils/helper/helper";
 import LoadingComponent from "../../../../components/LoadingComponent";
 import { Button, HStack, Stack, useToast } from "@chakra-ui/react";
 import DaftarProperti from "./components/DataProperty";
@@ -68,8 +68,8 @@ const index = () => {
     setLoading(true);
     let dataToSubmit = dataState;
     dataToSubmit.property_id = id;
-    dataToSubmit.tanggal_dibuat = new Date(dataState.tanggal_dibuat).getTime();
-    dataToSubmit.tanggal_mulai_sewa = new Date(dataState.tanggal_mulai_sewa).getTime();
+    dataToSubmit.tanggal_dibuat = Get_Epoc_Date(dataState.tanggal_dibuat);
+    dataToSubmit.tanggal_mulai_sewa = Get_Epoc_Date(dataState.tanggal_mulai_sewa);
 
     await axios
       .post(`${BASE_API}/property/update-property`, dataToSubmit, AUTHORIZATION_HEADERS)

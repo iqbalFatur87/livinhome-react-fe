@@ -1,30 +1,8 @@
-import {
-  Heading,
-  Stack,
-  useDisclosure,
-  Image,
-  HStack,
-  Text,
-  Button,
-  useBoolean,
-  Box,
-} from "@chakra-ui/react";
+import { Heading, Stack, useDisclosure, Image, HStack, Text, Button, useBoolean, Box } from "@chakra-ui/react";
 
 import { Menu, X } from "react-feather";
-import {
-  backgroundContainer,
-  borderRadius,
-  primaryTextColor,
-  primaryTextTitleColor,
-  customBorder,
-} from "../theme";
-import {
-  BsArrowLeftShort,
-  BsFillBellFill,
-  BsFillMoonFill,
-  BsFillSunFill,
-  BsNewspaper,
-} from "react-icons/bs";
+import { backgroundContainer, borderRadius, primaryTextColor, primaryTextTitleColor, customBorder } from "../theme";
+import { BsArrowLeftShort, BsFillBellFill, BsFillMoonFill, BsFillSunFill, BsNewspaper } from "react-icons/bs";
 import { FaSearch } from "react-icons/fa";
 import Divider from "../Divider";
 import { useNavigate } from "react-router-dom";
@@ -84,27 +62,11 @@ const Sidebar = (props: { theme: any; pageName: any; parts: any }) => {
         alignItems={"start"}
         border={{ base: customBorder(), lg: "none" }}
       >
-        <Stack
-          w={"full"}
-          my={"auto"}
-          paddingY={"10px"}
-          paddingX={"12px"}
-          position={"relative"}
-          justifyContent={"space-between"}
-        >
+        <Stack w={"full"} my={"auto"} paddingY={"10px"} paddingX={"12px"} position={"relative"} justifyContent={"space-between"}>
           <Stack display={{ base: "none", lg: "flex" }}>
-            <HStack
-              justifyContent={"space-between"}
-              width={"100%"}
-              alignItems={"start"}
-            >
+            <HStack justifyContent={"space-between"} width={"100%"} alignItems={"start"}>
               <HStack>
-                <Image
-                  src="/assets/Logo.png"
-                  width={"42px"}
-                  aspectRatio={"1/1"}
-                  borderRadius={borderRadius()}
-                />
+                <Image src="/assets/Logo.png" width={"42px"} aspectRatio={"1/1"} borderRadius={borderRadius()} />
                 <HStack lineHeight={"0.8"} as={"b"} fontSize={"2xl"}>
                   <Text color={primaryTextTitleColor()}>App Name</Text>
                 </HStack>
@@ -113,11 +75,7 @@ const Sidebar = (props: { theme: any; pageName: any; parts: any }) => {
             <Divider />
           </Stack>
 
-          <HStack
-            display={{ base: "flex", lg: "none" }}
-            width={"100%"}
-            justifyContent={"space-between"}
-          >
+          <HStack display={{ base: "flex", lg: "none" }} width={"100%"} justifyContent={"space-between"}>
             {props.parts.length > 2 ? (
               <Stack
                 backgroundColor={backgroundContainer()}
@@ -135,19 +93,10 @@ const Sidebar = (props: { theme: any; pageName: any; parts: any }) => {
                 <BsArrowLeftShort />
               </Stack>
             ) : (
-              <Image
-                src="/assets/Logo.png"
-                width={"42px"}
-                aspectRatio={"1/1"}
-                borderRadius={borderRadius()}
-              />
+              <Image src="/assets/Logo.png" width={"42px"} aspectRatio={"1/1"} borderRadius={borderRadius()} />
             )}
 
-            <Heading
-              color={primaryTextColor()}
-              fontSize={{ base: "xl", md: "2xl" }}
-              textTransform={"capitalize"}
-            >
+            <Heading color={primaryTextColor()} fontSize={{ base: "xl", md: "2xl" }} textTransform={"capitalize"}>
               App Name
             </Heading>
             <Button
@@ -164,11 +113,7 @@ const Sidebar = (props: { theme: any; pageName: any; parts: any }) => {
           </HStack>
         </Stack>
 
-        <Stack
-          alignItems={"center"}
-          width={"100%"}
-          display={{ base: "none", lg: "flex" }}
-        >
+        <Stack alignItems={"center"} width={"100%"} display={{ base: "none", lg: "flex" }}>
           <Stack width={"100%"} marginBottom={"12px"} alignItems={"center"}>
             <HStack
               borderRadius={"30px"}
@@ -195,14 +140,7 @@ const Sidebar = (props: { theme: any; pageName: any; parts: any }) => {
                 <FaSearch />
               </Stack>
 
-              <Stack
-                alignItems={"center"}
-                justifyContent={"center"}
-                fontSize={"18px"}
-                objectFit={"contain"}
-                color={"#A3AED0"}
-                cursor={"pointer"}
-              >
+              <Stack alignItems={"center"} justifyContent={"center"} fontSize={"18px"} objectFit={"contain"} color={"#A3AED0"} cursor={"pointer"}>
                 <BsFillBellFill />
               </Stack>
               <Stack
@@ -214,11 +152,7 @@ const Sidebar = (props: { theme: any; pageName: any; parts: any }) => {
                 cursor={"pointer"}
                 onClick={props.theme.switchTheme}
               >
-                {props.theme.currentTheme ? (
-                  <BsFillSunFill />
-                ) : (
-                  <BsFillMoonFill />
-                )}
+                {props.theme.currentTheme ? <BsFillSunFill /> : <BsFillMoonFill />}
               </Stack>
               <Stack
                 alignItems={"center"}
@@ -302,14 +236,7 @@ const Sidebar = (props: { theme: any; pageName: any; parts: any }) => {
               <FaSearch />
             </Stack>
 
-            <Stack
-              alignItems={"center"}
-              justifyContent={"center"}
-              fontSize={"18px"}
-              objectFit={"contain"}
-              color={"#A3AED0"}
-              cursor={"pointer"}
-            >
+            <Stack alignItems={"center"} justifyContent={"center"} fontSize={"18px"} objectFit={"contain"} color={"#A3AED0"} cursor={"pointer"}>
               <BsFillBellFill />
             </Stack>
             <Stack
@@ -321,11 +248,7 @@ const Sidebar = (props: { theme: any; pageName: any; parts: any }) => {
               cursor={"pointer"}
               onClick={props.theme.switchTheme}
             >
-              {props.theme.currentTheme ? (
-                <BsFillSunFill />
-              ) : (
-                <BsFillMoonFill />
-              )}
+              {props.theme.currentTheme ? <BsFillSunFill /> : <BsFillMoonFill />}
             </Stack>
             <Stack
               alignItems={"center"}
@@ -365,9 +288,7 @@ const Sidebar = (props: { theme: any; pageName: any; parts: any }) => {
           setShowSidebar={setShowSidebar}
         />
       </Stack>
-      {modal === "pencarian" ? (
-        <Pencarian isOpen={isOpen} onClose={onClose} />
-      ) : null}
+      {modal === "pencarian" ? <Pencarian isOpen={isOpen} onClose={onClose} /> : null}
     </>
   );
 };

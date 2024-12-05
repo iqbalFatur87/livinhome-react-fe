@@ -157,6 +157,7 @@ const index = () => {
           }}
           getData={getData}
           getDataTolakSSurvei={getDataTolakSSurvei}
+          dataState={dataState.filter((i: any) => (i.id = selectedId))?.[0]}
         />
       ) : null}
     </Stack>

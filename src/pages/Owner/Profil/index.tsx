@@ -5,22 +5,38 @@ import { useEffect, useState } from "react";
 import LoadingComponent from "../../../components/LoadingComponent";
 import axios from "axios";
 import { BASE_API } from "../../../utils/constant/api";
-import { authorityCheck, AUTHORIZATION_HEADERS } from "../../../utils/helper/helper";
+import { authorityCheck, AUTHORIZATION_HEADERS, encrypt, Get_Epoc_Date, LOCAL_STORAGE } from "../../../utils/helper/helper";
 import ModalUpdatePhotoProfil from "./components/ModalUpdatePhotoProfil";
+import { DATA } from "../../../utils/constant/localStorage";
 
 const index = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [dataState, setDataState] = useState<any>(null);
   const [initDataState, setInitDataState] = useState<any>(null);
-  const [listKota, setListKota] = useState<any>([]);
+  // const [listKota, setListKota] = useState<any>([]);
   const [modalPhotoProfil, setModalPhotoProfil] = useState<boolean>(false);
   const toast = useToast();
   const getData = async () => {
     setLoading(true);
     try {
       await axios.get(`${BASE_API}/profile/owner`, AUTHORIZATION_HEADERS).then((res) => {
-        setInitDataState(res.data.data);
-        setDataState(res.data.data);
+        const filteredField = res.data.data;
+        delete filteredField.job;
+        delete filteredField.school_name;
+        delete filteredField.city;
+        delete filteredField.status;
+        delete filteredField.last_education;
+        delete filteredField.emergency_contact;
+        // alert(filteredField)
+        if (filteredField.photo_profile !== LOCAL_STORAGE().AVATAR) {
+          let newLocalStorage = LOCAL_STORAGE();
+          newLocalStorage.AVATAR = filteredField.photo_profile;
+          localStorage[DATA] = encrypt(newLocalStorage);
+          window.location.reload();
+        } else {
+          setInitDataState(filteredField);
+          setDataState(filteredField);
+        }
       });
     } catch (error) {
       setDataState(null);
@@ -31,31 +47,31 @@ const index = () => {
   const updateForm = (field: string, newValue: any) => {
     setDataState((prev: any) => ({ ...prev, [field]: newValue }));
   };
-  const getlistKota = async () => {
-    setLoading(true);
-    setListKota([]);
-    await axios.get("/indonesia.json").then((res) => {
-      const tmp = [];
-      for (const i of res.data) {
-        for (const j of i.listKota) {
-          let dataToPush = j.name
-            .replace(/KABUPATEN\s+/i, "")
-            .replace(/KOTA\s+/i, "")
-            .trim();
-          tmp.push(dataToPush);
-        }
-      }
-      setListKota(tmp);
-      setTimeout(() => {
-        setLoading(false);
-      }, 100);
-    });
-  };
+  // const getlistKota = async () => {
+  //   setLoading(true);
+  //   setListKota([]);
+  //   await axios.get("/indonesia.json").then((res) => {
+  //     const tmp = [];
+  //     for (const i of res.data) {
+  //       for (const j of i.listKota) {
+  //         let dataToPush = j.name
+  //           .replace(/KABUPATEN\s+/i, "")
+  //           .replace(/KOTA\s+/i, "")
+  //           .trim();
+  //         tmp.push(dataToPush);
+  //       }
+  //     }
+  //     setListKota(tmp);
+  //     setTimeout(() => {
+  //       setLoading(false);
+  //     }, 100);
+  //   });
+  // };
 
   const submit = async () => {
     setLoading(true);
     let dataToPost = dataState;
-    dataToPost.date_of_birth = new Date(dataToPost.date_of_birth).getTime();
+    dataToPost.date_of_birth = Get_Epoc_Date(dataToPost.date_of_birth);
     await axios
       .post(`${BASE_API}/profile/owner/update`, dataToPost, AUTHORIZATION_HEADERS)
       .then(() => {
@@ -82,7 +98,7 @@ const index = () => {
     setLoading(false);
   };
   useEffect(() => {
-    getlistKota();
+    // getlistKota();
     getData();
   }, []);
   return loading ? (
@@ -99,7 +115,13 @@ const index = () => {
           gap={"0"}
           onClick={() => setModalPhotoProfil(true)}
         >
-          <Image src="/avatar.png" width={"100px"} height={"100px"} objectFit={"contain"} />
+          <Image
+            borderRadius={"100%"}
+            src={dataState?.photo_profile || "/No_Image_Available.jpg"}
+            width={"100px"}
+            height={"100px"}
+            objectFit={"cover"}
+          />
           <Text fontWeight={"bold"} fontSize={"xs"} as={"u"}>
             Ubah Foto
           </Text>
@@ -196,7 +218,7 @@ const index = () => {
             color={inputColor()}
           />
         </Stack>
-        <Stack>
+        {/* <Stack>
           <Text color={primaryTextColor()} fontWeight={"bold"}>
             Pekerjaan
           </Text>
@@ -213,8 +235,8 @@ const index = () => {
             <option value={"Swasta"}>Swasta</option>
             <option value={"Wira Usaha"}>Wira Usaha</option>
           </Select>
-        </Stack>
-        <Stack>
+        </Stack> */}
+        {/* <Stack>
           <HStack flexWrap={"wrap"}>
             <Text color={primaryTextColor()} fontWeight={"bold"}>
               Nama Sekolah
@@ -228,8 +250,8 @@ const index = () => {
             border={customBorder()}
             color={inputColor()}
           />
-        </Stack>
-        <Stack>
+        </Stack> */}
+        {/* <Stack>
           <Text color={primaryTextColor()} fontWeight={"bold"}>
             Kota Asal
           </Text>
@@ -247,8 +269,8 @@ const index = () => {
               </option>
             ))}
           </Select>
-        </Stack>
-        <Stack>
+        </Stack> */}
+        {/* <Stack>
           <Text color={primaryTextColor()} fontWeight={"bold"}>
             Status
           </Text>
@@ -264,8 +286,8 @@ const index = () => {
             <option value={"Belum Kawin"}>Belum Kawin</option>
             <option value={"Cerai"}>Cerai</option>
           </Select>
-        </Stack>
-        <Stack>
+        </Stack> */}
+        {/* <Stack>
           <Text color={primaryTextColor()} fontWeight={"bold"}>
             Pendidikan Terakhir
           </Text>
@@ -282,7 +304,7 @@ const index = () => {
             <option value={"S2"}>S2</option>
             <option value={"S3"}>S3</option>
           </Select>
-        </Stack>
+        </Stack> */}
 
         <Stack>
           <Text color={primaryTextColor()} fontWeight={"bold"}>
@@ -326,21 +348,11 @@ const index = () => {
         </Stack>
 
         <Stack>
-          <HStack flexWrap={"wrap"}>
-            <Text color={primaryTextColor()} fontWeight={"bold"}>
-              No Kontak Darurat
-            </Text>
-          </HStack>
-
-          <Input
-            value={dataState?.emergency_contact || ""}
-            onChange={(e) => updateForm("emergency_contact", e.target.value)}
-            backgroundColor={inputBackgroundColor()}
-            border={customBorder()}
-            color={inputColor()}
-          />
+          <Text color={primaryTextColor()} fontWeight={"bold"}>
+            KTP
+          </Text>
+          <Image src={dataState?.id_card || "/No_Image_Available.jpg"} />
         </Stack>
-        <Image src={dataState?.id_card} />
 
         <HStack justifyContent={"center"}>
           <Button onClick={() => setDataState(initDataState)}>Batal</Button>
@@ -352,6 +364,7 @@ const index = () => {
 
       {modalPhotoProfil ? (
         <ModalUpdatePhotoProfil
+          getData={getData}
           onClose={() => {
             setModalPhotoProfil(false);
           }}

@@ -7,7 +7,9 @@ const Middleware = () => {
   const location = useLocation();
   const pathname = location.pathname;
   const parts = pathname.split("/");
-  const pageName: number | string = params.id ? parts[parts.length - 2] : parts[parts.length - 1];
+  const pageName: number | string = params.id
+    ? parts[parts.length - 2]
+    : parts[parts.length - 1];
 
   if (pageName) {
     try {
@@ -22,6 +24,10 @@ const Middleware = () => {
   } else {
     if (LOCAL_STORAGE()?.ROLE == "owner") {
       return <Navigate to="/owner/management-properti" />;
+    } else if (LOCAL_STORAGE()?.ROLE == "renter") {
+      return <Navigate to="/dashboard" />;
+    } else if (LOCAL_STORAGE()?.ROLE == "admin") {
+      return <Navigate to="/admin/dashboard" />;
     } else {
       return <Navigate to="/dashboard" />;
     }

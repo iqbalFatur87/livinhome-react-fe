@@ -6,13 +6,13 @@ import FasilitasProperti from "./components/FasilitasProperti";
 import HargaProperti from "./components/HargaProperti";
 import axios from "axios";
 import { BASE_API } from "../../../utils/constant/api";
-import { AUTHORIZATION_HEADERS, authorityCheck } from "../../../utils/helper/helper";
+import { AUTHORIZATION_HEADERS, Get_Epoc_Date, authorityCheck } from "../../../utils/helper/helper";
 import LoadingComponent from "../../../components/LoadingComponent";
 
 const index = () => {
   const pageState: string[] = ["daftar properti", "foto properti", "fasilitas properti", "harga properti"];
   const [selectedState, setSelectedState] = useState<number>(0);
-  const [dataState, setDataState] = useState<any>({ foto_kamar_tidur: [] });
+  const [dataState, setDataState] = useState<any>({ foto_kamar_tidur: [], minimum_sewa: "1" });
   const toast = useToast();
   const [listRules, setListRules] = useState<any>(null);
   const [indonesia, setIndonesia] = useState<any>([]);
@@ -36,8 +36,8 @@ const index = () => {
   const submit = async () => {
     setLoading(true);
     let dataToSubmit = dataState;
-    dataToSubmit.tanggal_dibuat = new Date(dataState.tanggal_dibuat).getTime();
-    dataToSubmit.tanggal_mulai_sewa = new Date(dataState.tanggal_mulai_sewa).getTime();
+    dataToSubmit.tanggal_dibuat = Get_Epoc_Date(dataState.tanggal_dibuat);
+    dataToSubmit.tanggal_mulai_sewa = Get_Epoc_Date(dataState.tanggal_mulai_sewa);
     dataToSubmit.kamar_mandi = 1;
     await axios
       .post(`${BASE_API}/property/register`, dataToSubmit, AUTHORIZATION_HEADERS)

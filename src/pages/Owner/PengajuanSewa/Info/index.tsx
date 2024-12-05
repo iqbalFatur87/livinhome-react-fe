@@ -82,7 +82,7 @@ const index = () => {
                     : dataState?.property?.[0]?.minimum_sewa == 3
                     ? dataState?.property?.[0]?.harga_sewa_3_bulan
                     : dataState?.property?.[0]?.minimum_sewa == 12
-                    ? dataState?.property?.[0]?.harga_sewa_1_tahun
+                    ? dataState?.property?.[0]?.harga_sewa_tahun
                     : 0
                 )}{" "}
                 / {dataState?.property?.[0]?.minimum_sewa} Bulan
@@ -149,7 +149,7 @@ const index = () => {
                 <Text fontWeight={"bold"} color={primaryTextColor()}>
                   Jenis Kelamin
                 </Text>
-                <Text color={secondaryTextColor()}>{dataState?.gender || "-"}</Text>
+                <Text color={secondaryTextColor()}>{dataState?.gender == 1 ? "Pria" : dataState?.gender == 0 ? "Wanita" : "-"}</Text>
               </HStack>
               <HStack justifyContent={"space-between"}>
                 <Text fontWeight={"bold"} color={primaryTextColor()}>
@@ -175,7 +175,7 @@ const index = () => {
                   Dokumen
                 </Text>
               </Stack>
-              <Image src={dataState?.id_card} />
+              <Image src={dataState?.id_card || "/No_Image_Available.jpg"} />
             </Stack>
           </Stack>
         </Stack>
@@ -211,12 +211,12 @@ const index = () => {
             </Text>
             <Text color={secondaryTextColor()}>{dataState?.duration}</Text>
           </HStack>
-          <Stack borderBottom={"1px"} borderColor={"rgba(179, 179, 179, 1)"} paddingBottom={"10px"} marginTop={"30px"}>
+          {/* <Stack borderBottom={"1px"} borderColor={"rgba(179, 179, 179, 1)"} paddingBottom={"10px"} marginTop={"30px"}>
             <Text fontWeight={"bold"} color={primaryTextColor()} textAlign={"start"} fontSize={"md"}>
               Layanan Tambahan
             </Text>
-          </Stack>
-          <HStack
+          </Stack> */}
+          {/* <HStack
             borderColor={"rgba(96, 90, 90, 1)"}
             borderRadius={"16px"}
             padding={"8px"}
@@ -237,7 +237,7 @@ const index = () => {
             <Text fontWeight={"bold"} color={primaryTextColor()} alignSelf={"flex-end"} fontSize={"md"}>
               {convertToBillNumber(80000)}
             </Text>
-          </HStack>
+          </HStack> */}
 
           <Stack borderBottom={"1px"} borderColor={"rgba(179, 179, 179, 1)"} paddingBottom={"10px"}>
             <Text fontWeight={"bold"} color={primaryTextColor()} textAlign={"start"} fontSize={"md"}>
@@ -248,10 +248,9 @@ const index = () => {
             {convertToBillNumber(dataState?.total_price || 0)}
           </Text>
 
-          <Text textAlign={"center"} color={"rgba(212, 47, 47, 1)"} marginTop={"20px"}>
-            {/* Konfirmasi sebelum Minggu 17 Agustus 2024, 21:57 */}
+          {/* <Text textAlign={"center"} color={"rgba(212, 47, 47, 1)"} marginTop={"20px"}>
             {dataState?.deadline}
-          </Text>
+          </Text> */}
 
           <HStack>
             <Button

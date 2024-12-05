@@ -5,8 +5,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { BASE_API } from "../../../../utils/constant/api";
 import { REGISTER_TOKEN } from "../../../../utils/constant/localStorage";
+import { Get_Epoc_Date } from "../../../../utils/helper/helper";
 
 export const FormPemilikProperti = (props: { setRegisterState: any }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [jenisKelaminInput, setJenisKelaminInput] = useState<any>(null);
   const [namaLengkapInput, setNamaLengkapInput] = useState<any>(null);
   const [emailInput, setEmailInput] = useState<any>(null);
@@ -37,12 +39,13 @@ export const FormPemilikProperti = (props: { setRegisterState: any }) => {
   }, []);
 
   const register = async () => {
+    setLoading(true);
     await axios
       .post(`${BASE_API}/auth/register/owner`, {
         fullname: namaLengkapInput,
         gender: jenisKelaminInput,
         email: emailInput,
-        date_of_birth: new Date(tanggalInput).getTime(),
+        date_of_birth: Get_Epoc_Date(tanggalInput),
         phone_number: noHandphone,
         password: passwordInput,
       })
@@ -66,6 +69,7 @@ export const FormPemilikProperti = (props: { setRegisterState: any }) => {
           isClosable: true,
         });
       });
+    setLoading(false);
   };
   return (
     <Stack
@@ -106,7 +110,7 @@ export const FormPemilikProperti = (props: { setRegisterState: any }) => {
             </Stack>
           </RadioGroup>
           <HStack justifyContent={"space-between"}>
-            <Text color={secondaryTextColor()}>Tanggal</Text>
+            <Text color={secondaryTextColor()}>Tanggal Lahir</Text>
             <Input value={tanggalInput} onChange={(e) => setTanggalInput(e.target.value)} type="date" borderRadius={borderRadius()} />
           </HStack>
 
@@ -143,19 +147,20 @@ export const FormPemilikProperti = (props: { setRegisterState: any }) => {
             </HStack>
           </Stack>
 
-          {jenisKelaminInput && namaLengkapInput && emailInput && tanggalInput && noHandphone && passwordInput ? (
-            <Button
-              type="submit"
-              color={"white"}
-              backgroundColor={"black"}
-              borderRadius={"30px"}
-              size={"lg"}
-              _hover={{ backgroundColor: "black" }}
-              // onClick={() => props.setRegisterState("Unggah KTP")}
-            >
-              Daftar
-            </Button>
-          ) : null}
+          {/* {jenisKelaminInput && namaLengkapInput && emailInput && tanggalInput && noHandphone && passwordInput ? ( */}
+          <Button
+            type="submit"
+            color={"white"}
+            backgroundColor={"black"}
+            borderRadius={"30px"}
+            size={"lg"}
+            _hover={{ backgroundColor: "black" }}
+            isLoading={loading}
+            // onClick={() => props.setRegisterState("Unggah KTP")}
+          >
+            Daftar
+          </Button>
+          {/* ) : null} */}
 
           <HStack flexWrap={"wrap"} justifyContent={"center"} lineHeight={"4"} gap={"5px"} marginTop={"10px"}>
             <Text textAlign={"center"} fontSize={"sm"} color={primaryTextColor()}>

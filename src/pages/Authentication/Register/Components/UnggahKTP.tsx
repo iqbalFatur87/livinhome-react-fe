@@ -1,6 +1,6 @@
 import { Button, HStack, Image, ListItem, Stack, Text, UnorderedList, useToast } from "@chakra-ui/react";
 import { borderRadius, primaryTextColor, secondaryTextColor } from "../../../../components/theme";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
 import { REGISTER_TOKEN, REGISTER_UPLOAD, SUCCESS_REGISTER } from "../../../../utils/constant/localStorage";
@@ -12,8 +12,6 @@ export const UnggahKTP = () => {
   const [preview, setPreview] = useState<string | null>(null); // State to hold the file preview
   const [loading, setLoading] = useState<boolean>(false);
   const toast = useToast();
-  const stackRef = useRef<HTMLDivElement | null>(null);
-  const [marginTop, setMarginTop] = useState("150px");
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -78,29 +76,29 @@ export const UnggahKTP = () => {
     }
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (stackRef.current) {
-        const height = stackRef.current.clientHeight;
-        if (height < window.innerHeight) {
-          setMarginTop("0px");
-        } else {
-          setMarginTop("100px");
-        }
-      }
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     if (stackRef.current) {
+  //       const height = stackRef.current.clientHeight;
+  //       if (height < window.innerHeight) {
+  //         setMarginTop("0px");
+  //       } else {
+  //         setMarginTop("100px");
+  //       }
+  //     }
+  //   };
 
-    // Check on mount
-    handleResize();
+  //   // Check on mount
+  //   handleResize();
 
-    // Add resize listener
-    window.addEventListener("resize", handleResize);
+  //   // Add resize listener
+  //   window.addEventListener("resize", handleResize);
 
-    // Clean up listener on unmount
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  //   // Clean up listener on unmount
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, []);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
@@ -115,8 +113,7 @@ export const UnggahKTP = () => {
       backgroundColor={"white"}
       zIndex={"2"}
       gap={"40px"}
-      ref={stackRef}
-      marginTop={marginTop}
+      marginTop={"250px"}
     >
       <UnorderedList>
         <ListItem>Pastikan pencahayaan cukup pada saat pengambilan foto KTP (tidak terlalu terang atau terlalu gelap)</ListItem>
@@ -165,7 +162,15 @@ export const UnggahKTP = () => {
           </Stack>
         )}
       </Stack>
-      <Button onClick={submit} color={"white"} backgroundColor={"black"} borderRadius={"30px"} size={"md"} _hover={{ backgroundColor: "black" }}>
+      <Button
+        isLoading={loading}
+        onClick={submit}
+        color={"white"}
+        backgroundColor={"black"}
+        borderRadius={"30px"}
+        size={"md"}
+        _hover={{ backgroundColor: "black" }}
+      >
         Submit
       </Button>
 

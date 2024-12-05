@@ -11,7 +11,7 @@ export const generateTimestamp = (year: number, month: number = 1, date: number 
 export const convertToHumanDate = (timeStamp: string | number): string => {
   if (typeof timeStamp == "string") {
     return (
-      new Date(parseInt(timeStamp)).toLocaleString("id-ID", {
+      new Date(parseInt(timeStamp) * 1000).toLocaleString("id-ID", {
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -19,7 +19,7 @@ export const convertToHumanDate = (timeStamp: string | number): string => {
     );
   } else {
     return (
-      new Date(timeStamp).toLocaleString("id-ID", {
+      new Date(timeStamp * 1000).toLocaleString("id-ID", {
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -35,9 +35,9 @@ export const epocToInput = (timeStamp: string | number): string => {
 
 export const convertToBillNumber = (num: number | string): string => {
   if (typeof num == "string") {
-    return `Rp. ${parseInt(num, 10).toLocaleString()},-` || "-";
+    return `Rp. ${parseInt(num, 10).toLocaleString()}` || "-";
   } else {
-    return `Rp. ${num.toLocaleString()},-` || "-";
+    return `Rp. ${num.toLocaleString()}` || "-";
   }
 };
 
@@ -55,7 +55,7 @@ export const getHours = (epoc: number): string => {
 };
 export const logout = () => {
   localStorage.clear();
-  location.href = "/auth/login";
+  location.href = "/dashboard";
 };
 
 export const authorityCheck = (errorStatus: number): void => {
@@ -93,3 +93,5 @@ export const AUTHORIZATION_HEADERS = {
     Authorization: `${localStorage.token}`,
   },
 };
+
+export const Get_Epoc_Date = (params: number) => Math.trunc(new Date(params).getTime() / 1000.0);
