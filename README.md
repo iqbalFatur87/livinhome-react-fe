@@ -68,3 +68,5 @@ Key dependencies used in this project include:
 - Vite
 - Chakra UI for component styling
 - Axios for HTTP requests
+
+### P.S : For admin login, see note.txt
