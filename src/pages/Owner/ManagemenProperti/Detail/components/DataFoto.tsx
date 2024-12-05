@@ -125,7 +125,7 @@ const DataFoto: React.FC<DataFotoProps> = (props) => {
               maxWidth="100%"
               height="100%"
               objectFit="contain"
-              src={props.dataState.images.property.bagian_depan}
+              src={props.dataState.images.property.bagian_depan || "/No_Image_Available.jpg"}
               borderRadius={borderRadius()}
             />
           ) : loading ? (
@@ -178,7 +178,7 @@ const DataFoto: React.FC<DataFotoProps> = (props) => {
               maxWidth="100%"
               height="100%"
               objectFit="contain"
-              src={props.dataState?.images?.property?.bagian_jalan}
+              src={props.dataState?.images?.property?.bagian_jalan || "/No_Image_Available.jpg"}
               borderRadius={borderRadius()}
             />
           ) : loading ? (
@@ -231,7 +231,7 @@ const DataFoto: React.FC<DataFotoProps> = (props) => {
               maxWidth="100%"
               height="100%"
               objectFit="contain"
-              src={props.dataState?.images?.property?.bagian_dalam}
+              src={props.dataState?.images?.property?.bagian_dalam || "/No_Image_Available.jpg"}
               borderRadius={borderRadius()}
             />
           ) : loading ? (
@@ -283,7 +283,7 @@ const DataFoto: React.FC<DataFotoProps> = (props) => {
               maxWidth="100%"
               height="100%"
               objectFit="contain"
-              src={props.dataState?.images?.bathroom}
+              src={props.dataState?.images?.bathroom || "/No_Image_Available.jpg"}
               borderRadius={borderRadius()}
             />
           ) : loading ? (

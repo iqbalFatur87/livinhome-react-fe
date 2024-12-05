@@ -1,9 +1,9 @@
-import { Badge, Button, HStack, Image, Stack, Text } from "@chakra-ui/react";
+import { Badge, Button, HStack, Image, Stack, Text, useToast } from "@chakra-ui/react";
 import { borderRadius, primaryTextColor, primaryTextTitleColor, secondaryTextColor } from "../../../components/theme";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { authorityCheck, AUTHORIZATION_HEADERS, convertToBillNumber } from "../../../utils/helper/helper";
+import { authorityCheck, AUTHORIZATION_HEADERS, convertToBillNumber, LOCAL_STORAGE } from "../../../utils/helper/helper";
 import { BASE_API } from "../../../utils/constant/api";
 import LoadingComponent from "../../../components/LoadingComponent";
 import { FaBath, FaStar } from "react-icons/fa6";
@@ -12,9 +12,30 @@ import { IoIosExpand } from "react-icons/io";
 import { BsHouseAddFill } from "react-icons/bs";
 
 const index = () => {
+  const toast = useToast();
   const navigate = useNavigate();
   const [properti, setProperti] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [dataState, setDataState] = useState<any>(null);
+
+  const getData = async () => {
+    setLoading(true);
+    await axios
+      .get(`${BASE_API}/homepage/list-pemilik`, AUTHORIZATION_HEADERS)
+      .then((res) => setDataState(res.data.data))
+      .catch((error) => {
+        authorityCheck(error.response.status);
+        toast({
+          description: error.response?.data?.meta?.message?.join(", "),
+          status: "error",
+          duration: 9000,
+          variant: "subtle",
+          isClosable: true,
+        });
+      });
+    setLoading(false);
+  };
+
   const getProperti = async () => {
     setLoading(true);
     setProperti([]);
@@ -23,11 +44,19 @@ const index = () => {
       .then((res) => setProperti(res.data.data.properties?.[0] || null))
       .catch((error) => {
         authorityCheck(error.response.status);
+        toast({
+          description: error.response?.data?.meta?.message?.join(", "),
+          status: "error",
+          duration: 9000,
+          variant: "subtle",
+          isClosable: true,
+        });
       });
     setLoading(false);
   };
   useEffect(() => {
     getProperti();
+    getData();
   }, []);
 
   return loading ? (
@@ -44,23 +73,24 @@ const index = () => {
         alignItems={"center"}
         justifyContent={"center"}
       >
-        <Image src="/avatar.png" width={"50px"} height={"50px"} objectFit={"contain"} />
+        <Image src={LOCAL_STORAGE()?.AVATAR || "/No_Image_Available.jpg"} width={"50px"} height={"50px"} objectFit={"cover"} borderRadius={"100%"} />
         <HStack>
           <Stack alignItems={"center"} gap={"4px"}>
             <Text fontWeight="bold" color={primaryTextColor()} fontSize="xl">
-              2
+              {dataState?.total_property || 0}
             </Text>
             <Text color={primaryTextColor()}>Properti</Text>
           </Stack>
           <Stack alignItems={"center"} gap={"4px"}>
             <Text fontWeight="bold" color={primaryTextColor()} fontSize="xl">
-              2
+              {dataState?.total_transaksi || 0}
             </Text>
             <Text color={primaryTextColor()}>Transaksi</Text>
           </Stack>
         </HStack>
       </Stack>
       <Stack flexGrow={1}>
+        {/* <pre>{JSON.stringify(dataState, null, 2)}</pre> */}
         <Stack padding={"16px"} borderRadius={"24px"} boxShadow={"-2px -2px 8px 0px #0000001A"} gap={"16px"} width={"auto"} marginBottom={"30px"}>
           <Text fontWeight="bold" color={primaryTextColor()} fontSize="xl">
             Tanggapi Segera
@@ -79,7 +109,7 @@ const index = () => {
                 fontSize={"24px"}
                 fontWeight={"bold"}
               >
-                <Text margin={"auto"}>2</Text>
+                <Text margin={"auto"}>{dataState?.total_pengajuan_sewa || 0}</Text>
               </Stack>
               <Stack gap={"0px"}>
                 <Text color={primaryTextColor()} fontWeight={"bold"}>
@@ -104,7 +134,7 @@ const index = () => {
                 fontSize={"24px"}
                 fontWeight={"bold"}
               >
-                <Text margin={"auto"}>1</Text>
+                <Text margin={"auto"}>{dataState?.total_pengajuan_survey || 0}</Text>
               </Stack>
               <Stack gap={"0px"}>
                 <Text color={primaryTextColor()} fontWeight={"bold"}>
@@ -138,7 +168,7 @@ const index = () => {
                   width={{ base: "48%", sm: "220px" }}
                   aspectRatio={"1/1"}
                   objectFit={"cover"}
-                  src={properti.image}
+                  src={properti?.image || "/No_Image_Available.jpg"}
                   borderRadius={borderRadius()}
                 />
                 <Stack
@@ -189,7 +219,7 @@ const index = () => {
                   <HStack justifyContent={"space-between"} color={"rgba(96, 90, 90, 1)"} fontSize={"12px"} gap={"5px"} fontWeight={"bold"}>
                     <HStack>
                       <FaBath />
-                      <Text>{properti.total_kamar}</Text>
+                      <Text>{properti.kamar_mandi}</Text>
                     </HStack>
                     <HStack>
                       <IoBed />
@@ -226,6 +256,7 @@ const index = () => {
               gap={"20px"}
               onClick={() => navigate("/owner/daftar-properti")}
               cursor={"pointer"}
+              boxShadow={"-2px -2px 8px 0px rgba(0, 0, 0, 0.1);"}
             >
               <BsHouseAddFill style={{ fontSize: "38px" }} />
               <Stack gap={"0px"}>

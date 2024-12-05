@@ -18,7 +18,7 @@ import axios from "axios";
 import { BASE_API } from "../../../../utils/constant/api";
 import { AUTHORIZATION_HEADERS } from "../../../../utils/helper/helper";
 
-const ModalKonfirmasi = (props: { getDataTolakSSurvei: any; getData: any; selectedId: number; onClose: any }) => {
+const ModalKonfirmasi = (props: { dataState: any; getDataTolakSSurvei: any; getData: any; selectedId: number; onClose: any }) => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
   const [statusKonfirmasi, setStatusKonfirmasi] = useState<null | boolean>(null);
@@ -126,8 +126,9 @@ const ModalKonfirmasi = (props: { getDataTolakSSurvei: any; getData: any; select
             <ModalBody>
               <Stack justifyContent={"center"}>
                 <Image alignSelf={"center"} width={"163px"} src="/konfirmasi-pengajuan-survei.png" />
+                {/* <pre>{JSON.stringify(props.dataState, null, 2)}</pre> */}
                 <Text fontWeight={"bold"} color={primaryTextColor()} textAlign={"center"} fontSize={"md"} marginBottom={"20px"}>
-                  Apakah kamu yakin untuk mengkonfirmasi survei di jam 11.00 18 Agustus 2024?
+                  Apakah kamu yakin untuk mengkonfirmasi survei di jam {props.dataState.jam_mulai} {props.dataState.tanggal}?
                 </Text>
               </Stack>
             </ModalBody>

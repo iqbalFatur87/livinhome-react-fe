@@ -238,12 +238,12 @@ const index = () => {
               </Text>
               <Text color={secondaryTextColor()}>1 Tahun</Text>
             </HStack>
-            <Stack borderBottom={"1px"} borderColor={"rgba(179, 179, 179, 1)"} paddingBottom={"10px"} marginTop={"30px"}>
+            {/* <Stack borderBottom={"1px"} borderColor={"rgba(179, 179, 179, 1)"} paddingBottom={"10px"} marginTop={"30px"}>
               <Text fontWeight={"bold"} color={primaryTextColor()} textAlign={"start"} fontSize={"md"}>
                 Layanan Tambahan
               </Text>
-            </Stack>
-            <HStack
+            </Stack> */}
+            {/* <HStack
               borderColor={"rgba(96, 90, 90, 1)"}
               borderRadius={"16px"}
               padding={"8px"}
@@ -264,7 +264,7 @@ const index = () => {
               <Text fontWeight={"bold"} color={primaryTextColor()} alignSelf={"flex-end"} fontSize={"md"}>
                 {convertToBillNumber(80000)}
               </Text>
-            </HStack>
+            </HStack> */}
 
             <Stack borderBottom={"1px"} borderColor={"rgba(179, 179, 179, 1)"} paddingBottom={"10px"}>
               <Text fontWeight={"bold"} color={primaryTextColor()} textAlign={"start"} fontSize={"md"}>

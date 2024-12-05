@@ -94,7 +94,7 @@ const index = () => {
 
       <HStack flexWrap={"wrap"} justifyContent={"space-between"}>
         {listProperti
-          .filter((i: any) => i.nama.includes(searchInput))
+          .filter((i: any) => i.nama.toLowerCase().includes(searchInput.toLowerCase()))
           .map((i: any, index: number) => (
             <HStack key={index} height={"240px"} width={"450px"} padding={"0px"}>
               <Image width={{ base: "48%", sm: "220px" }} aspectRatio={"1/1"} objectFit={"cover"} src={i.image} borderRadius={borderRadius()} />
@@ -146,7 +146,7 @@ const index = () => {
                 <HStack justifyContent={"space-between"} color={"rgba(96, 90, 90, 1)"} fontSize={"12px"} gap={"5px"} fontWeight={"bold"}>
                   <HStack>
                     <FaBath />
-                    <Text>{i.total_kamar}</Text>
+                    <Text>{i.kamar_mandi}</Text>
                   </HStack>
                   <HStack>
                     <IoBed />

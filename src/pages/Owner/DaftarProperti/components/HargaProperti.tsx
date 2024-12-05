@@ -1,4 +1,4 @@
-import { Button, HStack, Input, Radio, RadioGroup, Select, Stack, Text } from "@chakra-ui/react";
+import { Button, HStack, Input, Select, Stack, Text } from "@chakra-ui/react";
 import { customBorder, inputBackgroundColor, inputColor, primaryTextColor, primaryTextTitleColor } from "../../../../components/theme";
 
 const HargaProperti = (props: { dataState: any; setDataState: any; submit: any }) => {
@@ -7,7 +7,7 @@ const HargaProperti = (props: { dataState: any; setDataState: any; submit: any }
       <Text fontWeight={"bold"} color={primaryTextColor()} textAlign={"center"} fontSize={"xl"}>
         Lengkapi Informasi Harga Sewa Kontrakan Kamu
       </Text>
-      <Stack>
+      {/* <Stack>
         <HStack flexWrap={"wrap"}>
           <Text color={primaryTextColor()}>Jangka Waktu Minimum Sewa</Text>
           <Text color={primaryTextTitleColor()}>*Wajib diisi</Text>
@@ -25,7 +25,7 @@ const HargaProperti = (props: { dataState: any; setDataState: any; submit: any }
             </Radio>
           </Stack>
         </RadioGroup>
-      </Stack>
+      </Stack> */}
 
       {props.dataState?.minimum_sewa ? (
         <Stack>

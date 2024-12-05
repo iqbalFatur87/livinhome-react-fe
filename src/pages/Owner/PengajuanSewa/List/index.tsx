@@ -79,9 +79,9 @@ const index = () => {
               </Text>
               <Text color={secondaryTextColor()}>{i?.property?.[0]?.minimum_sewa || 0} Bulan</Text>
             </HStack>
-            <Text textAlign={"center"} color={"rgba(212, 47, 47, 1)"} marginTop={"20px"}>
+            {/* <Text textAlign={"center"} color={"rgba(212, 47, 47, 1)"} marginTop={"20px"}>
               {i?.deadline}
-            </Text>
+            </Text> */}
             <Button
               onClick={() => navigate(`/owner/pengajuan-sewa/info-pengajuan-sewa/${i.id}`)}
               color={"white"}

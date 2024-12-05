@@ -218,8 +218,8 @@ const FasilitasProperti = (props: { dataState: any; setDataState: any }) => {
           onChange={(e) => props.setDataState((prev: any) => ({ ...prev, sumber_air: e.target.value }))}
         >
           <option>Pilih</option>
-          <option value="true">PDAM</option>
-          <option value="false">Sumur</option>
+          <option value="PDAM">PDAM</option>
+          <option value="Sumur">Sumur</option>
         </Select>
       </Stack>
 
@@ -360,7 +360,7 @@ const FasilitasProperti = (props: { dataState: any; setDataState: any }) => {
       {listFacility ? (
         <Stack>
           <Text color={primaryTextColor()} fontWeight={"bold"} marginTop={"20px"}>
-            Fasilitas Lainnya
+            Fasilitas Lainya
           </Text>
           <Stack marginLeft={{ base: "8px", md: "20px" }}>
             {listFacility.map((i: any, index: number) => (
