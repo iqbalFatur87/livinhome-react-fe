@@ -7,28 +7,34 @@ import axios from "axios";
 import { BASE_API } from "../../../../utils/constant/api";
 import { authorityCheck, AUTHORIZATION_HEADERS } from "../../../../utils/helper/helper";
 
-const ModalUpdatePhotoProfil = (props: { onClose: () => void }) => {
+const ModalUpdatePhotoProfil = (props: { getData: () => void; onClose: () => void }) => {
   const toast = useToast();
   const [loading, setLoading] = useState<boolean>(false);
 
   const onDrop = useCallback(async (acceptedFiles: any) => {
     setLoading(true);
-    const file = new FileReader();
-    // file.onload = function () {
-    //   setPreview(file.result);
-    // };
-    file.readAsDataURL(acceptedFiles[0]);
+
+    // Ambil file pertama dari acceptedFiles
+    const file = acceptedFiles[0];
+
     if (!file) {
+      setLoading(false);
       return;
     }
-    var formData = new FormData();
-    formData.append("image", acceptedFiles[0]);
-    const fileType = acceptedFiles[0].type;
 
-    if (fileType.includes("image")) {
-      await axios
-        .post(`${BASE_API}/profile/owner/update-image`, formData, AUTHORIZATION_HEADERS)
-        .then(() => {
+    // Membaca file sebagai Base64
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64Data: any = reader.result; // Ini adalah string Base64
+
+      const formData = new FormData();
+      formData.append("image", base64Data); // Mengirim Base64
+
+      const fileType = file.type;
+
+      if (fileType.includes("image")) {
+        try {
+          await axios.post(`${BASE_API}/profile/owner/update-image`, formData, AUTHORIZATION_HEADERS);
           toast({
             title: "Berhasil ubah foto profil",
             status: "success",
@@ -37,9 +43,8 @@ const ModalUpdatePhotoProfil = (props: { onClose: () => void }) => {
             isClosable: true,
           });
           props.onClose();
-          setLoading(false);
-        })
-        .catch((error) => {
+          props.getData();
+        } catch (error: any) {
           authorityCheck(error.response.status);
           toast({
             description: error.response?.data?.meta?.message?.join(", ") || "Upload failed",
@@ -48,18 +53,22 @@ const ModalUpdatePhotoProfil = (props: { onClose: () => void }) => {
             variant: "subtle",
             isClosable: true,
           });
+        } finally {
           setLoading(false);
+        }
+      } else {
+        toast({
+          title: `Hanya dapat mengunggah file gambar`,
+          status: "error",
+          duration: 9000,
+          variant: "subtle",
+          isClosable: true,
         });
-    } else {
-      toast({
-        title: `Hanya dapat mengunggah file gambar`,
-        status: "error",
-        duration: 9000,
-        variant: "subtle",
-        isClosable: true,
-      });
-      setLoading(false);
-    }
+        setLoading(false);
+      }
+    };
+
+    reader.readAsDataURL(file); // Membaca file sebagai data URL (Base64)
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });

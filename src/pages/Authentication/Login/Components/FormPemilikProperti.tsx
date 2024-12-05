@@ -31,7 +31,8 @@ export const FormPemilikProperti = (props: { setLoginState: any }) => {
 
         const newLocalStorage = {
           TOKEN: `${res.data.meta.token_type} ${res.data.meta.access_token}`,
-          ROLE: res.data.data,
+          ROLE: res.data.data[0],
+          AVATAR: res.data.data[1],
         };
         localStorage[DATA] = encrypt(newLocalStorage);
         localStorage.token = `${res.data.meta.token_type} ${res.data.meta.access_token}`;
