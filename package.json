@@ -18,7 +18,7 @@
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "axios": "^1.7.3",
+    "axios": "^1.7.4",
     "crypto-js": "^4.1.1",
     "datatables.net-dt": "^2.1.8",
     "datatables.net-react": "^1.0.0",
