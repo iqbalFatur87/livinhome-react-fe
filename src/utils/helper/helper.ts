@@ -90,7 +90,7 @@ export const LOCAL_STORAGE = () => {
 export const AUTHORIZATION_HEADERS = {
   headers: {
     Accept: "application/json",
-    Authorization: `${localStorage.token}`,
+    Authorization: `${LOCAL_STORAGE()?.TOKEN}`,
   },
 };
 
