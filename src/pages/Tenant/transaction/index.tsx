@@ -151,7 +151,7 @@ const RentalForm = () => {
      
 
       setTimeout(() => {
-        window.location.href = `/transaction-detail/${getid}`;
+        window.location.href = `/UploadPembayaran/${getid}`;
       }, 700);
 
       toast({

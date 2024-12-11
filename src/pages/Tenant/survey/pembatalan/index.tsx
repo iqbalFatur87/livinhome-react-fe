@@ -59,6 +59,7 @@ const SurveyBatal = () => {
         }
       );
       console.log("Pembatalan berhasil:", response.data);
+      alert("Survey Dibatalkan.");
 
       // Menampilkan toast pemberitahuan
       toast({
