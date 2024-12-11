@@ -1,10 +1,5 @@
 import { Button, HStack, Input, Stack, Text, useToast } from "@chakra-ui/react";
-import {
-  borderRadius,
-  primaryTextColor,
-  primaryTextTitleColor,
-  secondaryTextColor,
-} from "../../../../components/theme";
+import { borderRadius, primaryTextColor, primaryTextTitleColor, secondaryTextColor } from "../../../../components/theme";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
@@ -39,7 +34,9 @@ export const FormPenyewa = (props: { setLoginState: any }) => {
           AVATAR: res.data.data[1],
         };
         localStorage[DATA] = encrypt(newLocalStorage);
-        localStorage.token = `${res.data.meta.token_type} ${res.data.meta.access_token}`;
+        if (import.meta.env.VITE_MODE == "DEV") {
+          localStorage.token = `${res.data.meta.token_type} ${res.data.meta.access_token}`;
+        }
         setTimeout(() => {
           window.location.href = "/searching";
         }, 700);
@@ -75,20 +72,10 @@ export const FormPenyewa = (props: { setLoginState: any }) => {
         }}
       >
         <Stack gap={"20px"} margin={"auto"}>
-          <Text
-            fontSize={"2xl"}
-            fontWeight={"bold"}
-            alignSelf={"center"}
-            color={primaryTextColor()}
-          >
+          <Text fontSize={"2xl"} fontWeight={"bold"} alignSelf={"center"} color={primaryTextColor()}>
             Login Penyewa
           </Text>
-          <Input
-            value={emailInput}
-            onChange={(e) => setEmailInput(e.target.value)}
-            borderRadius={borderRadius()}
-            placeholder="Masukan Email"
-          />
+          <Input value={emailInput} onChange={(e) => setEmailInput(e.target.value)} borderRadius={borderRadius()} placeholder="Masukan Email" />
           <Input
             value={passwordInput}
             onChange={(e) => setPasswordInput(e.target.value)}
@@ -118,50 +105,21 @@ export const FormPenyewa = (props: { setLoginState: any }) => {
           </HStack>
 
           <Stack marginTop={"40px"}>
-            <Text
-              textAlign={"center"}
-              lineHeight={"4"}
-              fontSize={"sm"}
-              color={primaryTextColor()}
-            >
+            <Text textAlign={"center"} lineHeight={"4"} fontSize={"sm"} color={primaryTextColor()}>
               Kami tidak akan memberikan informasi pribadi Anda kepada siapapun
             </Text>
 
-            <HStack
-              flexWrap={"wrap"}
-              justifyContent={"center"}
-              lineHeight={"4"}
-              gap={"3px"}
-              marginTop={"10px"}
-            >
-              <Text
-                textAlign={"center"}
-                fontSize={"sm"}
-                color={primaryTextColor()}
-              >
+            <HStack flexWrap={"wrap"} justifyContent={"center"} lineHeight={"4"} gap={"3px"} marginTop={"10px"}>
+              <Text textAlign={"center"} fontSize={"sm"} color={primaryTextColor()}>
                 Dengan masuk, Anda secara otomatis menyetujui
               </Text>
-              <Text
-                textAlign={"center"}
-                fontSize={"sm"}
-                color={primaryTextColor()}
-                fontWeight={"bold"}
-              >
+              <Text textAlign={"center"} fontSize={"sm"} color={primaryTextColor()} fontWeight={"bold"}>
                 Syarat dan Ketentuan{" "}
               </Text>
-              <Text
-                textAlign={"center"}
-                fontSize={"sm"}
-                color={primaryTextColor()}
-              >
+              <Text textAlign={"center"} fontSize={"sm"} color={primaryTextColor()}>
                 serta
               </Text>
-              <Text
-                textAlign={"center"}
-                fontSize={"sm"}
-                color={primaryTextColor()}
-                fontWeight={"bold"}
-              >
+              <Text textAlign={"center"} fontSize={"sm"} color={primaryTextColor()} fontWeight={"bold"}>
                 Kebijakan Privasi
               </Text>
               <Text textAlign={"center"} fontSize={"sm"}>
