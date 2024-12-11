@@ -1,4 +1,4 @@
 {
   "meta": { "code": 200, "status": "success", "message": ["Error"] },
-  "data": "SQLSTATE[22007]: Invalid datetime format: 1292 Incorrect date value: '56875-12-27' for column `u170486383_livinHome`.`users`.`date_of_birth` at row 1 (Connection: mysql, SQL: insert into `users` (`fullname`, `gender`, `email`, `date_of_birth`, `phone_number`, `password`, `roles`, `updated_at`, `created_at`) values (Hilmi Pemilik 3, 1, hilmipemilik3@gmail.com, 56875-12-27, 6283123123123, $2y$12$uIyhsQf.KPLlQq6BfUBeheqfnPzvcTNDeID0Jk/JVZL82IYXFVFLm, owner, 2024-11-27 16:25:56, 2024-11-27 16:25:56))"
+  "data": "SQLSTATE[22007]: Invalid datetime format: 1292 Incorrect date value: '56875-12-27' for column `u170486383_livinHome`.`users`.`date_of_birth` at row 1 (Connection: mysql, SQL: insert into `users` (`fullname`, `gender`, `email`, `date_of_birth`, `phone_number`, `password`, `roles`, `updated_at`, `created_at`) values (Iqbal Pemilik 3, 1, iqbalpemilik3@gmail.com, 56875-12-27, 6283123123123, $2y$12$uIyhsQf.KPLlQq6BfUBeheqfnPzvcTNDeID0Jk/JVZL82IYXFVFLm, owner, 2024-11-27 16:25:56, 2024-11-27 16:25:56))"
 }
