@@ -86,7 +86,7 @@ const DetailPemilik = () => {
                 readOnly
               />
             </Flex>
-            <Flex>
+            {/* <Flex>
               <Text fontWeight="bold">Harga Sewa per Bulan:</Text>
               <Input
                 maxW="sm"
@@ -95,7 +95,7 @@ const DetailPemilik = () => {
                 }`}
                 readOnly
               />
-            </Flex>
+            </Flex> */}
             <Flex>
               <Text fontWeight="bold" gap={4} mr={4}>
                 Aturan Property:
