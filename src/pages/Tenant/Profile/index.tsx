@@ -95,7 +95,7 @@ const ProfileUpdate = () => {
     const formData = new FormData();
     formData.append("fullname", dataState?.fullname);
     formData.append("gender", dataState?.gender);
-    formData.append("date_of_birth", formattedDateOfBirth);
+    formData.append("date_of_birth", `${formattedDateOfBirth}`);
     formData.append("phone_number", dataState?.phone_number);
     formData.append("job", dataState?.job);
     formData.append("school_name", dataState?.school_name);
@@ -128,7 +128,7 @@ const ProfileUpdate = () => {
         isClosable: true,
       });
       getData();
-    } catch (error) {
+    } catch (error : any) {
       if (error.response?.status === 403) {
         // Handle the 403 error (Unauthorized or Forbidden)
         toast({
@@ -286,6 +286,24 @@ const ProfileUpdate = () => {
 
 // Custom Components for reusability
 
+interface FormFieldProps {
+  label: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+}
+
+interface FormSelectProps {
+  label: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  options: { label: string; value: any }[];
+}
+
+interface FormFileInputProps {
+  label: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 const NotificationBanner = () => (
   <HStack
     justifyContent="center"
@@ -298,30 +316,30 @@ const NotificationBanner = () => (
   </HStack>
 );
 
-const FormField = ({ label, value, onChange, type = "text" }) => (
+const FormField: React.FC<FormFieldProps> = ({ label, value, onChange, type = "text" }) => (
   <Stack>
     <Text>{label}</Text>
     <Input
       value={value}
       onChange={onChange}
       borderRadius="12px"
-      backgroundColor={inputBackgroundColor}
-      color={inputColor}
+      backgroundColor={inputBackgroundColor()}
+      color={inputColor()}
       _placeholder={{ color: "gray.500" }}
       type={type}
     />
   </Stack>
 );
 
-const FormSelect = ({ label, value, onChange, options }) => (
+const FormSelect: React.FC<FormSelectProps> = ({ label, value, onChange, options}) => (
   <Stack>
     <Text>{label}</Text>
     <Select
       value={value}
       onChange={onChange}
       borderRadius="12px"
-      backgroundColor={inputBackgroundColor}
-      color={inputColor}
+      backgroundColor={inputBackgroundColor()}
+      color={inputColor()}
     >
       {options.map((option) => (
         <option key={option.value} value={option.value}>
@@ -332,7 +350,7 @@ const FormSelect = ({ label, value, onChange, options }) => (
   </Stack>
 );
 
-const FormFileInput = ({ label, onChange }) => (
+const FormFileInput: React.FC<FormFileInputProps> = ({ label, onChange }) => (
   <Stack>
     <Text>{label}</Text>
     <Input
