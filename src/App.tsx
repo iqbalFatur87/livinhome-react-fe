@@ -49,6 +49,7 @@ import {
   DetailPensanan,
   ChatTenant,
   DetailChatTenant,
+  UploadPembayaran,
 } from "./pages";
 import AuthMiddleware from "./utils/middleware/AuthMiddleware";
 import Middleware from "./utils/middleware/Middleware";
@@ -100,6 +101,10 @@ function App() {
           <Route
             path="transaction-detail/:id"
             element={<DetailTransaction />}
+          />
+          <Route
+            path="UploadPembayaran/:id"
+            element={<UploadPembayaran/>}
           />
           <Route path="survey/:id" element={<Survey />} />
           <Route path="survey/batal/:id" element={<SurveyBatal />} />
