@@ -35,10 +35,12 @@ export const FormPemilikProperti = (props: { setLoginState: any }) => {
           AVATAR: res.data.data[1],
         };
         localStorage[DATA] = encrypt(newLocalStorage);
-        localStorage.token = `${res.data.meta.token_type} ${res.data.meta.access_token}`;
+        if (import.meta.env.VITE_MODE == "DEV") {
+          localStorage.token = `${res.data.meta.token_type} ${res.data.meta.access_token}`;
+        }
 
         setTimeout(() => {
-          window.location.href = "/owner/management-properti";
+          window.location.href = "/owner/dashboard";
         }, 700);
       })
       .catch((e) => {

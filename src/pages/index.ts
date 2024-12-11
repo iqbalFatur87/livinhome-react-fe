@@ -51,6 +51,7 @@ export { default as SurveyBatal } from "./Tenant/survey/pembatalan/index";
 export { default as Transaction } from "./Tenant/transaction/index";
 export { default as DetailTransaction } from "./Tenant/transaction/detail-transaksi";
 export  {default as SuccessTransaction } from './Tenant/transaction/berhasil'
+export {default as UploadPembayaran} from './Tenant/transaction/upload-pembayaran'
 
 // Layout admin
 
