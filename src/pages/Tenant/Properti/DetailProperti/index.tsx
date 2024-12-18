@@ -373,14 +373,14 @@ const detailProperti = () => {
                 <Text>Kapasitas Garasi</Text>
                 <Text fontWeight="bold">
                   {propertyData.kapasitas_mobil} mobil /{" "}
-                  {propertyData.kapasitas_motor} montor
+                  {propertyData.kapasitas_motor} motor
                 </Text>
               </GridItem>
 
               <GridItem>
                 <Icon boxSize={6} />
                 <Text>Daya Listrik</Text>
-                <Text fontWeight="bold">{propertyData.daya_listrik} Waat</Text>
+                <Text fontWeight="bold">{propertyData.daya_listrik} Watt</Text>
               </GridItem>
 
               <GridItem>
