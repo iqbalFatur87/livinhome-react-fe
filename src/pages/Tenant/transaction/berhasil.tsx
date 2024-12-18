@@ -20,10 +20,10 @@ import { Link, useParams } from "react-router-dom";
 const Berhasil = () => {
   const [activeStep, setActiveStep] = useState(4);
   const steps = [
-    { title: "First", description: "Ajukan Sewa" },
-    { title: "Second", description: "Pemilik Menyetujui" },
-    { title: "Third", description: "Pembayaran" },
-    { title: "Four", description: "Check In" },
+    { description: "Ajukan Sewa" },
+    { description: "Pemilik Menyetujui" },
+    { description: "Pembayaran" },
+    { description: "Check In" },
   ];
   const [Datatrans, setData] = useState<any>(null);
   const { id } = useParams();
@@ -68,7 +68,6 @@ const Berhasil = () => {
             </StepIndicator>
 
             <Box flexShrink="0">
-              <StepTitle>{step.title}</StepTitle>
               <StepDescription>{step.description}</StepDescription>
             </Box>
 
