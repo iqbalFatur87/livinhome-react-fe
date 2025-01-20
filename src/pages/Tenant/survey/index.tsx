@@ -1,27 +1,14 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import {
   Box,
-  VStack,
-  HStack,
-  Text,
   Button,
-  Image,
+  Center,
+  Flex,
   Grid,
   GridItem,
-  useToast,
-  Step,
-  StepDescription,
-  StepIcon,
-  StepIndicator,
-  StepNumber,
-  Stepper,
-  StepSeparator,
-  StepStatus,
-  StepTitle,
-  useSteps,
-  Flex,
-  useDisclosure,
+  HStack,
+  Image,
   Input,
   Modal,
   ModalBody,
@@ -30,36 +17,48 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Center,
-} from "@chakra-ui/react";
-import { MdModeEdit } from "react-icons/md";
-import { useParams, Link } from "react-router-dom";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+  Step,
+  StepDescription,
+  StepIcon,
+  StepIndicator,
+  StepNumber,
+  Stepper,
+  StepSeparator,
+  StepStatus,
+  Text,
+  useDisclosure,
+  useSteps,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
+import {Link, useParams} from 'react-router-dom';
+import {MapContainer, Marker, Popup, TileLayer} from 'react-leaflet';
+import {BASE_API} from '../../../utils/constant/api';
 
 const SurveyScheduler = () => {
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [surveyData, setSurveyData] = useState<any>(null);
   const [detailData, setDetailData] = useState<any>(null);
-  const [jamMulai, setJamMulai] = useState("");
-  const [jamSelesai, setJamSelesai] = useState("");
-  const [tanggal, setTanggal] = useState("");
+  const [jamMulai, setJamMulai] = useState('');
+  const [jamSelesai, setJamSelesai] = useState('');
+  const [tanggal, setTanggal] = useState('');
   const [dates, setDates] = useState<Date[]>([]);
   const toast = useToast();
-  const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
   const times = [
-    "08:00 - 09:00",
-    "10:00 - 11:00",
-    "12:00 - 13:00",
-    "14:00 - 15:00",
-    "16:00 - 17:00",
+    '08:00 - 09:00',
+    '10:00 - 11:00',
+    '12:00 - 13:00',
+    '14:00 - 15:00',
+    '16:00 - 17:00',
   ];
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
   const steps = [
-    {  description: "Pilih Waktu Survei" },
-    {  description: "Pemilik Menyetujui" },
-    {  description: "Cek Unit" },
+    { description: 'Pilih Waktu Survei' },
+    { description: 'Pemilik Menyetujui' },
+    { description: 'Cek Unit' },
   ];
 
   // Generate dates starting from today for the next 7 days
@@ -82,7 +81,7 @@ const SurveyScheduler = () => {
   const fetchDetailData = async () => {
     try {
       const ResponseData = await axios.get(
-        `https://livin-api.rrens.me/api/property/detail-property/${id}`,
+        `${BASE_API}/property/detail-property/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -92,26 +91,23 @@ const SurveyScheduler = () => {
       const dataDetail = ResponseData.data.data;
       setDetailData(dataDetail);
     } catch (error) {
-      console.error("Error fetching survey data:", error);
+      console.error('Error fetching survey data:', error);
     }
   };
 
   const fetchSurveyData = async () => {
     try {
-      const response = await axios.get(
-        `https://livin-api.rrens.me/api/survey/detail/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_API}/survey/detail/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       // Assuming your survey data is inside response.data.data array
       const surveyDetails = response.data.data[0];
       setSurveyData(surveyDetails);
-      console.log("Fetched survey data:", surveyDetails);
+      console.log('Fetched survey data:', surveyDetails);
     } catch (error) {
-      console.error("Error fetching survey data:", error);
+      console.error('Error fetching survey data:', error);
     }
   };
 
@@ -122,15 +118,15 @@ const SurveyScheduler = () => {
 
   const handleSubmitSurvey = async () => {
     if (selectedDate && selectedTime) {
-      const jamMulai = selectedTime.split(" - ")[0];
-      const jamSelesai = selectedTime.split(" - ")[1];
+      const jamMulai = selectedTime.split(' - ')[0];
+      const jamSelesai = selectedTime.split(' - ')[1];
       // const formattedDate = `${date.getFullYear()}-${String(
-        //   date.getDate()
+      //   date.getDate()
       // ).padStart(2, "0")}-${String(date.getMonth() + 1).padStart(2, "0")}`;
       // date.setHours(0, 0, 0, 0);
-      
+
       // const date = new Date(selectedDate);
-    const data=  Math.trunc(new Date(selectedDate).getTime()/1000.0);
+      const data = Math.trunc(new Date(selectedDate).getTime() / 1000.0);
       // Mengonversi tanggal ke timestamp (dalam milidetik), kemudian ubah menjadi detik
       // const epochTimestamp = (date.getTime() / 1000);
       // const timestampString = (date.getTime() / 1000).toString();
@@ -139,41 +135,41 @@ const SurveyScheduler = () => {
         property_id: id,
         jam_mulai: jamMulai,
         jam_selesai: jamSelesai,
-        tanggal: data ,
+        tanggal: data,
       };
       try {
         const response = await axios.post(
-          "https://livin-api.rrens.me/api/survey/submit-survey",
+          `${BASE_API}/survey/submit-survey`,
           surveyPayload,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
           }
         );
-        console.log("Response:", response.data);
-window.location.reload()
+        console.log('Response:', response.data);
+        window.location.reload();
         // Show success alert or toast notification
         toast({
-          title: "Survei berhasil diajukan.",
-          description: "Silakan tunggu konfirmasi jadwal survei Anda.",
-          status: "success",
+          title: 'Survei berhasil diajukan.',
+          description: 'Silakan tunggu konfirmasi jadwal survei Anda.',
+          status: 'success',
           duration: 5000,
           isClosable: true,
         });
       } catch (error) {
-        console.error("Error submitting survey:", error);
+        console.error('Error submitting survey:', error);
         toast({
-          title: "Gagal mengajukan survei.",
-          description: "Terjadi kesalahan saat mengirimkan permintaan survei.",
-          status: "error",
+          title: 'Gagal mengajukan survei.',
+          description: 'Terjadi kesalahan saat mengirimkan permintaan survei.',
+          status: 'error',
           duration: 5000,
           isClosable: true,
         });
       }
     } else {
-      alert("Pilih hari dan waktu sebelum mengajukan survei.");
+      alert('Pilih hari dan waktu sebelum mengajukan survei.');
     }
   };
 
@@ -202,19 +198,19 @@ window.location.reload()
       };
 
       const response = await axios.post(
-        "https://livin-api.rrens.me/api/survey/edit-submit-survey",
+        `${BASE_API}/survey/edit-submit-survey`,
         surveyPayload,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       );
-      console.log("Response:", response.data);
+      console.log('Response:', response.data);
       toast({
-        title: "Survei berhasil diubah.",
-        status: "success",
+        title: 'Survei berhasil diubah.',
+        status: 'success',
         duration: 5000,
         isClosable: true,
       });
@@ -222,10 +218,10 @@ window.location.reload()
       onClose();
       fetchSurveyData(); // Refresh survey data
     } catch (error) {
-      console.error("Error editing survey:", error);
+      console.error('Error editing survey:', error);
       toast({
-        title: "Gagal mengubah survei.",
-        status: "error",
+        title: 'Gagal mengubah survei.',
+        status: 'error',
         duration: 5000,
         isClosable: true,
       });
@@ -247,7 +243,6 @@ window.location.reload()
               </StepIndicator>
 
               <Box flexShrink="0">
-                <StepTitle>{step.title}</StepTitle>
                 <StepDescription>{step.description}</StepDescription>
               </Box>
 
@@ -262,7 +257,7 @@ window.location.reload()
               <VStack>
                 {surveyData.status === 1 ? (
                   <Box>
-                    <Text fontWeight={"bold"}>
+                    <Text fontWeight={'bold'}>
                       Pemilik Menyetujui Pengajuan Survei Anda!
                     </Text>
                     <Text>
@@ -271,8 +266,8 @@ window.location.reload()
                   </Box>
                 ) : surveyData.status === 0 ? (
                   <Box>
-                    <Text fontWeight={"bold"}>
-                      Pemilik Membatalkan Pengajuan Survei Anda!
+                    <Text fontWeight={'bold'}>
+                      Pemilik Menolak Pengajuan Survei Anda!
                     </Text>
                     <Text>
                       Mohon tunggu sampai pemilik menyetujui pengajuan survei
@@ -281,7 +276,7 @@ window.location.reload()
                   </Box>
                 ) : (
                   <Box>
-                    <Text fontWeight={"bold"}>Pengajuan Berhasil</Text>
+                    <Text fontWeight={'bold'}>Pengajuan Berhasil</Text>
                     <Text>
                       Mohon tunggu sampai pemilik menyetujui pengajuan survei
                       anda
@@ -290,35 +285,35 @@ window.location.reload()
                 )}
 
                 <Button
-                  variant={"solid"}
+                  variant={'solid'}
                   colorScheme={
                     surveyData.status === 1
-                      ? "green"
+                      ? 'green'
                       : surveyData.status === 0
-                      ? "red"
-                      : "yellow"
+                      ? 'red'
+                      : 'yellow'
                   }
-                  height={"350px"}
+                  height={'350px'}
                   width="200px"
-                  border={"2px"}
-                  borderRadius={"full"}
+                  border={'2px'}
+                  borderRadius={'full'}
                 >
-                  <VStack textAlign={"center"}>
+                  <VStack textAlign={'center'}>
                     <Text>
-                      {new Intl.DateTimeFormat("id-ID", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
+                      {new Intl.DateTimeFormat('id-ID', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
                       }).format(new Date(surveyData.tanggal))}
                     </Text>
 
                     <Text fontWeight="bold">
-                      {" "}
+                      {' '}
                       {new Date(surveyData.tanggal).getDate()}
                     </Text>
                     <Text>
-                      {new Date(surveyData.tanggal).toLocaleString("id-ID", {
-                        month: "long",
+                      {new Date(surveyData.tanggal).toLocaleString('id-ID', {
+                        month: 'long',
                       })}
                     </Text>
                   </VStack>
@@ -327,13 +322,13 @@ window.location.reload()
             </Center>
 
             <Button
-              variant={"solid"}
+              variant={'solid'}
               colorScheme={
                 surveyData.status === 1
-                  ? "green"
+                  ? 'green'
                   : surveyData.status === 0
-                  ? "red"
-                  : "yellow"
+                  ? 'red'
+                  : 'yellow'
               }
               width="100%"
             >
@@ -341,13 +336,13 @@ window.location.reload()
             </Button>
 
             <Flex mt={4} gap={4}>
-              <Link to={"/searching"}>
+              <Link to={'/searching'}>
                 <Button>Kembali</Button>
               </Link>
 
               {surveyData.status == 1 ? (
                 <Link to={`/survey/batal/${surveyData.id}`}>
-                  <Button colorScheme={"red"} width="100%">
+                  <Button colorScheme={'red'} width="100%">
                     Survey Batal
                   </Button>
                 </Link>
@@ -356,7 +351,7 @@ window.location.reload()
                   Edit Survey
                 </Button>
               ) : (
-                ""
+                ''
               )}
             </Flex>
 
@@ -374,9 +369,9 @@ window.location.reload()
                       value={jamMulai}
                       onChange={(e) => setJamMulai(e.target.value)}
                     />
-                      <Text>Jam Selesai</Text>
-                   
-                   <Input
+                    <Text>Jam Selesai</Text>
+
+                    <Input
                       type="time"
                       placeholder="Jam Selesai"
                       value={jamSelesai}
@@ -410,21 +405,21 @@ window.location.reload()
                   <GridItem key={date}>
                     <Button
                       onClick={() => setSelectedDate(date)}
-                      variant={selectedDate === date ? "solid" : "outline"}
-                      colorScheme={selectedDate === date ? "blue" : "gray"}
-                      height={"200px"}
+                      variant={selectedDate === date ? 'solid' : 'outline'}
+                      colorScheme={selectedDate === date ? 'blue' : 'gray'}
+                      height={'200px'}
                       width="100%"
-                      border={"2px"}
-                      borderRadius={"full"}
+                      border={'2px'}
+                      borderRadius={'full'}
                     >
                       <VStack>
                         <Text>{days[date.getDay()]}</Text>
                         <Text fontWeight="bold">{date.getDate()}</Text>
                         <Text>
-                          {date.toLocaleString("id-ID", { month: "long" })}
+                          {date.toLocaleString('id-ID', { month: 'long' })}
                         </Text>
                         <Text>
-                          {date.toLocaleString("id-ID", { year: "numeric" })}
+                          {date.toLocaleString('id-ID', { year: 'numeric' })}
                         </Text>
                       </VStack>
                     </Button>
@@ -442,8 +437,8 @@ window.location.reload()
                   <GridItem key={time}>
                     <Button
                       onClick={() => setSelectedTime(time)}
-                      variant={selectedTime === time ? "solid" : "outline"}
-                      colorScheme={selectedTime === time ? "blue" : "gray"}
+                      variant={selectedTime === time ? 'solid' : 'outline'}
+                      colorScheme={selectedTime === time ? 'blue' : 'gray'}
                       width="100%"
                     >
                       {time}
@@ -480,7 +475,7 @@ window.location.reload()
             <MapContainer
               center={[latitude, longitude]}
               zoom={13}
-              style={{ height: "100%", width: "100%" }}
+              style={{ height: '100%', width: '100%' }}
             >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

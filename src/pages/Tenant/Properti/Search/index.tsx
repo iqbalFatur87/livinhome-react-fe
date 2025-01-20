@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Flex,
@@ -19,26 +19,27 @@ import {
   Tag,
   TagLabel,
   TagRightIcon,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 import {
   FaSearch,
   FaFilter,
   FaHouseUser,
   FaBed,
   FaToilet,
-} from "react-icons/fa";
-import axios from "axios";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { Link } from "react-router-dom";
+} from 'react-icons/fa';
+import axios from 'axios';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Link } from 'react-router-dom';
+import { BASE_API } from '../../../../utils/constant/api';
 
 const PropertySearch = () => {
   const [properties, setProperties] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(15000000);
   const [totalKamar, setTotalKamar] = useState(0);
   const [kamar_mandi, setkamar_mandi] = useState(0);
-  const [type, setType] = useState("");
+  const [type, setType] = useState('');
   const [showPopupFilter, setShowPopupFilter] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,31 +53,28 @@ const PropertySearch = () => {
   const fetchProperties = async () => {
     setIsLoading(true);
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error("No authentication token found");
+        throw new Error('No authentication token found');
       }
 
       const endpoint = searchTerm
         ? `property/search/${searchTerm}`
-        : "property/search/all";
+        : 'property/search/all';
 
-      const response = await axios.get(
-        `https://livin-api.rrens.me/api/${endpoint}`,
-        {
-          params: {
-            page: currentPage,
-            priceStart: minPrice,
-            priceEnd: maxPrice,
-            bedroomCount: totalKamar === 5 ? 5 : totalKamar,
-            bathroomCount: kamar_mandi === 5 ? 5 : kamar_mandi,
-            type: type,
-          },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_API}/${endpoint}`, {
+        params: {
+          page: currentPage,
+          priceStart: minPrice,
+          priceEnd: maxPrice,
+          bedroomCount: totalKamar === 5 ? 5 : totalKamar,
+          bathroomCount: kamar_mandi === 5 ? 5 : kamar_mandi,
+          type: type,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const filteredData = response.data.data.data.filter(
         (property) =>
           (totalKamar === 5 ? property.total_kamar >= 5 : true) &&
@@ -85,20 +83,20 @@ const PropertySearch = () => {
       setProperties(filteredData);
       setTotalPages(response.data.data.last_page);
     } catch (error) {
-      console.error("Error fetching properties:", error);
+      console.error('Error fetching properties:', error);
       if (axios.isAxiosError(error) && error.response?.status === 401) {
         toast({
-          title: "Authentication Error",
-          description: "Please log in again.",
-          status: "error",
+          title: 'Authentication Error',
+          description: 'Please log in again.',
+          status: 'error',
           duration: 5000,
           isClosable: true,
         });
       } else {
         toast({
-          title: "Error",
-          description: "Failed to fetch properties. Please try again.",
-          status: "error",
+          title: 'Error',
+          description: 'Failed to fetch properties. Please try again.',
+          status: 'error',
           duration: 5000,
           isClosable: true,
         });
@@ -119,7 +117,7 @@ const PropertySearch = () => {
   };
 
   const options = [1, 2, 3, 4, 5];
-  const typeKamar = ["kost", "apartement", "kontrakan"];
+  const typeKamar = ['kost', 'apartement', 'kontrakan'];
 
   return (
     <Box>
@@ -163,7 +161,7 @@ const PropertySearch = () => {
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
         <Box>
           <Flex>
-            <Text fontWeight="bold">{searchTerm || "All Properties"}</Text>
+            <Text fontWeight="bold">{searchTerm || 'All Properties'}</Text>
             <Spacer />
             <Text>{properties.length} Hasil</Text>
           </Flex>
@@ -173,7 +171,7 @@ const PropertySearch = () => {
               <Link
                 key={property.id}
                 to={`/detail-properti/${property.id}`}
-                style={{ textDecoration: "none" }}
+                style={{ textDecoration: 'none' }}
               >
                 <Flex
                   p={4}
@@ -181,16 +179,16 @@ const PropertySearch = () => {
                   borderRadius="lg"
                   shadow="md"
                   _hover={{
-                    shadow: "lg",
-                    transform: "scale(1.02)",
-                    transition: "all 0.2s",
+                    shadow: 'lg',
+                    transform: 'scale(1.02)',
+                    transition: 'all 0.2s',
                   }}
                 >
                   <Image
                     src={
                       property.image
                         ? property.image[0]
-                        : "https://via.placeholder.com/150"
+                        : 'https://via.placeholder.com/150'
                     }
                     alt="Property Image"
                     boxSize="100px"
@@ -202,7 +200,7 @@ const PropertySearch = () => {
                       Rp. {property.harga_sewa_1_bulan.toLocaleString()}/Bulan
                     </Text>
                     <Text>
-                      {property.total_kamar} | {property.kamar_mandi} |{" "}
+                      {property.total_kamar} | {property.kamar_mandi} |{' '}
                       {property.lebar_tanah} m²
                     </Text>
                   </Box>
@@ -240,7 +238,7 @@ const PropertySearch = () => {
                 parseFloat(properties[0].longitude),
               ]}
               zoom={13}
-              style={{ height: "100%", width: "100%" }}
+              style={{ height: '100%', width: '100%' }}
             >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -313,7 +311,7 @@ const PropertySearch = () => {
             <option value="0">Pilih Kamar</option>
             {options.map((option) => (
               <option key={option} value={option}>
-                {option === 5 ? "5+" : option}
+                {option === 5 ? '5+' : option}
               </option>
             ))}
           </Select>
@@ -327,7 +325,7 @@ const PropertySearch = () => {
             <option value="0">Pilih Kamar Mandi</option>
             {options.map((option) => (
               <option key={option} value={option}>
-                {option === 5 ? "5+" : option}
+                {option === 5 ? '5+' : option}
               </option>
             ))}
           </Select>

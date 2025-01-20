@@ -2,31 +2,16 @@ import { Button, HStack, Input, Select, Stack, Text } from "@chakra-ui/react";
 import { customBorder, inputBackgroundColor, inputColor, primaryTextColor, primaryTextTitleColor } from "../../../../components/theme";
 
 const HargaProperti = (props: { dataState: any; setDataState: any; submit: any }) => {
+  const formatter = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  });
+
   return (
     <Stack gap={"25px"}>
       <Text fontWeight={"bold"} color={primaryTextColor()} textAlign={"center"} fontSize={"xl"}>
         Lengkapi Informasi Harga Sewa Kontrakan Kamu
       </Text>
-      {/* <Stack>
-        <HStack flexWrap={"wrap"}>
-          <Text color={primaryTextColor()}>Jangka Waktu Minimum Sewa</Text>
-          <Text color={primaryTextTitleColor()}>*Wajib diisi</Text>
-        </HStack>
-        <RadioGroup value={props.dataState?.minimum_sewa} onChange={(e) => props.setDataState((prev: any) => ({ ...prev, minimum_sewa: e }))}>
-          <Stack direction="row">
-            <Radio colorScheme="orange" value="1">
-              1 Bulan
-            </Radio>
-            <Radio colorScheme="orange" value="3">
-              3 Bulan
-            </Radio>
-            <Radio colorScheme="orange" value="12">
-              1 Tahun
-            </Radio>
-          </Stack>
-        </RadioGroup>
-      </Stack> */}
-
       {props.dataState?.minimum_sewa ? (
         <Stack>
           <HStack flexWrap={"wrap"}>
@@ -34,6 +19,7 @@ const HargaProperti = (props: { dataState: any; setDataState: any; submit: any }
             <Text color={primaryTextTitleColor()}>*Wajib diisi</Text>
           </HStack>
           <Input
+            type="number"
             value={
               props.dataState?.minimum_sewa == 1
                 ? props.dataState?.harga_sewa_1_bulan
@@ -73,6 +59,7 @@ const HargaProperti = (props: { dataState: any; setDataState: any; submit: any }
             border={customBorder()}
             color={inputColor()}
           />
+          <Text>{formatter.format(props.dataState?.harga_sewa_1_bulan || 0)}</Text>
         </Stack>
       ) : null}
 

@@ -9,8 +9,8 @@ import { encrypt } from "../../../../utils/helper/helper";
 
 const FormAdmin = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [emailInput, setEmailInput] = useState<any>("");
-  const [passwordInput, setPasswordInput] = useState<any>("");
+  const [emailInput, setEmailInput] = useState<string>("");
+  const [passwordInput, setPasswordInput] = useState<string>("");
   const toast = useToast();
 
   const login = async () => {

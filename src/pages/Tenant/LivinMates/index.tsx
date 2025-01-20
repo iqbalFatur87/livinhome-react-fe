@@ -8,9 +8,10 @@ import {
   useMediaQuery,
   Spinner,
   SimpleGrid,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; // Import useParams
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom'; // Import useParams
+import { BASE_API } from '../../../utils/constant/api';
 
 interface Renter {
   id: number;
@@ -79,28 +80,25 @@ const LivinMates = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const inSmallScreen = useMediaQuery("(max-width: 768px)");
+  const inSmallScreen = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+      const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
       if (!token) {
-        setError("No authentication token found");
+        setError('No authentication token found');
         setIsLoading(false);
         return;
       }
       try {
         // Use the id parameter in the fetch URL
-        const response = await fetch(
-          `https://livin-api.rrens.me/api/property/livin-match/${id}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`${BASE_API}/property/livin-match/${id}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
         const result: ApiResponse = await response.json();
 
@@ -109,11 +107,11 @@ const LivinMates = () => {
           setRenters(result.data.livin_match); // Set the renters data
         } else {
           throw new Error(
-            result.meta.message.join(", ") || "Failed to fetch property data"
+            result.meta.message.join(', ') || 'Failed to fetch property data'
           );
         }
       } catch (err: any) {
-        setError(err.message || "An unknown error occurred");
+        setError(err.message || 'An unknown error occurred');
       } finally {
         setIsLoading(false);
       }
@@ -169,18 +167,18 @@ const LivinMates = () => {
             >
               <VStack spacing={4} align="flex-start">
                 <Heading size="lg" color="yellow.200">
-                  Penyewa {index +1}
+                  Penyewa {index + 1}
                 </Heading>
                 <Text fontWeight="bold">Nama Lengkap</Text>
                 <Text>{renter.fullname}</Text>
                 <Text fontWeight="bold">Nomor HP</Text>
                 <Text>{renter.phone_number}</Text>
                 <Text fontWeight="bold">Jenis Kelamin</Text>
-                <Text>{renter.gender === 1 ? "Laki-laki" : "Perempuan"}</Text>
+                <Text>{renter.gender === 1 ? 'Laki-laki' : 'Perempuan'}</Text>
                 <Text fontWeight="bold">Pekerjaan</Text>
                 <Text>{renter.job}</Text>
                 <Text fontWeight="bold">Sekolah</Text>
-                <Text>{renter.school_name || "Tidak ada"}</Text>
+                <Text>{renter.school_name || 'Tidak ada'}</Text>
               </VStack>
             </Box>
           ))

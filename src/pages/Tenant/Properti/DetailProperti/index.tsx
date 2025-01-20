@@ -30,16 +30,17 @@ import {
   useDisclosure,
   ModalBody,
   ModalCloseButton,
-} from "@chakra-ui/react";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+} from '@chakra-ui/react';
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 // And react-slick as our Carousel Lib
 
-import { DivideSquare } from "react-feather";
-import { MdShoppingCartCheckout, MdSearch } from "react-icons/md";
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom"; // Import useParams
-import axios from "axios";
+import { DivideSquare } from 'react-feather';
+import { MdShoppingCartCheckout, MdSearch } from 'react-icons/md';
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom'; // Import useParams
+import axios from 'axios';
+import { BASE_API } from '../../../../utils/constant/api';
 interface Property {
   id: number;
   nama: string;
@@ -67,30 +68,27 @@ interface Property {
 
 const detailProperti = () => {
   const [profiledata, setProfile] = useState(null);
-  const [rentalDuration, setRentalDuration] = useState<string>("");
-  const [checkInDate, setCheckInDate] = useState<string>("");
+  const [rentalDuration, setRentalDuration] = useState<string>('');
+  const [checkInDate, setCheckInDate] = useState<string>('');
   const { id } = useParams<{ id: string }>(); // Get the id from URL parameters
   const [propertyData, setPropertyData] = useState<Property | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentSlide, setCurrentSlide] = useState<number>(0);
-  const [isMobile] = useMediaQuery("(max-width:768px)");
+  const [isMobile] = useMediaQuery('(max-width:768px)');
   const [displayedImages, setDisplayedImages] = useState<string[]>([]);
   const [property_id, setPropertyid] = useState<number>();
 
   const fecthDataProfile = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     try {
-      const response = await axios.get(
-        "https://livin-api.rrens.me/api/profile/renter",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.get(`${BASE_API}/profile/renter`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setProfile(response.data.data);
-      console.log(response, "kor");
+      console.log(response, 'kor');
     } catch (error) {
       console.log(error);
     }
@@ -100,48 +98,48 @@ const detailProperti = () => {
     fecthDataProfile();
   }, []);
   const HandleChat = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     if (!token) {
-      console.error("Missing token for chat");
+      console.error('Missing token for chat');
       return; // Abort if no token is available
     }
 
     try {
       const response = await axios.post(
-        "https://livin-api.rrens.me/api/chat/chat-owner",
+        `${BASE_API}/chat/chat-owner`,
         {
           property_id: propertyData?.id,
         },
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       );
 
-      localStorage.removeItem("chat_id");
+      localStorage.removeItem('chat_id');
       if (response.data && response.data.data && response.data.data.chat_id) {
         const chatId = response.data.data.chat_id;
-        localStorage.setItem("chat_id", chatId.toString());
-        console.log("Chat ID saved to localStorage:", chatId);
+        localStorage.setItem('chat_id', chatId.toString());
+        console.log('Chat ID saved to localStorage:', chatId);
       } else {
-        console.error("Chat ID is not available in the response");
+        console.error('Chat ID is not available in the response');
       }
 
       // Misalnya, navigasi ke halaman chat
       window.location.href = `/chat/${propertyData?.id}`;
     } catch (error) {
-      console.error("Error creating chat:", error);
+      console.error('Error creating chat:', error);
       // Tampilkan pesan error kepada pengguna
-      alert("Gagal membuat chat. Silakan coba lagi.");
+      alert('Gagal membuat chat. Silakan coba lagi.');
     }
   };
 
   const handleSave = () => {
     if (!checkInDate || !rentalDuration) {
-      alert("Harap pilih tanggal dan durasi sewa.");
+      alert('Harap pilih tanggal dan durasi sewa.');
       return;
     }
 
@@ -155,8 +153,8 @@ const detailProperti = () => {
 
     const dataCheckin = Math.trunc(new Date(checkInDate).getTime() / 1000.0);
     // Save to localStorage
-    localStorage.setItem("checkInDate", dataCheckin);
-    localStorage.setItem("rentalDuration", rentalDuration);
+    localStorage.setItem('checkInDate', dataCheckin);
+    localStorage.setItem('rentalDuration', rentalDuration);
 
     // Navigate to the transaction page
 
@@ -168,33 +166,33 @@ const detailProperti = () => {
   // Fetch property data
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+      const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
       if (!token) {
-        setError("No authentication token found");
+        setError('No authentication token found');
         setIsLoading(false);
         return;
       }
       try {
         // Use the id parameter in the fetch URL
         const response = await fetch(
-          `https://livin-api.rrens.me/api/property/detail-property/${id}`,
+          `${BASE_API}/property/detail-property/${id}`,
           {
-            method: "GET",
+            method: 'GET',
             headers: {
               Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
           }
         );
 
         const result = await response.json();
-        if (response.ok && result.meta.status === "success") {
+        if (response.ok && result.meta.status === 'success') {
           setPropertyData(result.data);
         } else {
-          throw new Error("Failed to fetch property data");
+          throw new Error('Failed to fetch property data');
         }
       } catch (err: any) {
-        setError(err.message || "An unknown error occurred");
+        setError(err.message || 'An unknown error occurred');
       } finally {
         setIsLoading(false);
       }
@@ -205,30 +203,30 @@ const detailProperti = () => {
 
   // Post data
   const HandleSave = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     if (!token) {
-      console.error("Missing token for adding to cart");
+      console.error('Missing token for adding to cart');
       return; // Abort if no token is available
     }
 
     try {
       const response = await axios.post(
-        "https://livin-api.rrens.me/api/cart/add-cart",
+        `${BASE_API}/cart/add-cart`,
         { property_id: propertyData.id },
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       );
 
       // alert("Berhasil");
       // Handle successful addition to cart (e.g., display a success message)
-      console.log("Successfully added property to cart:", response.data);
+      console.log('Successfully added property to cart:', response.data);
     } catch (error) {
-      console.error("Error adding property to cart:", error);
+      console.error('Error adding property to cart:', error);
       // Handle error gracefully (e.g., display an error message to the user)
     }
   };
@@ -329,7 +327,7 @@ const detailProperti = () => {
           </Flex>
 
           <Flex my={4}>
-            <Text fontSize={"md"} color={"gray.300"}>
+            <Text fontSize={'md'} color={'gray.300'}>
               {propertyData.alamat}
             </Text>
             <Spacer></Spacer>
@@ -372,7 +370,7 @@ const detailProperti = () => {
                 <Icon boxSize={6} />
                 <Text>Kapasitas Garasi</Text>
                 <Text fontWeight="bold">
-                  {propertyData.kapasitas_mobil} mobil /{" "}
+                  {propertyData.kapasitas_mobil} mobil /{' '}
                   {propertyData.kapasitas_motor} montor
                 </Text>
               </GridItem>
@@ -425,8 +423,8 @@ const detailProperti = () => {
           </Tabs>
         </Box>
         <Box
-          backgroundColor={"white"}
-          height={"450px"}
+          backgroundColor={'white'}
+          height={'450px'}
           p={4}
           borderWidth="1px"
           borderRadius="md"
@@ -442,12 +440,12 @@ const detailProperti = () => {
               </Text>
             </Box>
           </Flex>
-          <Text color="gray.500" fontSize={"sm"} mt={2}>
+          <Text color="gray.500" fontSize={'sm'} mt={2}>
             Aktif Sejak Mei 2024
           </Text>
           <SimpleGrid
             my={3}
-            justifyContent={"Center"}
+            justifyContent={'Center'}
             columns={{ base: 2, md: 2 }}
           >
             <Box>
@@ -458,8 +456,8 @@ const detailProperti = () => {
 
                 <HStack>
                   <Text>
-                    {" "}
-                    {propertyData.transaction_success}Transaksi Berhasil
+                    {' '}
+                    {propertyData.transaction_success} Transaksi Berhasil
                   </Text>
                 </HStack>
               </VStack>
@@ -479,7 +477,7 @@ const detailProperti = () => {
           <Text as="span">
             <Text as="span" color="orange.500" fontWeight="bold">
               {propertyData.harga_sewa_1_bulan}
-            </Text>{" "}
+            </Text>{' '}
             <Text as="span" color="gray.500">
               /Bulan
             </Text>
@@ -489,18 +487,18 @@ const detailProperti = () => {
             my={4}
             direction="row"
             align="center"
-            justify={"center"}
+            justify={'center'}
           >
             <Button
               onClick={HandleChat}
               colorScheme="teal"
-              variant={"outline"}
+              variant={'outline'}
               size="md"
             >
               Chat Pemilik
             </Button>
             <Link to={`/survey/${propertyData.id}`}>
-              <Button variant={"outline"} colorScheme="teal" size="md">
+              <Button variant={'outline'} colorScheme="teal" size="md">
                 Jadwalkan Survey
               </Button>
             </Link>
@@ -511,22 +509,22 @@ const detailProperti = () => {
             my={4}
             direction="row"
             align="center"
-            justify={"center"}
+            justify={'center'}
           >
             <Input
-              width={"50%"}
+              width={'50%'}
               type="date"
               placeholder=" Mulai CheckIn"
               colorScheme="teal"
-              variant={"outline"}
+              variant={'outline'}
               // disabled={ profiledata.transaction_history != null }
               size="md"
               value={checkInDate}
               onChange={(e) => setCheckInDate(e.target.value)} // Update state
             />
             <Select
-              borderColor={"black"}
-              width={"50%"}
+              borderColor={'black'}
+              width={'50%'}
               placeholder="Durasi Sewa"
               value={rentalDuration}
               // disabled={ profiledata.transaction_history != null  }
@@ -539,32 +537,18 @@ const detailProperti = () => {
           </Stack>
           <VStack>
             {profiledata?.transaction_history != null ? (
-           
               <Text color="red">Anda sudah punya properti</Text>
             ) : (
               <Button
-              width={"full"}
-              colorScheme="green"
-              variant={"solid"}
-              size="md"
-              onClick={handleSave}
-            >
-              Pesan Sekarang
-            </Button>
-            )}
-            <Link
-              to={`/livin-mates/${propertyData.id}`}
-              style={{ textDecoration: "none" }}
-            >
-              <Button
-                width={"full"}
-                colorScheme="orange"
-                variant={"outline"}
+                width={'full'}
+                colorScheme="green"
+                variant={'solid'}
                 size="md"
+                onClick={handleSave}
               >
-                Livin Mates
+                Pesan Sekarang
               </Button>
-            </Link>
+            )}
           </VStack>
         </Box>
       </SimpleGrid>
@@ -576,13 +560,13 @@ const detailProperti = () => {
               src={propertyData.image[currentSlide]}
               alt="Property Image"
               width="400px"
-              height={"250px"}
+              height={'250px'}
             />
             <HStack mt={2}>
               <IconButton
                 icon={<FaArrowLeft />}
                 onClick={prevSlide}
-                aria-label={""}
+                aria-label={''}
               />
               <Text>
                 {currentSlide + 1} of {propertyData.image.length}
@@ -590,7 +574,7 @@ const detailProperti = () => {
               <IconButton
                 icon={<FaArrowRight />}
                 onClick={nextSlide}
-                aria-label={""}
+                aria-label={''}
               />
             </HStack>
           </ModalBody>

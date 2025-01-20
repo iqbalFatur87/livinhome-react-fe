@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Flex, IconButton, Table, Tbody, Td, Th, Tr } from "@chakra-ui/react";
-import DataTable from "datatables.net-react";
-import DT from "datatables.net-dt";
-import "datatables.net-select-dt";
-import "datatables.net-responsive-dt";
-import { Link } from "react-router-dom";
-import { MdDelete, MdPreview } from "react-icons/md";
+import React, { useEffect, useState } from 'react';
+import { Flex, IconButton, Table, Tbody, Td, Th, Tr } from '@chakra-ui/react';
+import DataTable from 'datatables.net-react';
+import DT from 'datatables.net-dt';
+import 'datatables.net-select-dt';
+import 'datatables.net-responsive-dt';
+import { Link } from 'react-router-dom';
+import { MdDelete, MdPreview } from 'react-icons/md';
+import { BASE_API } from '../../../../utils/constant/api';
 
 DataTable.use(DT);
 
@@ -21,40 +22,37 @@ const PemilikKost = () => {
   const [kostData, setKostData] = useState<PropertiKost[]>([]);
 
   const handleDelete = async (id: number) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     try {
-      const response = await fetch(
-        "https://livin-api.rrens.me/api/admin/penyewa/delete",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            property_id: id,
-          }),
-        }
-      );
+      const response = await fetch(`${BASE_API}/admin/penyewa/delete`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          property_id: id,
+        }),
+      });
 
       if (response.ok) {
         setKostData((prevData) => prevData.filter((kost) => kost.id !== id)); // Remove the deleted item from UI
         toast({
-          title: "Property deleted",
-          description: "The property has been successfully deleted.",
-          status: "success",
+          title: 'Property deleted',
+          description: 'The property has been successfully deleted.',
+          status: 'success',
           duration: 3000,
           isClosable: true,
         });
       } else {
-        throw new Error("Failed to delete the property");
+        throw new Error('Failed to delete the property');
       }
     } catch (error) {
-      console.error("Error deleting property:", error);
+      console.error('Error deleting property:', error);
       toast({
-        title: "Error",
-        description: "Failed to delete the property. Please try again.",
-        status: "error",
+        title: 'Error',
+        description: 'Failed to delete the property. Please try again.',
+        status: 'error',
         duration: 3000,
         isClosable: true,
       });
@@ -63,21 +61,21 @@ const PemilikKost = () => {
   useEffect(() => {
     // Fetch data dari API
     const fetchData = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       try {
         const response = await fetch(
-          "https://livin-api.rrens.me/api/admin/penyewa/category/kost",
+          `${BASE_API}/admin/penyewa/category/kost`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
           }
         );
         const result = await response.json();
         setKostData(result.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -85,7 +83,7 @@ const PemilikKost = () => {
   }, []);
 
   return (
-    <Table variant={"simple"}>
+    <Table variant={'simple'}>
       <Tr>
         <Th>No</Th>
         <Th>Nama Penyewa</Th>
@@ -103,19 +101,15 @@ const PemilikKost = () => {
             <Td>{kost.phone_number}</Td>
             <Td>{kost.checkin}</Td>
             <Td>
-            <Flex gap={3}>
+              <Flex gap={3}>
                 <IconButton
                   aria-label="Delete Property"
                   icon={<MdDelete />}
                   onClick={() => handleDelete(kost.id)} // Call delete handler
                 />
                 <Link to={`/admin/penyewa-detail/${kost.id}`}>
-               
-                <IconButton
-                  aria-label="View Property"
-                  icon={<MdPreview />}
-                />
-                 </Link>
+                  <IconButton aria-label="View Property" icon={<MdPreview />} />
+                </Link>
               </Flex>
             </Td>
           </Tr>

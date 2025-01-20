@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -11,16 +11,17 @@ import {
   IconButton,
   SimpleGrid,
   Spinner,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 import {
   FaBath,
   FaBed,
   FaEnvelope,
   FaShoppingCart,
   FaTrash,
-} from "react-icons/fa";
-import axios from "axios";
-import { Link } from "react-router-dom";
+} from 'react-icons/fa';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { BASE_API } from '../../../utils/constant/api';
 
 interface Property {
   id: number;
@@ -39,19 +40,19 @@ interface Property {
 
 const PropertyListing = () => {
   const [properties, setProperties] = useState<Property[]>([]);
-  const [category, setCategory] = useState<string>("");
+  const [category, setCategory] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleDelete = async (propertyId: number) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     try {
       await axios.post(
-        `https://livin-api.rrens.me/api/cart/delete-cart`,
+        `${BASE_API}/cart/delete-cart`,
         { id: propertyId }, // Kirim property_id di body
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       );
@@ -59,22 +60,22 @@ const PropertyListing = () => {
       // Update state setelah berhasil menghapus
       setProperties(properties.filter((item) => item.id !== propertyId));
     } catch (error) {
-      console.error("Error deleting property:", error);
+      console.error('Error deleting property:', error);
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
 
       try {
         const response = await axios.get(
-          `https://livin-api.rrens.me/api/cart?sort=asc&category=${category}`,
+          `${BASE_API}/cart?sort=asc&category=${category}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
           }
         );
@@ -82,7 +83,7 @@ const PropertyListing = () => {
         const fetchedProperties = response.data.data || [];
         setProperties(fetchedProperties);
       } catch (error) {
-        console.error("Error fetching properties:", error);
+        console.error('Error fetching properties:', error);
         setProperties([]);
       } finally {
         setLoading(false);
@@ -96,20 +97,20 @@ const PropertyListing = () => {
       {/* Left Section */}
       <Box flex={1} p={4}>
         <Flex mb={4}>
-          <Button variant="ghost" mr={2} onClick={() => setCategory("")}>
+          <Button variant="ghost" mr={2} onClick={() => setCategory('')}>
             Semua
           </Button>
           <Button
             variant="ghost"
             mr={2}
-            onClick={() => setCategory("Kontrakan")}
+            onClick={() => setCategory('Kontrakan')}
           >
             Kontrakan
           </Button>
-          <Button variant="ghost" mr={2} onClick={() => setCategory("kost")}>
+          <Button variant="ghost" mr={2} onClick={() => setCategory('kost')}>
             Kost
           </Button>
-          <Button variant="ghost" onClick={() => setCategory("Apartement")}>
+          <Button variant="ghost" onClick={() => setCategory('Apartement')}>
             Apartemen
           </Button>
         </Flex>
@@ -132,8 +133,8 @@ const PropertyListing = () => {
                       alt="Property Image"
                       h="200px"
                       w="150px"
-                      borderRadius={"md"}
-                      maxW={"sm"}
+                      borderRadius={'md'}
+                      maxW={'sm'}
                       objectFit="cover"
                     />
 
@@ -156,10 +157,10 @@ const PropertyListing = () => {
                     <Box
                       position="absolute"
                       left="140"
-                      borderRadius={"lg"}
+                      borderRadius={'lg'}
                       p={4}
-                      backgroundColor={"white"}
-                      shadow={"md"}
+                      backgroundColor={'white'}
+                      shadow={'md'}
                     >
                       {/* Location and Price */}
                       <VStack align="start" spacing={2}>
@@ -171,7 +172,7 @@ const PropertyListing = () => {
                           color="gray.600"
                           fontWeight="semibold"
                         >
-                          Rp.{" "}
+                          Rp.{' '}
                           {item.property[0].harga_sewa_1_bulan.toLocaleString()}
                           /bulan
                         </Text>
@@ -181,7 +182,7 @@ const PropertyListing = () => {
                           <HStack>
                             <Icon as={FaBath} />
                             <Text>
-                              {" "}
+                              {' '}
                               {item.property[0].kamar_mandi
                                 ? item.property[0].kamar_mandi
                                 : 0}
@@ -190,14 +191,14 @@ const PropertyListing = () => {
                           <HStack>
                             <Icon as={FaBed} />
                             <Text>
-                              {" "}
+                              {' '}
                               {item.property[0].total_kamar
                                 ? item.property[0].total_kamar
                                 : 0}
                             </Text>
                           </HStack>
                           <Text>
-                            {" "}
+                            {' '}
                             {item.property[0].lebar_tanah
                               ? item.property[0].lebar_tanah
                               : 0}
@@ -211,15 +212,15 @@ const PropertyListing = () => {
                           Kirim Pesan
                         </Button> */}
                         <Link to={`/detail-properti/${item.property_id}`}>
+                          <IconButton
+                            colorScheme="orange"
+                            aria-label="Add to Cart"
+                            fontSize="20px"
+                            icon={<FaShoppingCart />}
+                          />
+                        </Link>
                         <IconButton
-                          colorScheme="orange"
-                          aria-label="Add to Cart"
-                          fontSize="20px"
-                          icon={<FaShoppingCart />}
-                        />
-                          </Link>
-                        <IconButton
-                          float={"inline-start"}
+                          float={'inline-start'}
                           colorScheme="red"
                           aria-label="Delete"
                           fontSize="20px"
@@ -230,7 +231,7 @@ const PropertyListing = () => {
                     </Box>
                   </HStack>
                 ))
-              : "No Property Available"}
+              : 'No Property Available'}
           </SimpleGrid>
         )}
       </Box>
@@ -239,7 +240,7 @@ const PropertyListing = () => {
       <Box
         flex={1}
         maxW="200px"
-        justifyContent={"center"}
+        justifyContent={'center'}
         bg="orange.400"
         borderBottomRadius="full"
         borderTopRadius="full"
@@ -247,7 +248,7 @@ const PropertyListing = () => {
       >
         <Box>
           <Image
-            src={"/human.png"}
+            src={'/human.png'}
             alt="Person"
             position="absolute"
             bottom={0}

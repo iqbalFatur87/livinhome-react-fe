@@ -1,16 +1,18 @@
 import { Button, HStack, Image, ListItem, Stack, Text, UnorderedList, useToast } from "@chakra-ui/react";
 import { borderRadius, primaryTextColor, secondaryTextColor } from "../../../../components/theme";
 import { useCallback, useState } from "react";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import { useDropzone } from "react-dropzone";
 import { REGISTER_TOKEN, REGISTER_UPLOAD, SUCCESS_REGISTER } from "../../../../utils/constant/localStorage";
 import { TbCloudUpload } from "react-icons/tb";
 import { BASE_API } from "../../../../utils/constant/api";
+import {useNavigate} from "react-router-dom";
 
 export const UnggahKTP = () => {
   const [file, setFile] = useState<File | null>(null); // State to hold the file
   const [preview, setPreview] = useState<string | null>(null); // State to hold the file preview
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
   const toast = useToast();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {

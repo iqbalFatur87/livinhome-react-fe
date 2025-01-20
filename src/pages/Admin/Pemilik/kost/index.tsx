@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Flex,
   IconButton,
@@ -11,9 +11,10 @@ import {
   Thead,
   useToast,
   Box,
-} from "@chakra-ui/react";
-import { MdDelete, MdPreview } from "react-icons/md";
-import { Link } from "react-router-dom";
+} from '@chakra-ui/react';
+import { MdDelete, MdPreview } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import { BASE_API } from '../../../../utils/constant/api';
 
 interface PropertiKost {
   id: number;
@@ -28,26 +29,26 @@ interface PropertiKost {
 
 const PemilikKost = () => {
   const [kostData, setKostData] = useState<PropertiKost[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>(""); // State for search term
+  const [searchTerm, setSearchTerm] = useState<string>(''); // State for search term
   const toast = useToast(); // Chakra-UI toast for notifications
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       try {
         const response = await fetch(
-          "https://livin-api.rrens.me/api/admin/pemilik/category/kost",
+          `${BASE_API}/admin/pemilik/category/kost`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
           }
         );
         const result = await response.json();
         setKostData(result.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -55,40 +56,37 @@ const PemilikKost = () => {
   }, []);
 
   const handleDelete = async (id: number) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     try {
-      const response = await fetch(
-        "https://livin-api.rrens.me/api/admin/pemilik/delete",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            property_id: id,
-          }),
-        }
-      );
+      const response = await fetch(`${BASE_API}/admin/pemilik/delete`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          property_id: id,
+        }),
+      });
 
       if (response.ok) {
         setKostData((prevData) => prevData.filter((kost) => kost.id !== id)); // Remove the deleted item from UI
         toast({
-          title: "Property deleted",
-          description: "The property has been successfully deleted.",
-          status: "success",
+          title: 'Property deleted',
+          description: 'The property has been successfully deleted.',
+          status: 'success',
           duration: 3000,
           isClosable: true,
         });
       } else {
-        throw new Error("Failed to delete the property");
+        throw new Error('Failed to delete the property');
       }
     } catch (error) {
-      console.error("Error deleting property:", error);
+      console.error('Error deleting property:', error);
       toast({
-        title: "Error",
-        description: "Failed to delete the property. Please try again.",
-        status: "error",
+        title: 'Error',
+        description: 'Failed to delete the property. Please try again.',
+        status: 'error',
         duration: 3000,
         isClosable: true,
       });
@@ -110,7 +108,7 @@ const PemilikKost = () => {
         onChange={(e) => setSearchTerm(e.target.value)} // Update search term on input change
       />
 
-      <Table variant={"simple"}>
+      <Table variant={'simple'}>
         <Thead>
           <Tr>
             <Th>No</Th>
