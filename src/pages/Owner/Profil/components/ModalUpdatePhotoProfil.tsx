@@ -1,80 +1,80 @@
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, Text, useToast } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
-import { secondaryTextColor } from "../../../../components/theme";
-import { TbCloudUpload } from "react-icons/tb";
-import { useDropzone } from "react-dropzone";
-import axios from "axios";
-import { BASE_API } from "../../../../utils/constant/api";
-import { authorityCheck, AUTHORIZATION_HEADERS } from "../../../../utils/helper/helper";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  Text,
+  useToast
+} from "@chakra-ui/react";
+import {useCallback, useState} from "react";
+import {secondaryTextColor} from "../../../../components/theme";
+import {TbCloudUpload} from "react-icons/tb";
+import {useDropzone} from "react-dropzone";
+import {AxiosError} from "axios";
+import {apiOwnerProfileUpdateProfilePhoto} from "../../../../api/profile.ts";
+import {useNavigate} from "react-router-dom";
 
-const ModalUpdatePhotoProfil = (props: { getData: () => void; onClose: () => void }) => {
+const ModalUpdatePhotoProfil = ({ onClose }: { onClose: () => void }) => {
   const toast = useToast();
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-  const onDrop = useCallback(async (acceptedFiles: any) => {
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
     setLoading(true);
 
     // Ambil file pertama dari acceptedFiles
-    const file = acceptedFiles[0];
+    const profileImg = acceptedFiles[0];
 
-    if (!file) {
+    if (!profileImg) {
       setLoading(false);
       return;
     }
 
-    // Membaca file sebagai Base64
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64Data: any = reader.result; // Ini adalah string Base64
+    try {
+      await apiOwnerProfileUpdateProfilePhoto(profileImg);
 
-      const formData = new FormData();
-      formData.append("image", base64Data); // Mengirim Base64
+      toast({
+        title: "Berhasil ubah foto profil",
+        status: "success",
+        duration: 9000,
+        variant: "subtle",
+        isClosable: true,
+      });
 
-      const fileType = file.type;
-
-      if (fileType.includes("image")) {
-        try {
-          await axios.post(`${BASE_API}/profile/owner/update-image`, formData, AUTHORIZATION_HEADERS);
-          toast({
-            title: "Berhasil ubah foto profil",
-            status: "success",
-            duration: 9000,
-            variant: "subtle",
-            isClosable: true,
-          });
-          props.onClose();
-          props.getData();
-        } catch (error: any) {
-          authorityCheck(error.response.status);
-          toast({
-            description: error.response?.data?.meta?.message?.join(", ") || "Upload failed",
-            status: "error",
-            duration: 9000,
-            variant: "subtle",
-            isClosable: true,
-          });
-        } finally {
-          setLoading(false);
-        }
-      } else {
+      navigate(0);
+    } catch (error) {
+      if (error instanceof AxiosError) {
         toast({
-          title: `Hanya dapat mengunggah file gambar`,
+          description: error.response?.data?.meta?.message?.join(", ") || "Upload failed",
           status: "error",
           duration: 9000,
           variant: "subtle",
           isClosable: true,
         });
-        setLoading(false);
+        return;
       }
-    };
 
-    reader.readAsDataURL(file); // Membaca file sebagai data URL (Base64)
-  }, []);
+      toast({
+        description: "Kesalahan server saat mengupload foto",
+        status: "error",
+        duration: 9000,
+        variant: "subtle",
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false)
+    }
+
+  }, [navigate, toast]);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
-    <Modal isOpen={true} onClose={() => props.onClose()} isCentered>
+    <Modal isOpen={true} onClose={() => onClose()} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Update Photo Profil</ModalHeader>

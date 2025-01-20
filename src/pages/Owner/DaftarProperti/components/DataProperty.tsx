@@ -43,7 +43,7 @@ const DaftarProperti = (props: { dataState: any; setDataState: any; listRules: a
       <Stack>
         <HStack flexWrap={"wrap"}>
           <Text color={primaryTextColor()} fontWeight={"bold"}>
-            Nama Kontrakan
+            Nama Properti
           </Text>
           <Text color={primaryTextTitleColor()}>*Wajib diisi</Text>
         </HStack>

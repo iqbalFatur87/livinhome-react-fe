@@ -13,11 +13,12 @@ import axios from "axios";
 import { BASE_API } from "../../../../utils/constant/api";
 import LoadingComponent from "../../../../components/LoadingComponent";
 import ModalTolak from "./components/ModalTolakj";
+import {ModalBuktiTransaksi} from "./components/ModalBuktiTransaksi.tsx";
 
 const index = () => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [modalType, setModalType] = useState<string | null>(null);
+  const [modalType, setModalType] = useState<'konfirmasi' | 'tolak' | 'bukti-bayar' | null>(null);
   const [dataState, setDataState] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const toast = useToast();
@@ -211,33 +212,6 @@ const index = () => {
             </Text>
             <Text color={secondaryTextColor()}>{dataState?.duration}</Text>
           </HStack>
-          {/* <Stack borderBottom={"1px"} borderColor={"rgba(179, 179, 179, 1)"} paddingBottom={"10px"} marginTop={"30px"}>
-            <Text fontWeight={"bold"} color={primaryTextColor()} textAlign={"start"} fontSize={"md"}>
-              Layanan Tambahan
-            </Text>
-          </Stack> */}
-          {/* <HStack
-            borderColor={"rgba(96, 90, 90, 1)"}
-            borderRadius={"16px"}
-            padding={"8px"}
-            justifyContent={"space-between"}
-            height={"100%"}
-            marginBottom={"30px"}
-          >
-            <HStack>
-              <Image src="/cleaning-services.png" />
-              <Stack gap={"0px"}>
-                <HStack gap={"0px"} fontWeight={"bold"}>
-                  <Text>Livin</Text>
-                  <Text color={primaryTextTitleColor()}>Clean</Text>
-                </HStack>
-                <Text color={secondaryTextColor()}>Jasa Kebersihan</Text>
-              </Stack>
-            </HStack>
-            <Text fontWeight={"bold"} color={primaryTextColor()} alignSelf={"flex-end"} fontSize={"md"}>
-              {convertToBillNumber(80000)}
-            </Text>
-          </HStack> */}
 
           <Stack borderBottom={"1px"} borderColor={"rgba(179, 179, 179, 1)"} paddingBottom={"10px"}>
             <Text fontWeight={"bold"} color={primaryTextColor()} textAlign={"start"} fontSize={"md"}>
@@ -248,45 +222,56 @@ const index = () => {
             {convertToBillNumber(dataState?.total_price || 0)}
           </Text>
 
-          {/* <Text textAlign={"center"} color={"rgba(212, 47, 47, 1)"} marginTop={"20px"}>
-            {dataState?.deadline}
-          </Text> */}
+          <Stack>
+            <HStack>
+              <Button
+                  onClick={() => {
+                    setModalType("tolak");
+                    onOpen();
+                  }}
+                  size={"sm"}
+                  marginTop={"20px"}
+                  variant={"outline"}
+                  width={"100%"}
+              >
+                Tolak
+              </Button>
+              <Button
+                  onClick={() => {
+                    setModalType("konfirmasi");
+                    onOpen();
+                  }}
+                  color={"white"}
+                  backgroundColor={"black"}
+                  size={"sm"}
+                  _hover={{ backgroundColor: "black" }}
+                  marginTop={"20px"}
+                  width={"100%"}
+              >
+                Konfirmasi
+              </Button>
+            </HStack>
 
-          <HStack>
-            <Button
-              onClick={() => {
-                setModalType("tolak");
-                onOpen();
-              }}
-              size={"sm"}
-              marginTop={"20px"}
-              variant={"outline"}
-              width={"100%"}
-            >
-              Tolak
+            <Button onClick={() => {
+              setModalType('bukti-bayar')
+              onOpen();
+            }}>
+              Lihat Bukti Pembayaran
             </Button>
-            <Button
-              onClick={() => {
-                setModalType("konfirmasi");
-                onOpen();
-              }}
-              color={"white"}
-              backgroundColor={"black"}
-              size={"sm"}
-              _hover={{ backgroundColor: "black" }}
-              marginTop={"20px"}
-              width={"100%"}
-            >
-              Konfirmasi
-            </Button>
-          </HStack>
+          </Stack>
         </Stack>
 
-        {modalType == "konfirmasi" ? (
-          <ModalKonfirmasi id={id} isOpen={isOpen} onOpen={onOpen} onClose={onClose} setModalType={setModalType} />
-        ) : modalType == "tolak" ? (
-          <ModalTolak id={id} isOpen={isOpen} onOpen={onOpen} onClose={onClose} setModalType={setModalType} />
-        ) : null}
+        {modalType === 'konfirmasi' && (
+            <ModalKonfirmasi id={id} isOpen={isOpen} onOpen={onOpen} onClose={onClose} setModalType={setModalType} />
+        )}
+
+        {modalType === 'tolak' && (
+            <ModalTolak id={id} isOpen={isOpen} onOpen={onOpen} onClose={onClose} setModalType={setModalType} />
+        )}
+
+        {modalType === 'bukti-bayar' && (
+          <ModalBuktiTransaksi isOpen={isOpen} onClose={onClose} proofUrl={dataState?.proof_of_payment} />
+        )}
       </HStack>
     </>
   );

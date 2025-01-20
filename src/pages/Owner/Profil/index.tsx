@@ -8,6 +8,8 @@ import { BASE_API } from "../../../utils/constant/api";
 import { authorityCheck, AUTHORIZATION_HEADERS, encrypt, Get_Epoc_Date, LOCAL_STORAGE } from "../../../utils/helper/helper";
 import ModalUpdatePhotoProfil from "./components/ModalUpdatePhotoProfil";
 import { DATA } from "../../../utils/constant/localStorage";
+import {apiGetOwnerProfile} from "../../../api/profile.ts";
+import {UserProfilePublic} from "../../../models/users.ts";
 
 const index = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -16,26 +18,29 @@ const index = () => {
   // const [listKota, setListKota] = useState<any>([]);
   const [modalPhotoProfil, setModalPhotoProfil] = useState<boolean>(false);
   const toast = useToast();
+
+
+
   const getData = async () => {
     setLoading(true);
     try {
-      await axios.get(`${BASE_API}/profile/owner`, AUTHORIZATION_HEADERS).then((res) => {
-        const filteredField = res.data.data;
-        delete filteredField.job;
-        delete filteredField.school_name;
-        delete filteredField.city;
-        delete filteredField.status;
-        delete filteredField.last_education;
-        delete filteredField.emergency_contact;
-        // alert(filteredField)
-        if (filteredField.photo_profile !== LOCAL_STORAGE().AVATAR) {
+      await apiGetOwnerProfile().then((res) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { job, school_name, city, status, last_education , emergency_contact, ...profile } = res.data;
+
+        const storedProfile: UserProfilePublic = profile;
+
+        if (storedProfile.photo_profile !== LOCAL_STORAGE().AVATAR) {
           let newLocalStorage = LOCAL_STORAGE();
-          newLocalStorage.AVATAR = filteredField.photo_profile;
+          newLocalStorage.AVATAR = storedProfile.photo_profile;
           localStorage[DATA] = encrypt(newLocalStorage);
           window.location.reload();
         } else {
-          setInitDataState(filteredField);
-          setDataState(filteredField);
+
+          console.log('new data', storedProfile);
+
+          setInitDataState(storedProfile);
+          setDataState(storedProfile);
         }
       });
     } catch (error) {
@@ -218,93 +223,6 @@ const index = () => {
             color={inputColor()}
           />
         </Stack>
-        {/* <Stack>
-          <Text color={primaryTextColor()} fontWeight={"bold"}>
-            Pekerjaan
-          </Text>
-          <Select
-            value={dataState?.job || ""}
-            onChange={(e) => updateForm("job", e.target.value)}
-            backgroundColor={inputBackgroundColor()}
-            border={customBorder()}
-            color={inputColor()}
-          >
-            <option>Pilih Pekerjaan</option>
-            <option value={"Mahasiswa"}>Mahasiswa</option>
-            <option value={"PNS"}>PNS</option>
-            <option value={"Swasta"}>Swasta</option>
-            <option value={"Wira Usaha"}>Wira Usaha</option>
-          </Select>
-        </Stack> */}
-        {/* <Stack>
-          <HStack flexWrap={"wrap"}>
-            <Text color={primaryTextColor()} fontWeight={"bold"}>
-              Nama Sekolah
-            </Text>
-          </HStack>
-
-          <Input
-            value={dataState?.school_name || ""}
-            onChange={(e) => updateForm("school_name", e.target.value)}
-            backgroundColor={inputBackgroundColor()}
-            border={customBorder()}
-            color={inputColor()}
-          />
-        </Stack> */}
-        {/* <Stack>
-          <Text color={primaryTextColor()} fontWeight={"bold"}>
-            Kota Asal
-          </Text>
-          <Select
-            value={dataState?.city || ""}
-            onChange={(e) => updateForm("city", e.target.value)}
-            backgroundColor={inputBackgroundColor()}
-            border={customBorder()}
-            color={inputColor()}
-          >
-            <option>Pilih</option>
-            {listKota.map((i: string) => (
-              <option value={i} key={i}>
-                {i}
-              </option>
-            ))}
-          </Select>
-        </Stack> */}
-        {/* <Stack>
-          <Text color={primaryTextColor()} fontWeight={"bold"}>
-            Status
-          </Text>
-          <Select
-            value={dataState?.status || ""}
-            onChange={(e) => updateForm("status", e.target.value)}
-            backgroundColor={inputBackgroundColor()}
-            border={customBorder()}
-            color={inputColor()}
-          >
-            <option>Pilih Status</option>
-            <option value={"kawin"}>Kawin</option>
-            <option value={"Belum Kawin"}>Belum Kawin</option>
-            <option value={"Cerai"}>Cerai</option>
-          </Select>
-        </Stack> */}
-        {/* <Stack>
-          <Text color={primaryTextColor()} fontWeight={"bold"}>
-            Pendidikan Terakhir
-          </Text>
-          <Select
-            value={dataState?.last_education || ""}
-            onChange={(e) => updateForm("last_education", e.target.value)}
-            backgroundColor={inputBackgroundColor()}
-            border={customBorder()}
-            color={inputColor()}
-          >
-            <option>Pilih Pendidikan</option>
-            <option value={"SMA"}>SMA</option>
-            <option value={"S1"}>S1</option>
-            <option value={"S2"}>S2</option>
-            <option value={"S3"}>S3</option>
-          </Select>
-        </Stack> */}
 
         <Stack>
           <Text color={primaryTextColor()} fontWeight={"bold"}>
@@ -364,7 +282,6 @@ const index = () => {
 
       {modalPhotoProfil ? (
         <ModalUpdatePhotoProfil
-          getData={getData}
           onClose={() => {
             setModalPhotoProfil(false);
           }}
