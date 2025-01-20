@@ -1,6 +1,6 @@
 import { Button, HStack, Input, Stack, Text, useToast } from "@chakra-ui/react";
 import { borderRadius, primaryTextColor, primaryTextTitleColor, secondaryTextColor } from "../../../../components/theme";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { BASE_API } from "../../../../utils/constant/api";
@@ -12,6 +12,7 @@ export const FormPenyewa = (props: { setLoginState: any }) => {
   const [emailInput, setEmailInput] = useState<any>("");
   const [passwordInput, setPasswordInput] = useState<any>("");
   const toast = useToast();
+  const navigate = useNavigate();
 
   const login = async () => {
     setLoading(true);
@@ -37,9 +38,12 @@ export const FormPenyewa = (props: { setLoginState: any }) => {
         if (import.meta.env.VITE_MODE == "DEV") {
           localStorage.token = `${res.data.meta.token_type} ${res.data.meta.access_token}`;
         }
-        setTimeout(() => {
-          window.location.href = "/searching";
-        }, 700);
+
+        navigate('/searching');
+
+        // setTimeout(() => {
+        //   window.location.href = "/searching";
+        // }, 700);
       })
       .catch((e) => {
         toast({

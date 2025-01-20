@@ -1,57 +1,65 @@
 import { Button, HStack, Input, Stack, Text, useToast } from "@chakra-ui/react";
 import { borderRadius, primaryTextColor, primaryTextTitleColor, secondaryTextColor } from "../../../../components/theme";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import {Link, useNavigate} from "react-router-dom";
+import axios, {AxiosError} from "axios";
 import { BASE_API } from "../../../../utils/constant/api";
 import { useState } from "react";
 import { DATA } from "../../../../utils/constant/localStorage";
 import { encrypt } from "../../../../utils/helper/helper";
+import {publicApi} from "../../../../utils/api/client.ts";
 
 export const FormPemilikProperti = (props: { setLoginState: any }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [emailInput, setEmailInput] = useState<any>("");
-  const [passwordInput, setPasswordInput] = useState<any>("");
+  const [emailInput, setEmailInput] = useState<string>("");
+  const [passwordInput, setPasswordInput] = useState<string>("");
   const toast = useToast();
+  const navigate = useNavigate();
 
   const login = async () => {
     setLoading(true);
-    await axios
-      .post(`${BASE_API}/auth/login/owner`, {
+
+    try {
+      const res = await publicApi.post('/auth/login/owner', {
         email: emailInput,
         password: passwordInput,
-      })
-      .then((res) => {
-        toast({
-          description: res.data.meta.message,
-          status: "success",
-          variant: "subtle",
-          duration: 9000,
-          isClosable: true,
-        });
+      });
 
-        const newLocalStorage = {
-          TOKEN: `${res.data.meta.token_type} ${res.data.meta.access_token}`,
-          ROLE: res.data.data[0],
-          AVATAR: res.data.data[1],
-        };
-        localStorage[DATA] = encrypt(newLocalStorage);
-        if (import.meta.env.VITE_MODE == "DEV") {
-          localStorage.token = `${res.data.meta.token_type} ${res.data.meta.access_token}`;
-        }
+      toast({
+        description: res.data.meta.message,
+        status: "success",
+        variant: "subtle",
+        duration: 9000,
+        isClosable: true,
+      });
 
-        setTimeout(() => {
-          window.location.href = "/owner/dashboard";
-        }, 700);
-      })
-      .catch((e) => {
+      const newLocalStorage = {
+        TOKEN: `${res.data.meta.token_type} ${res.data.meta.access_token}`,
+        ROLE: res.data.data[0],
+        AVATAR: res.data.data[1],
+      };
+
+      localStorage[DATA] = encrypt(newLocalStorage);
+      if (import.meta.env.VITE_MODE == "DEV") {
+        localStorage.token = `${res.data.meta.token_type} ${res.data.meta.access_token}`;
+      }
+
+      // navigate('/owner/dashboard');
+      setTimeout(() => {
+        window.location.href = "/owner/dashboard";
+      }, 700);
+
+    } catch (e) {
+      if (e instanceof AxiosError) {
         toast({
-          description: e.response.data.meta.message.join(", "),
+          description: e.response?.data.meta.message.join(", ") || 'Terjadi kesalahan',
           status: "error",
           variant: "subtle",
           duration: 9000,
           isClosable: true,
         });
-      });
+      }
+    }
+
     setLoading(false);
   };
   return (
