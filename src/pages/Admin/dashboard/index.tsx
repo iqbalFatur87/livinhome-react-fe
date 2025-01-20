@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Grid,
@@ -9,7 +9,8 @@ import {
   Stack,
   Spinner,
   Center,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
+import { BASE_API } from '../../../utils/constant/api';
 
 interface DataDashboard {
   total_kontrakan: number;
@@ -32,18 +33,18 @@ const Dashboard = () => {
 
   // useEffect untuk mengambil data dari API saat komponen pertama kali dirender
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     const fetchDashboardData = async () => {
       try {
-        const response = await fetch(`https://livin-api.rrens.me/api/admin/dashboard`, {
+        const response = await fetch(`${BASE_API}/admin/dashboard`, {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         });
 
         if (!response.ok) {
-          throw new Error("Gagal mengambil data dari server");
+          throw new Error('Gagal mengambil data dari server');
         }
 
         const result = await response.json();
@@ -52,11 +53,11 @@ const Dashboard = () => {
         if (result.meta.code === 200) {
           setDashboardData(result.data);
         } else {
-          setError("Data tidak tersedia");
+          setError('Data tidak tersedia');
         }
       } catch (error) {
-        console.error("Error fetching dashboard data:", error);
-        setError("Terjadi kesalahan saat mengambil data");
+        console.error('Error fetching dashboard data:', error);
+        setError('Terjadi kesalahan saat mengambil data');
       } finally {
         setLoading(false); // Mengatur loading menjadi false setelah data di-fetch
       }
@@ -88,7 +89,7 @@ const Dashboard = () => {
   return (
     <Stack mx={10}>
       {/* Main Content */}
-      <Box width={"100%"}>
+      <Box width={'100%'}>
         <Grid templateColumns="repeat(1, 1fr)" gap={6}>
           {/* Total Kontrakan */}
           <GridItem
@@ -99,7 +100,7 @@ const Dashboard = () => {
           >
             <Flex align="center">
               <Image
-                src="https://via.placeholder.com/80"
+                src="/images/admin/total_kontrakan.jpg"
                 boxSize="80px"
                 borderRadius="full"
                 alt="Kontrakan"
@@ -133,7 +134,7 @@ const Dashboard = () => {
           >
             <Flex align="center">
               <Image
-                src="https://via.placeholder.com/80"
+                src="/images/admin/total_kosan.jpg"
                 boxSize="80px"
                 borderRadius="full"
                 alt="Kost"
@@ -167,7 +168,7 @@ const Dashboard = () => {
           >
             <Flex align="center">
               <Image
-                src="https://via.placeholder.com/80"
+                src="/images/admin/total_apartemen.jpg"
                 boxSize="80px"
                 borderRadius="full"
                 alt="Apartemen"
@@ -201,7 +202,7 @@ const Dashboard = () => {
           >
             <Flex align="center">
               <Image
-                src="https://via.placeholder.com/80"
+                src="/images/admin/pesanan_baru.png"
                 boxSize="80px"
                 borderRadius="full"
                 alt="Pesanan Baru"

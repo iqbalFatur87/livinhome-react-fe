@@ -9,24 +9,25 @@ import {
   ListItem,
   SimpleGrid,
   Text,
-} from "@chakra-ui/react";
-import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { CheckCircle } from "react-feather";
+} from '@chakra-ui/react';
+import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { CheckCircle } from 'react-feather';
+import { BASE_API } from '../../../../utils/constant/api';
 
 const DetailPemilik = () => {
   const { id } = useParams(); // Get the property ID from the URL
   const [property, setProperty] = useState(null); // State to store property details
   const [loading, setLoading] = useState(true); // State to handle loading
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   useEffect(() => {
     // Fetch property details from the API
     axios
-      .get(`https://livin-api.rrens.me/api/admin/pemilik/detail/${id}`, {
+      .get(`${BASE_API}/admin/pemilik/detail/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       })
       .then((response) => {
@@ -34,7 +35,7 @@ const DetailPemilik = () => {
         setLoading(false); // Stop loading
       })
       .catch((error) => {
-        console.error("Error fetching property details:", error);
+        console.error('Error fetching property details:', error);
         setLoading(false);
       });
   }, [id]);
@@ -110,20 +111,14 @@ const DetailPemilik = () => {
             </Flex>
             <SimpleGrid columns={{ md: 2 }}>
               <Flex gap={2} mr={2}>
-                <Text fontWeight="bold"  textStyle="sm">Lebar Tanah:</Text>
-                <Input
-                  maxW="sm"
-                  value={` ${property.lebar_tanah}`}
-                  readOnly
-                />
+                <Text fontWeight="bold" textStyle="sm">
+                  Lebar Tanah:
+                </Text>
+                <Input maxW="sm" value={` ${property.lebar_tanah}`} readOnly />
               </Flex>
               <Flex gap={2}>
                 <Text fontWeight="bold">Luas Kamar:</Text>
-                <Input
-                  maxW="sm"
-                  value={` ${property.luas_kamar}`}
-                  readOnly
-                />
+                <Input maxW="sm" value={` ${property.luas_kamar}`} readOnly />
               </Flex>
             </SimpleGrid>
           </Flex>

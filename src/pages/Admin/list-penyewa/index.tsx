@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Flex, IconButton, Table, Tbody, Td, Th, Tr } from "@chakra-ui/react";
-import DataTable from "datatables.net-react";
-import DT from "datatables.net-dt";
-import "datatables.net-select-dt";
-import "datatables.net-responsive-dt";
-import { Link } from "react-router-dom";
-import { MdDelete, MdPreview } from "react-icons/md";
+import { Flex, IconButton, Table, Tbody, Td, Th, Tr } from '@chakra-ui/react';
+import DT from 'datatables.net-dt';
+import DataTable from 'datatables.net-react';
+import 'datatables.net-responsive-dt';
+import 'datatables.net-select-dt';
+import { useEffect, useState } from 'react';
+import { MdDelete, MdPreview } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import { BASE_API } from '../../../utils/constant/api';
 
 DataTable.use(DT);
 
@@ -24,21 +25,18 @@ const PemilikKost = () => {
   useEffect(() => {
     // Fetch data dari API
     const fetchData = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       try {
-        const response = await fetch(
-          "https://livin-api.rrens.me/api/admin/pesanan",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`${BASE_API}/admin/pesanan`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
         const result = await response.json();
         setKostData(result.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -46,7 +44,7 @@ const PemilikKost = () => {
   }, []);
 
   return (
-    <Table variant={"simple"}>
+    <Table variant={'simple'}>
       <Tr>
         <Th>No</Th>
         <Th>Nama Penyewa</Th>
@@ -66,7 +64,7 @@ const PemilikKost = () => {
             <Td>{kost.duration}</Td>
             <Td>{kost.status}</Td>
             <Td>
-            <Flex gap={4}>
+              <Flex gap={4}>
                 <IconButton
                   aria-label="Delete Property"
                   icon={<MdDelete />}

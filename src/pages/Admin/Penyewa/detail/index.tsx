@@ -8,37 +8,38 @@ import {
   ListItem,
   SimpleGrid,
   Text,
-} from "@chakra-ui/react";
-import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { CheckCircle } from "react-feather";
+} from '@chakra-ui/react';
+import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { CheckCircle } from 'react-feather';
+import { BASE_API } from '../../../../utils/constant/api';
 
 const DetailPemilik = () => {
   const { id } = useParams(); // Get the property ID from the URL
   const [property, setProperty] = useState(null); // State to store property details
   const [loading, setLoading] = useState(true); // State to handle loading
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     if (!token) {
-      console.error("Token is not available");
+      console.error('Token is not available');
       return;
     }
 
     // Fetch property details from the API
     axios
-      .get(`https://livin-api.rrens.me/api/admin/penyewa/detail/${id}`, {
+      .get(`${BASE_API}/admin/penyewa/detail/${id}`, {
         headers: {
           Authorization: `${token}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       })
       .then((response) => {
         setProperty(response.data.data); // Set property data
       })
       .catch((error) => {
-        console.error("Error fetching property details:", error.message);
+        console.error('Error fetching property details:', error.message);
       })
       .finally(() => {
         setLoading(false); // Stop loading
@@ -68,13 +69,13 @@ const DetailPemilik = () => {
               <Text fontWeight="bold" mr={8}>
                 Nama Property:
               </Text>
-              <Input maxW="sm" value={property.property_name || "-"} readOnly />
+              <Input maxW="sm" value={property.property_name || '-'} readOnly />
             </Flex>
             <Flex>
               <Text fontWeight="bold" mr={10}>
                 Check In:
               </Text>
-              <Input maxW="sm" value={property.checkin || "-"} readOnly />
+              <Input maxW="sm" value={property.checkin || '-'} readOnly />
             </Flex>
             <Flex>
               <Text fontWeight="bold" mr={14}>
@@ -82,7 +83,7 @@ const DetailPemilik = () => {
               </Text>
               <Input
                 maxW="sm"
-                value={property.fullname_renter || "-"}
+                value={property.fullname_renter || '-'}
                 readOnly
               />
             </Flex>
@@ -120,7 +121,7 @@ const DetailPemilik = () => {
                 <Text fontWeight="bold">Lebar Tanah:</Text>
                 <Input
                   maxW="sm"
-                  value={`${property.lebar_tanah || "0"} m`}
+                  value={`${property.property_land_area || '0'} m`}
                   readOnly
                 />
               </Flex>
@@ -128,7 +129,7 @@ const DetailPemilik = () => {
                 <Text fontWeight="bold">Luas Kamar:</Text>
                 <Input
                   maxW="sm"
-                  value={`${property.luas_kamar || "0"} m²`}
+                  value={`${property.property_room_area || '0'} m²`}
                   readOnly
                 />
               </Flex>

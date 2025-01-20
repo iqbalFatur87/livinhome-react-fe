@@ -1,32 +1,21 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Image,
-  Input,
-  List,
-  ListIcon,
-  ListItem,
-  SimpleGrid,
-  Text,
-} from "@chakra-ui/react";
-import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { CheckCircle } from "react-feather";
+import { Box, Flex, Input, SimpleGrid, Text } from '@chakra-ui/react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { BASE_API } from '../../../../utils/constant/api';
 
 const DetailPemilik = () => {
   const { id } = useParams(); // Get the property ID from the URL
   const [property, setProperty] = useState(null); // State to store property details
   const [loading, setLoading] = useState(true); // State to handle loading
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   useEffect(() => {
     // Fetch property details from the API
     axios
-      .get(`https://livin-api.rrens.me/api/admin/penyewa/detail/${id}`, {
+      .get(`${BASE_API}/admin/penyewa/detail/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       })
       .then((response) => {
@@ -34,7 +23,7 @@ const DetailPemilik = () => {
         setLoading(false); // Stop loading
       })
       .catch((error) => {
-        console.error("Error fetching property details:", error);
+        console.error('Error fetching property details:', error);
         setLoading(false);
       });
   }, [id]);
@@ -62,7 +51,7 @@ const DetailPemilik = () => {
               <Text fontWeight="bold" mr={8}>
                 Nama Property:
               </Text>
-              <Input maxW="sm" value={property.fullname_renter} readOnly />
+              <Input maxW="sm" value={property.property_name} readOnly />
             </Flex>
             <Flex gap={2}>
               <Text fontWeight="bold" mr={10}>
@@ -78,21 +67,13 @@ const DetailPemilik = () => {
             </Flex>
             <Flex gap={2}>
               <Text fontWeight="bold">Tanggal Lahir:</Text>
-              <Input
-                maxW="sm"
-                value={` ${property.date_of_birth}`}
-                readOnly
-              />
+              <Input maxW="sm" value={` ${property.date_of_birth}`} readOnly />
             </Flex>
             <Flex gap={2}>
               <Text fontWeight="bold">Check In:</Text>
-              <Input
-                maxW="sm"
-                value={` ${property.checkin}`}
-                readOnly
-              />
+              <Input maxW="sm" value={` ${property.checkin}`} readOnly />
             </Flex>
-         
+
             {/* <Flex gap={2}>
               <Text fontWeight="bold">Id Card:</Text>
               <Image
