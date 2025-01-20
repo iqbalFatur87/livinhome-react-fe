@@ -20,10 +20,6 @@ const Navbar = () => {
       title: "Properti",
       url: "/owner/management-properti",
     },
-    {
-      title: "Pesan",
-      url: "/404",
-    },
   ];
 
   useEffect(() => {
