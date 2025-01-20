@@ -1,9 +1,7 @@
 import {
+  Box,
   Button,
   Center,
-  VStack,
-  Text,
-  Box,
   Step,
   StepDescription,
   StepIcon,
@@ -12,46 +10,24 @@ import {
   Stepper,
   StepSeparator,
   StepStatus,
-  StepTitle,
-} from "@chakra-ui/react";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import {useState} from 'react';
+import {Link, useParams} from 'react-router-dom';
+import {useQueryGetTransactionDetail} from "../../../queries/get-transaction-detail.ts";
+
 const Berhasil = () => {
   const [activeStep, setActiveStep] = useState(4);
   const steps = [
-    { description: "Ajukan Sewa" },
-    { description: "Pemilik Menyetujui" },
-    { description: "Pembayaran" },
-    { description: "Check In" },
+    { description: 'Ajukan Sewa' },
+    { description: 'Pemilik Menyetujui' },
+    { description: 'Pembayaran' },
+    { description: 'Check In' },
   ];
-  const [Datatrans, setData] = useState<any>(null);
-  const { id } = useParams();
-  const token = localStorage.getItem("token");
-  // Fetch transaction details
-  const fetchTransactionData = async () => {
-    try {
-      const response = await axios.get(
-        `https://livin-api.rrens.me/api/transaction/detail/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setData(response.data.data); // Assuming the response contains the `data` key
+  const { id: transactionId } = useParams();
 
-      // Parse and set remaining time
-      // const deadline = response.data.data.deadline;
-    } catch (error) {
-      console.error("Error fetching transaction details:", error);
-    }
-  };
-
-  // Fetch data only once when component mounts
-  useEffect(() => {
-    fetchTransactionData();
-  }, [id]);
+  const { data: response, isPending } = useQueryGetTransactionDetail({ transactionId })
 
   return (
     <Box>
@@ -75,34 +51,42 @@ const Berhasil = () => {
           </Step>
         ))}
       </Stepper>
-      <Center>
-        <Button
-          variant={"solid"}
-          colorScheme={"green"}
-          height={"350px"}
-          width="200px"
-          border={"2px"}
-          borderRadius={"full"}
-        >
-          <VStack textAlign={"center"}>
-            <Text>{Datatrans?.data.checkin}</Text>
-            <Text fontWeight="bold">
-              {" "}
-              {new Date(Datatrans?.data.checkin).getDate()}
-            </Text>
-            <Text>
-              {new Date(Datatrans?.data.checkin).toLocaleString("id-ID", {
-                month: "long",
-              })}
-            </Text>
-          </VStack>
-        </Button>
-      </Center>
-      <Link to={"/searching"}>
-        <Button variant={"solid"} colorScheme={"green"} width="100%">
-          Kembali
-        </Button>
-      </Link>
+
+      {isPending && <Text>Loading...</Text>}
+
+      {!isPending && response?.data && (
+          <>
+            <Center>
+              <Button
+                  variant={'solid'}
+                  colorScheme={'green'}
+                  height={'350px'}
+                  width="200px"
+                  border={'2px'}
+                  borderRadius={'full'}
+              >
+                <VStack textAlign={'center'}>
+                  <Text>{response.data.transaction.checkin}</Text>
+                  <Text fontWeight="bold">
+                    {' '}
+                    {new Date(response.data.transaction.checkin).getDate()}
+                  </Text>
+                  <Text>
+                    {new Date(response.data.transaction.checkin).toLocaleString('id-ID', {
+                      month: 'long',
+                    })}
+                  </Text>
+                </VStack>
+              </Button>
+            </Center>
+
+            <Link to={'/searching'}>
+              <Button variant={'solid'} colorScheme={'green'} width="100%">
+                Kembali
+              </Button>
+            </Link>
+          </>
+      )}
     </Box>
   );
 };

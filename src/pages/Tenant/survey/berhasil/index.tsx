@@ -30,9 +30,9 @@ import {
 
 const SurveyScheduler = () => {
   const steps = [
-    { description: "Pilih Waktu Survei" },
-    { description: "Pemilik Menyetujui" },
-    { description: "Cek Unit" },
+    { title: "First", description: "Pilih Waktu Survei" },
+    { title: "Second", description: "Pemilik Menyetujui" },
+    { title: "Third", description: "Cek Unit" },
   ];
   const { activeStep, setActiveStep } = useSteps({
     index: 2,
@@ -54,6 +54,7 @@ const SurveyScheduler = () => {
               </StepIndicator>
 
               <Box flexShrink="0">
+                <StepTitle>{step.title}</StepTitle>
                 <StepDescription>{step.description}</StepDescription>
               </Box>
 

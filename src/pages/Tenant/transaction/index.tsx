@@ -1,72 +1,72 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   Box,
-  VStack,
-  HStack,
-  Text,
-  Input,
   Button,
-  Image,
   Divider,
+  HStack,
+  Image,
+  Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  useToast,
   Select,
-} from "@chakra-ui/react";
-import {
   Step,
   StepDescription,
   StepIcon,
   StepIndicator,
   StepNumber,
-  StepStatus,
-  StepSeparator,
-  StepTitle,
   Stepper,
-} from "@chakra-ui/react";
-import LoadingComponent from "../../../components/LoadingComponent";
-import axios from "axios";
-import { BASE_API } from "../../../utils/constant/api";
-import { AUTHORIZATION_HEADERS } from "../../../utils/helper/helper";
-import { useParams } from "react-router-dom";
+  StepSeparator,
+  StepStatus,
+  Text,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
+import LoadingComponent from '../../../components/LoadingComponent';
+import axios from 'axios';
+import {BASE_API} from '../../../utils/constant/api';
+import {AUTHORIZATION_HEADERS} from '../../../utils/helper/helper';
+import {useParams} from 'react-router-dom';
+import {useQueryGetPropertyDetail} from "../../../queries/get-property-detail.ts";
 
 const RentalForm = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id: propertyId } = useParams<{ id: string }>();
   const [activeStep, setActiveStep] = useState(1);
   const [loading, setLoading] = useState(true);
   const [dataState, setDataState] = useState<any>(null);
-  const [dataPropertiState, setDataPropertiState] = useState<any>(null);
-  const [fullname, setFullname] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [job, setJob] = useState("");
+  // const [dataPropertiState, setDataPropertiState] = useState<any>(null);
+  const [fullname, setFullname] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [job, setJob] = useState('');
   const [gender, setGender] = useState(1);
   const [number_of_renters, setnumber_of_renters] = useState(1);
-  const [schoolName, setSchoolName] = useState("");
+  const [schoolName, setSchoolName] = useState('');
   const [idCard, setIdCard] = useState<File | null>(null);
   const [checkin, setCheckin] = useState<string | null>(null);
   const [duration, setDuration] = useState(1);
-  const [additionalNote, setAdditionalNote] = useState("");
-  const [previewUrl, setPreviewUrl] = useState<string>("");
+  const [additionalNote, setAdditionalNote] = useState('');
+  const [previewUrl, setPreviewUrl] = useState<string>('');
   const toast = useToast();
 
+  const { data: response, isPending } = useQueryGetPropertyDetail({ propertyId})
+
   // Fetch Property Details
-  const getProperty = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        `${BASE_API}/property/detail-property/${id}`,
-        AUTHORIZATION_HEADERS
-      );
-      setDataPropertiState(response.data.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const getProperty = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await axios.get(
+  //       `${BASE_API}/property/detail-property/${propertyId}`,
+  //       AUTHORIZATION_HEADERS
+  //     );
+  //     setDataPropertiState(response.data.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   // Fetch User Data
   const getData = async () => {
@@ -78,15 +78,15 @@ const RentalForm = () => {
       );
       const userData = res.data.data;
       setDataState(userData);
-      setFullname(userData?.fullname || "");
-      setPhoneNumber(userData?.phone_number || "");
-      setJob(userData?.job || "");
-      setSchoolName(userData?.school_name || "");
+      setFullname(userData?.fullname || '');
+      setPhoneNumber(userData?.phone_number || '');
+      setJob(userData?.job || '');
+      setSchoolName(userData?.school_name || '');
     } catch (error) {
       toast({
-        title: "Error fetching profile data",
+        title: 'Error fetching profile data',
         description: (error as Error).message,
-        status: "error",
+        status: 'error',
         duration: 3000,
         isClosable: true,
       });
@@ -103,14 +103,14 @@ const RentalForm = () => {
       setPreviewUrl(URL.createObjectURL(file));
     }
   };
-  const storedDuration = localStorage.getItem("rentalDuration");
+  const storedDuration = localStorage.getItem('rentalDuration');
   // Submit Form
   const handleSubmit = async () => {
     if (!fullname || !phoneNumber || !job || !schoolName || !checkin) {
       toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields",
-        status: "error",
+        title: 'Validation Error',
+        description: 'Please fill in all required fields',
+        status: 'error',
         duration: 3000,
         isClosable: true,
       });
@@ -118,53 +118,51 @@ const RentalForm = () => {
     }
 
     const formData = new FormData();
-    formData.append("property_id", id || "");
-    formData.append("fullname", fullname);
-    formData.append("phone_number", phoneNumber);
-    formData.append("job", job);
-    formData.append("gender", gender.toString());
-    formData.append("number_of_renters", number_of_renters.toString());
-    formData.append("school_name", schoolName);
-    formData.append("duration", duration.toString());
-    formData.append("checkin", checkin || "");
-    formData.append("additional_note", additionalNote);
+    formData.append('property_id', propertyId || '');
+    formData.append('fullname', fullname);
+    formData.append('phone_number', phoneNumber);
+    formData.append('job', job);
+    formData.append('gender', gender.toString());
+    formData.append('number_of_renters', number_of_renters.toString());
+    formData.append('school_name', schoolName);
+    formData.append('duration', duration.toString());
+    formData.append('checkin', checkin || '');
+    formData.append('additional_note', additionalNote);
 
     if (idCard) {
-      formData.append("id_card", idCard);
+      formData.append('id_card', idCard);
     }
 
     try {
       const response = await fetch(
-        "https://livin-api.rrens.me/api/transaction/store-transaction-data",
+        `${BASE_API}/transaction/store-transaction-data`,
         {
-          method: "POST",
+          method: 'POST',
           body: formData,
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         }
       );
       const resdata = await response.json();
-      localStorage.setItem("idtransaksi", resdata.data.data.id);
+      localStorage.setItem('idtransaksi', resdata.data.data.id);
       const getid = localStorage.getItem('idtransaksi');
-
-     
 
       setTimeout(() => {
         window.location.href = `/UploadPembayaran/${getid}`;
       }, 700);
 
       toast({
-        title: "Form submitted successfully!",
-        status: "success",
+        title: 'Form submitted successfully!',
+        status: 'success',
         duration: 3000,
         isClosable: true,
       });
     } catch (error) {
       toast({
-        title: "Error submitting form",
+        title: 'Error submitting form',
         description: (error as Error).message,
-        status: "error",
+        status: 'error',
         duration: 3000,
         isClosable: true,
       });
@@ -172,16 +170,16 @@ const RentalForm = () => {
   };
 
   const steps = [
-    { description: "Ajukan Sewa" },
-    { description: "Pemilik Menyetujui" },
-    { description: "Pembayaran" },
-    { description: "Check In" },
+    { description: 'Ajukan Sewa' },
+    { description: 'Pemilik Menyetujui' },
+    { description: 'Pembayaran' },
+    { description: 'Check In' },
   ];
 
   // Cleanup URLs
   useEffect(() => {
     return () => {
-      if (previewUrl && previewUrl.startsWith("blob:")) {
+      if (previewUrl && previewUrl.startsWith('blob:')) {
         URL.revokeObjectURL(previewUrl);
       }
     };
@@ -189,16 +187,16 @@ const RentalForm = () => {
 
   // Initialize Data
   useEffect(() => {
-    getProperty();
+    // getProperty();
     getData();
 
     // Set Checkin and Duration from localStorage
-    setCheckin(localStorage.getItem("checkInDate"));
-    const storedDuration = localStorage.getItem("rentalDuration");
+    setCheckin(localStorage.getItem('checkInDate'));
+    const storedDuration = localStorage.getItem('rentalDuration');
     setDuration(storedDuration ? parseInt(storedDuration, 10) : 1);
   }, []);
 
-  if (loading) return <LoadingComponent />;
+  if (isPending || loading) return <LoadingComponent />;
 
   return (
     <Box maxWidth="800px" margin="auto" padding={4}>
@@ -214,7 +212,6 @@ const RentalForm = () => {
             </StepIndicator>
 
             <Box flexShrink="0">
-              <StepTitle>{step.title}</StepTitle>
               <StepDescription>{step.description}</StepDescription>
             </Box>
 
@@ -316,7 +313,7 @@ const RentalForm = () => {
 
           <Box>
             <Text fontSize="sm">Jenis Kelamin</Text>
-            <Select onChange={(e) => setGender(e.target.value)}>
+            <Select onChange={(e) => setGender(parseInt(e.target.value))}>
               <option value={1}>Laki-Laki</option>
               <option value={0}>Perempuan</option>
             </Select>
@@ -338,11 +335,11 @@ const RentalForm = () => {
 
         <Box flex={1}>
           <Box borderWidth={1} borderRadius="md" overflow="hidden">
-            <Image src={dataPropertiState?.image[0]} alt="Kontrakan Pak Ade" />
+            <Image src={response?.data.image[0]} alt="Kontrakan Pak Ade" />
             <Box p={4}>
-              <Text fontWeight="bold">{dataPropertiState?.nama}</Text>
+              <Text fontWeight="bold">{response?.data.nama}</Text>
               <Text fontSize="sm" color="gray.500">
-                {dataPropertiState?.alamat}
+                {response?.data.alamat}
               </Text>
               <Divider my={4} />
               <Text fontWeight="bold" marginBottom={2}>
@@ -351,28 +348,28 @@ const RentalForm = () => {
               <HStack justify="space-between">
                 <Text fontSize="sm">Biaya sewa unit properti</Text>
                 <Text fontSize="sm">
-                  {new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                  }).format(dataPropertiState?.harga_sewa_1_bulan)}
+                  {new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                  }).format((response?.data.harga_sewa_1_bulan || 0))}
                 </Text>
               </HStack>
               <HStack justify="space-between">
                 <Text fontSize="sm">Uang muka DP (20%)</Text>
                 <Text fontSize="sm" fontWeight="bold">
-                  {new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                  }).format(dataPropertiState?.harga_sewa_1_bulan * 0.2)}
+                  {new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                  }).format((response?.data.harga_sewa_1_bulan || 0) * 0.2)}
                 </Text>
               </HStack>
               <HStack justify="space-between" fontWeight="bold" marginTop={2}>
                 <Text>Total Pembayaran DP</Text>
                 <Text>
-                  {new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                  }).format(dataPropertiState?.harga_sewa_1_bulan * 0.2)}
+                  {new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                  }).format((response?.data.harga_sewa_1_bulan || 0) * 0.2)}
                 </Text>
               </HStack>
               <Divider my={4} />
@@ -382,22 +379,22 @@ const RentalForm = () => {
               <HStack justify="space-between">
                 <Text fontSize="sm">Total Harga</Text>
                 <Text fontSize="sm">
-                  {new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
+                  {new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
                   }).format(
-                    dataPropertiState?.harga_sewa_1_bulan * storedDuration
+                    (response?.data.harga_sewa_1_bulan || 0) * storedDuration!
                   )}
                 </Text>
               </HStack>
               <HStack justify="space-between" fontWeight="bold" marginTop={2}>
                 <Text>Total Uang Dp 20%</Text>
                 <Text>
-                  {new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
+                  {new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
                   }).format(
-                    dataPropertiState?.harga_sewa_1_bulan * storedDuration * 0.2
+                    (response?.data.harga_sewa_1_bulan || 0) * storedDuration! * 0.2
                   )}
                 </Text>
               </HStack>

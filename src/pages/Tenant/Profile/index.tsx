@@ -8,23 +8,23 @@ import {
   Stack,
   Text,
   useToast,
-} from "@chakra-ui/react";
-import { MdOutlineNotificationsActive } from "react-icons/md";
-import { useEffect, useState } from "react";
-import LoadingComponent from "../../../components/LoadingComponent";
-import axios from "axios";
-import { BASE_API } from "../../../utils/constant/api";
+} from '@chakra-ui/react';
+import { MdOutlineNotificationsActive } from 'react-icons/md';
+import { useEffect, useState } from 'react';
+import LoadingComponent from '../../../components/LoadingComponent';
+import axios from 'axios';
+import { BASE_API } from '../../../utils/constant/api';
 import {
   authorityCheck,
   AUTHORIZATION_HEADERS,
-} from "../../../utils/helper/helper";
-import ModalUpdatePhotoProfil from "./components/ModalUpdatePhotoProfile";
+} from '../../../utils/helper/helper';
+import ModalUpdatePhotoProfil from './components/ModalUpdatePhotoProfile';
 import {
   customBorder,
   inputBackgroundColor,
   inputColor,
   primaryTextColor,
-} from "../../../components/theme";
+} from '../../../components/theme';
 
 const ProfileUpdate = () => {
   const [loading, setLoading] = useState(true);
@@ -53,18 +53,18 @@ const ProfileUpdate = () => {
   const getListKota = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("/indonesia.json");
+      const res = await axios.get('/indonesia.json');
       const kotaList = res.data.flatMap((provinsi: any) =>
         provinsi.listKota.map((kota: any) =>
           kota.name
-            .replace(/KABUPATEN\s+/i, "")
-            .replace(/KOTA\s+/i, "")
+            .replace(/KABUPATEN\s+/i, '')
+            .replace(/KOTA\s+/i, '')
             .trim()
         )
       );
       setListKota(kotaList);
     } catch (error) {
-      console.error("Error fetching cities", error);
+      console.error('Error fetching cities', error);
     }
     setLoading(false);
   };
@@ -93,58 +93,58 @@ const ProfileUpdate = () => {
     );
 
     const formData = new FormData();
-    formData.append("fullname", dataState?.fullname);
-    formData.append("gender", dataState?.gender);
-    formData.append("date_of_birth", `${formattedDateOfBirth}`);
-    formData.append("phone_number", dataState?.phone_number);
-    formData.append("job", dataState?.job);
-    formData.append("school_name", dataState?.school_name);
-    formData.append("city", dataState?.city);
-    formData.append("status", dataState?.status);
-    formData.append("last_education", dataState?.last_education);
-    formData.append("emergency_contact", dataState?.emergency_contact);
+    formData.append('fullname', dataState?.fullname);
+    formData.append('gender', dataState?.gender);
+    formData.append('date_of_birth', formattedDateOfBirth);
+    formData.append('phone_number', dataState?.phone_number);
+    formData.append('job', dataState?.job);
+    formData.append('school_name', dataState?.school_name);
+    formData.append('city', dataState?.city);
+    formData.append('status', dataState?.status);
+    formData.append('last_education', dataState?.last_education);
+    formData.append('emergency_contact', dataState?.emergency_contact);
 
     if (idCardFile) {
-      formData.append("id_card", idCardFile);
+      formData.append('id_card', idCardFile);
     }
 
     if (photoFile) {
-      formData.append("photo_profile", photoFile); // Ensure the 'photo' field is passed correctly
+      formData.append('photo_profile', photoFile); // Ensure the 'photo' field is passed correctly
     }
 
     try {
       await axios.post(`${BASE_API}/profile/renter/update`, formData, {
         headers: {
           ...AUTHORIZATION_HEADERS.headers,
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       });
 
       toast({
-        description: "Berhasil update profil",
-        status: "success",
-        variant: "subtle",
+        description: 'Berhasil update profil',
+        status: 'success',
+        variant: 'subtle',
         duration: 9000,
         isClosable: true,
       });
       getData();
-    } catch (error : any) {
+    } catch (error) {
       if (error.response?.status === 403) {
         // Handle the 403 error (Unauthorized or Forbidden)
         toast({
-          description: "Anda tidak memiliki izin untuk melakukan tindakan ini",
-          status: "error",
-          variant: "subtle",
+          description: 'Anda tidak memiliki izin untuk melakukan tindakan ini',
+          status: 'error',
+          variant: 'subtle',
           duration: 9000,
           isClosable: true,
         });
       } else {
         toast({
           description:
-            error.response?.data?.meta?.message?.join(", ") ||
-            "Terjadi kesalahan",
-          status: "error",
-          variant: "subtle",
+            error.response?.data?.meta?.message?.join(', ') ||
+            'Terjadi kesalahan',
+          status: 'error',
+          variant: 'subtle',
           duration: 9000,
           isClosable: true,
         });
@@ -165,7 +165,7 @@ const ProfileUpdate = () => {
       <Stack width="100%" maxWidth="500px" gap="20px">
         <Stack alignSelf="center" alignItems="center" cursor="pointer">
           <Image
-            src={dataState?.photo_profile|| "/avatar.png"}
+            src={dataState?.photo_profile || '/avatar.png'}
             width="100px"
             height="100px"
             objectFit="contain"
@@ -182,48 +182,48 @@ const ProfileUpdate = () => {
         <FormField
           label="Nama Lengkap"
           value={dataState?.fullname}
-          onChange={(e) => updateForm("fullname", e.target.value)}
+          onChange={(e) => updateForm('fullname', e.target.value)}
         />
         <FormSelect
           label="Jenis Kelamin"
           value={dataState?.gender}
-          onChange={(e) => updateForm("gender", e.target.value)}
+          onChange={(e) => updateForm('gender', e.target.value)}
           options={[
-            { label: "Laki-Laki", value: 1 },
-            { label: "Perempuan", value: 0 },
+            { label: 'Laki-Laki', value: 1 },
+            { label: 'Perempuan', value: 0 },
           ]}
         />
         <FormField
           label="Tanggal Lahir"
           value={dataState?.date_of_birth}
-          onChange={(e) => updateForm("date_of_birth", e.target.value)}
+          onChange={(e) => updateForm('date_of_birth', e.target.value)}
           type="date"
         />
         <FormField
           label="No Handphone"
           value={dataState?.phone_number}
-          onChange={(e) => updateForm("phone_number", e.target.value)}
+          onChange={(e) => updateForm('phone_number', e.target.value)}
         />
         <FormSelect
           label="Pekerjaan"
           value={dataState?.job}
-          onChange={(e) => updateForm("job", e.target.value)}
+          onChange={(e) => updateForm('job', e.target.value)}
           options={[
-            { label: "Mahasiswa", value: "Mahasiswa" },
-            { label: "PNS", value: "PNS" },
-            { label: "Swasta", value: "Swasta" },
-            { label: "Wira Usaha", value: "Wira Usaha" },
+            { label: 'Mahasiswa', value: 'Mahasiswa' },
+            { label: 'PNS', value: 'PNS' },
+            { label: 'Swasta', value: 'Swasta' },
+            { label: 'Wira Usaha', value: 'Wira Usaha' },
           ]}
         />
         <FormField
           label="Nama Sekolah"
           value={dataState?.school_name}
-          onChange={(e) => updateForm("school_name", e.target.value)}
+          onChange={(e) => updateForm('school_name', e.target.value)}
         />
         <FormSelect
           label="Kota Asal"
           value={dataState?.city}
-          onChange={(e) => updateForm("city", e.target.value)}
+          onChange={(e) => updateForm('city', e.target.value)}
           options={listKota.map((kota: string) => ({
             label: kota,
             value: kota,
@@ -232,30 +232,27 @@ const ProfileUpdate = () => {
         <FormSelect
           label="Status"
           value={dataState?.status}
-          onChange={(e) => updateForm("status", e.target.value)}
+          onChange={(e) => updateForm('status', e.target.value)}
           options={[
-            { label: "Kawin", value: "kawin" },
-            { label: "Belum Kawin", value: "Belum Kawin" },
-            { label: "Cerai", value: "Cerai" },
+            { label: 'Kawin', value: 'kawin' },
+            { label: 'Belum Kawin', value: 'Belum Kawin' },
+            { label: 'Cerai', value: 'Cerai' },
           ]}
         />
         <FormSelect
           label="Pendidikan Terakhir"
           value={dataState?.last_education}
-          onChange={(e) => updateForm("last_education", e.target.value)}
+          onChange={(e) => updateForm('last_education', e.target.value)}
           options={[
-            { label: "SMA", value: "SMA" },
-            { label: "S1", value: "S1" },
-            { label: "S2", value: "S2" },
-            { label: "S3", value: "S3" },
+            { label: 'SMA', value: 'SMA' },
+            { label: 'S1', value: 'S1' },
+            { label: 'S2', value: 'S2' },
+            { label: 'S3', value: 'S3' },
           ]}
         />
 
         <Image
-          src={
-            dataState?.id_card ||
-            "https://livin-api.rrens.me/uploads/ktp/renter"
-          }
+          src={dataState?.id_card || `${BASE_API}/uploads/ktp/renter`}
           width="100px"
           height="100px"
           objectFit="contain"
@@ -270,7 +267,7 @@ const ProfileUpdate = () => {
         <FormField
           label="No Kontak Darurat"
           value={dataState?.emergency_contact}
-          onChange={(e) => updateForm("emergency_contact", e.target.value)}
+          onChange={(e) => updateForm('emergency_contact', e.target.value)}
         />
 
         <HStack justifyContent="center">
@@ -286,24 +283,6 @@ const ProfileUpdate = () => {
 
 // Custom Components for reusability
 
-interface FormFieldProps {
-  label: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: string;
-}
-
-interface FormSelectProps {
-  label: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: { label: string; value: any }[];
-}
-
-interface FormFileInputProps {
-  label: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
 const NotificationBanner = () => (
   <HStack
     justifyContent="center"
@@ -316,30 +295,30 @@ const NotificationBanner = () => (
   </HStack>
 );
 
-const FormField: React.FC<FormFieldProps> = ({ label, value, onChange, type = "text" }) => (
+const FormField = ({ label, value, onChange, type = 'text' }) => (
   <Stack>
     <Text>{label}</Text>
     <Input
       value={value}
       onChange={onChange}
       borderRadius="12px"
-      backgroundColor={inputBackgroundColor()}
-      color={inputColor()}
-      _placeholder={{ color: "gray.500" }}
+      backgroundColor={inputBackgroundColor}
+      color={inputColor}
+      _placeholder={{ color: 'gray.500' }}
       type={type}
     />
   </Stack>
 );
 
-const FormSelect: React.FC<FormSelectProps> = ({ label, value, onChange, options}) => (
+const FormSelect = ({ label, value, onChange, options }) => (
   <Stack>
     <Text>{label}</Text>
     <Select
       value={value}
       onChange={onChange}
       borderRadius="12px"
-      backgroundColor={inputBackgroundColor()}
-      color={inputColor()}
+      backgroundColor={inputBackgroundColor}
+      color={inputColor}
     >
       {options.map((option) => (
         <option key={option.value} value={option.value}>
@@ -350,7 +329,7 @@ const FormSelect: React.FC<FormSelectProps> = ({ label, value, onChange, options
   </Stack>
 );
 
-const FormFileInput: React.FC<FormFileInputProps> = ({ label, onChange }) => (
+const FormFileInput = ({ label, onChange }) => (
   <Stack>
     <Text>{label}</Text>
     <Input
