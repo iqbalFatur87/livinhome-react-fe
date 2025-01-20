@@ -1,54 +1,47 @@
-import {
-  Route,
-  RouterProvider,
-  createBrowserRouter,
-  createRoutesFromElements,
-} from "react-router-dom";
+import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider,} from "react-router-dom";
 // import { Suspense, lazy } from "react";
-
 import "./App.css";
-import { createContext, useEffect, useState } from "react";
+import {createContext, useEffect, useState} from "react";
 import {
   Cart,
   Chat,
+  ChatTenant,
   DaftarProperti,
   Dashboard,
   DashboardOwner,
+  DetailChatTenant,
+  DetailPemilik,
+  DetailPensanan,
+  DetailPenyewa,
   DetailProperti,
   DetailPropertiTenat,
+  DetailTransaction,
+  IndexAdmin,
   InfoCalonPenyewaSewa,
   KonfirmasiPenyewa,
-  LayoutRenter,
-  Transaction,
   ListPengajuanSewa,
+  ListPenyewa,
   LivinMates,
   Login,
+  LoginAdmin,
   ManagementProperti,
+  PemilikApartement,
+  PemilikKontrakan,
+  PemilikKost,
   PengajuanSurvei,
+  PenyewaApartement,
+  PenyewaKontrakan,
+  PenyewaKost,
   Profil,
   ProfileTenant,
   Register,
   ResetPassword,
-  Status,
   Searching,
-  Survey,
-  IndexAdmin,
-  PemilikKost,
-  SurveyBatal,
-  LoginAdmin,
-  PemilikApartement,
-  PemilikKontrakan,
-  PenyewaKost,
-  PenyewaApartement,
-  PenyewaKontrakan,
-  ListPenyewa,
-  DetailTransaction,
+  Status,
   SuccessTransaction,
-  DetailPemilik,
-  DetailPenyewa,
-  DetailPensanan,
-  ChatTenant,
-  DetailChatTenant,
+  Survey,
+  SurveyBatal,
+  Transaction,
   UploadPembayaran,
 } from "./pages";
 import AuthMiddleware from "./utils/middleware/AuthMiddleware";
@@ -57,8 +50,11 @@ import LayoutOwner from "./pages/Owner/Layout";
 import LayoutPengajuanSewa from "./pages/Owner/PengajuanSewa/Layout";
 import LayoutTenant from "./pages/Tenant/Layout";
 import LayoutAdmin from "./pages/Admin/layouts";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 // const Dashboard = lazy((): any => import("./pages/Dashboard"));
 export const ThemeContext: any = createContext(null);
+
+const queryClient = new QueryClient();
 
 function App() {
   const [currentTheme, setCurrentTheme] = useState(false);
@@ -165,9 +161,11 @@ function App() {
   );
 
   return (
-    <ThemeContext.Provider value={{ currentTheme, switchTheme }}>
-      <RouterProvider router={router} />
-    </ThemeContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeContext.Provider value={{ currentTheme, switchTheme }}>
+        <RouterProvider router={router} />
+      </ThemeContext.Provider>
+    </QueryClientProvider>
   );
 }
 
