@@ -4,7 +4,6 @@ import "./App.css";
 import {createContext, useEffect, useState} from "react";
 import {
   Cart,
-  Chat,
   ChatTenant,
   DaftarProperti,
   Dashboard,
@@ -21,7 +20,6 @@ import {
   KonfirmasiPenyewa,
   ListPengajuanSewa,
   ListPenyewa,
-  LivinMates,
   Login,
   LoginAdmin,
   ManagementProperti,
@@ -83,7 +81,6 @@ function App() {
         <Route path="/" element={<LayoutTenant />}>
           <Route index element={<Dashboard />} />
           <Route path="profile" element={<ProfileTenant />} />
-          <Route path="livin-mates/:id" element={<LivinMates />} />
           <Route path="detail-properti/:id" element={<DetailPropertiTenat />} />
           <Route path="chat" element={<ChatTenant />} />
           <Route path="chat/:id" element={<DetailChatTenant/>} />
@@ -129,7 +126,6 @@ function App() {
             </Route>
 
             <Route path="profil" element={<Profil />} />
-            <Route path="chat" element={<Chat />} />
           </Route>
         </Route>
 
