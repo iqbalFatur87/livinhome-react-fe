@@ -4,11 +4,9 @@ import "./App.css";
 import {createContext, useEffect, useState} from "react";
 import {
   Cart,
-  ChatTenant,
   DaftarProperti,
   Dashboard,
   DashboardOwner,
-  DetailChatTenant,
   DetailPemilik,
   DetailPensanan,
   DetailPenyewa,
@@ -82,8 +80,6 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="profile" element={<ProfileTenant />} />
           <Route path="detail-properti/:id" element={<DetailPropertiTenat />} />
-          <Route path="chat" element={<ChatTenant />} />
-          <Route path="chat/:id" element={<DetailChatTenant/>} />
           <Route path="cart" element={<Cart />} />
           <Route path="searching" element={<Searching />} />
           <Route path="transaction/:id" element={<Transaction />} />

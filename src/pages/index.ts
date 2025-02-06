@@ -21,8 +21,6 @@ export { default as KonfirmasiPenyewa } from "./Owner/PengajuanSewa/Confirm";
 export { default as PengajuanSurvei } from "./Owner/PengajuanSurvei";
 export { default as Profil } from "./Owner/Profil";
 
-export { default as Chat } from "./Owner/Chat";
-
 //Layout
 export { default as LayoutOwner } from "./Owner/Layout";
 export { default as LayoutPengajuanSewa } from "./Owner/PengajuanSewa/Layout";
@@ -34,11 +32,8 @@ export { default as Search } from "./Renter/Search";
 export { default as LayoutRenter } from "./Renter/Layout";
 // Tenant
 export { default as ProfileTenant } from "./Tenant/Profile/index";
-export { default as LivinMates } from "./Tenant/LivinMates/index";
 export { default as DetailPropertiTenat } from "./Tenant/Properti/DetailProperti/index";
 export { default as Searching } from "./Tenant/Properti/Search/index";
-export { default as ChatTenant } from "./Tenant/Chat/components/ListChats";
-export { default as DetailChatTenant } from "./Tenant/Chat/components/DetailChats";
 export { default as Cart } from "./Tenant/Cart/index";
 
 // Survey
