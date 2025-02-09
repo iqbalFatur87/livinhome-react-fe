@@ -58,7 +58,7 @@ const DetailPemilik = () => {
     <Box p={5}>
       <Link to="/">
         <Text fontSize="2xl" fontWeight="bold">
-          Detail Property
+          Detail Penyewa
         </Text>
       </Link>
 
