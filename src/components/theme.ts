@@ -70,8 +70,8 @@ export const theme = extendTheme({
     },
   },
   fonts: {
-    heading: "Lato",
-    body: "Lato",
+    heading: "Poppins",
+    body: "Poppins",
   },
   fontSizes: {
     xs: "10px",
