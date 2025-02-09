@@ -66,7 +66,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
           <MenuList>
             <MenuItem as={Link} to="/admin/pemilik-kost">Kost</MenuItem>
             <MenuItem as={Link} to="/admin/pemilik-kontrakan">Kontrakan</MenuItem>
-            <MenuItem as={Link} to="/admin/pemilik-apartement">Apartemen</MenuItem>
           </MenuList>
         </Menu>
 
@@ -78,7 +77,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
           <MenuList>
             <MenuItem as={Link} to="/admin/penyewa-kost">Kost</MenuItem>
             <MenuItem as={Link} to="/admin/penyewa-kontrakan">Kontrakan</MenuItem>
-            <MenuItem as={Link} to="/admin/penyewa-apartement">Apartemen</MenuItem>
           </MenuList>
         </Menu>
 
