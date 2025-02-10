@@ -7,7 +7,12 @@ import axios from "axios";
 import { BASE_API } from "../../../../utils/constant/api";
 import { authorityCheck, AUTHORIZATION_HEADERS } from "../../../../utils/helper/helper";
 
-const ModalUpdatePhotoProfil = (props: { onClose: () => void }) => {
+interface ModalUpdatePhotoProfilProps {
+  onClose: () => void;
+  isOpen: boolean;
+}
+
+const ModalUpdatePhotoProfil = (props: ModalUpdatePhotoProfilProps) => {
   const toast = useToast();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -65,7 +70,7 @@ const ModalUpdatePhotoProfil = (props: { onClose: () => void }) => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
-    <Modal isOpen={true} onClose={() => props.onClose()} isCentered>
+    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Update Photo Profil</ModalHeader>
