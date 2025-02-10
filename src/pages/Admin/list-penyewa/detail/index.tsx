@@ -1,4 +1,4 @@
-import { Box, Flex, Input, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Flex, Input, Text } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
