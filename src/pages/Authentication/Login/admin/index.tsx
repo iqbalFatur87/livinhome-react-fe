@@ -1,6 +1,5 @@
 import { Button, HStack, Input, Stack, Text, useToast, Container } from "@chakra-ui/react";
-import { borderRadius, primaryTextColor, secondaryTextColor } from "../../../../components/theme";
-import { Link } from "react-router-dom";
+import { borderRadius, primaryTextColor } from "../../../../components/theme";
 import axios from "axios";
 import { BASE_API } from "../../../../utils/constant/api";
 import { useState } from "react";
