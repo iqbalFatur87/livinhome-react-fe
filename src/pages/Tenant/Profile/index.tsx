@@ -10,9 +10,11 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { MdOutlineNotificationsActive } from 'react-icons/md';
+import { TbCloudUpload } from "react-icons/tb";
 import { useEffect, useState } from 'react';
 import LoadingComponent from '../../../components/LoadingComponent';
 import axios from 'axios';
+import { AxiosError } from 'axios';
 import { BASE_API } from '../../../utils/constant/api';
 import {
   authorityCheck,
@@ -33,6 +35,8 @@ const ProfileUpdate = () => {
   const [listKota, setListKota] = useState<any>([]);
   const [idCardFile, setIdCardFile] = useState<File | null>(null); // State to manage KTP file upload
   const [photoFile, setphotoFile] = useState<File | null>(null); // State to manage KTP file upload
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+
   const toast = useToast();
 
   const getData = async () => {
@@ -95,7 +99,7 @@ const ProfileUpdate = () => {
     const formData = new FormData();
     formData.append('fullname', dataState?.fullname);
     formData.append('gender', dataState?.gender);
-    formData.append('date_of_birth', formattedDateOfBirth);
+    formData.append('date_of_birth', formattedDateOfBirth.toString());
     formData.append('phone_number', dataState?.phone_number);
     formData.append('job', dataState?.job);
     formData.append('school_name', dataState?.school_name);
@@ -129,7 +133,8 @@ const ProfileUpdate = () => {
       });
       getData();
     } catch (error) {
-      if (error.response?.status === 403) {
+      const err = error as AxiosError<{ meta: { message: string[] } }>;
+      if (err.response?.status === 403) {
         // Handle the 403 error (Unauthorized or Forbidden)
         toast({
           description: 'Anda tidak memiliki izin untuk melakukan tindakan ini',
@@ -141,7 +146,7 @@ const ProfileUpdate = () => {
       } else {
         toast({
           description:
-            error.response?.data?.meta?.message?.join(', ') ||
+            err.response?.data?.meta?.message?.join(', ') ||
             'Terjadi kesalahan',
           status: 'error',
           variant: 'subtle',
@@ -171,9 +176,16 @@ const ProfileUpdate = () => {
             objectFit="contain"
           />
           {/* File input for KTP upload */}
-          <FormFileInput
-            label="Upload Photo Profile Anda (Upload File)"
-            onChange={handlephotoFileChange}
+          <Button
+            leftIcon={<TbCloudUpload />}
+            onClick={() => setIsPhotoModalOpen(true)}
+            variant="outline"
+          >
+            Upload Photo Profile
+          </Button>
+          <ModalUpdatePhotoProfil
+            onClose={() => setIsPhotoModalOpen(false)}
+            isOpen={isPhotoModalOpen}
           />
         </Stack>
 
@@ -182,12 +194,12 @@ const ProfileUpdate = () => {
         <FormField
           label="Nama Lengkap"
           value={dataState?.fullname}
-          onChange={(e) => updateForm('fullname', e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateForm('fullname', e.target.value)}
         />
         <FormSelect
           label="Jenis Kelamin"
           value={dataState?.gender}
-          onChange={(e) => updateForm('gender', e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateForm('gender', e.target.value)}
           options={[
             { label: 'Laki-Laki', value: 1 },
             { label: 'Perempuan', value: 0 },
@@ -196,18 +208,18 @@ const ProfileUpdate = () => {
         <FormField
           label="Tanggal Lahir"
           value={dataState?.date_of_birth}
-          onChange={(e) => updateForm('date_of_birth', e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateForm('date_of_birth', e.target.value)}
           type="date"
         />
         <FormField
           label="No Handphone"
           value={dataState?.phone_number}
-          onChange={(e) => updateForm('phone_number', e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateForm('phone_number', e.target.value)}
         />
         <FormSelect
           label="Pekerjaan"
           value={dataState?.job}
-          onChange={(e) => updateForm('job', e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateForm('job', e.target.value)}
           options={[
             { label: 'Mahasiswa', value: 'Mahasiswa' },
             { label: 'PNS', value: 'PNS' },
@@ -216,14 +228,14 @@ const ProfileUpdate = () => {
           ]}
         />
         <FormField
-          label="Nama Sekolah"
+          label="Nama Instansi"
           value={dataState?.school_name}
-          onChange={(e) => updateForm('school_name', e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateForm('school_name', e.target.value)}
         />
         <FormSelect
           label="Kota Asal"
           value={dataState?.city}
-          onChange={(e) => updateForm('city', e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateForm('city', e.target.value)}
           options={listKota.map((kota: string) => ({
             label: kota,
             value: kota,
@@ -232,7 +244,7 @@ const ProfileUpdate = () => {
         <FormSelect
           label="Status"
           value={dataState?.status}
-          onChange={(e) => updateForm('status', e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateForm('status', e.target.value)}
           options={[
             { label: 'Kawin', value: 'kawin' },
             { label: 'Belum Kawin', value: 'Belum Kawin' },
@@ -242,7 +254,7 @@ const ProfileUpdate = () => {
         <FormSelect
           label="Pendidikan Terakhir"
           value={dataState?.last_education}
-          onChange={(e) => updateForm('last_education', e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateForm('last_education', e.target.value)}
           options={[
             { label: 'SMA', value: 'SMA' },
             { label: 'S1', value: 'S1' },
@@ -267,7 +279,7 @@ const ProfileUpdate = () => {
         <FormField
           label="No Kontak Darurat"
           value={dataState?.emergency_contact}
-          onChange={(e) => updateForm('emergency_contact', e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateForm('emergency_contact', e.target.value)}
         />
 
         <HStack justifyContent="center">
@@ -295,7 +307,31 @@ const NotificationBanner = () => (
   </HStack>
 );
 
-const FormField = ({ label, value, onChange, type = 'text' }) => (
+interface FormFieldProps {
+  label: string;
+  value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+}
+
+interface Option {
+  value: string | number;
+  label: string;
+}
+
+interface FormSelectProps {
+  label: string;
+  value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  options: Option[];
+}
+
+interface FormFileInputProps {
+  label: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const FormField = ({ label, value, onChange, type = 'text' }: FormFieldProps) => (
   <Stack>
     <Text>{label}</Text>
     <Input
@@ -310,7 +346,7 @@ const FormField = ({ label, value, onChange, type = 'text' }) => (
   </Stack>
 );
 
-const FormSelect = ({ label, value, onChange, options }) => (
+const FormSelect = ({ label, value, onChange, options }: FormSelectProps) => (
   <Stack>
     <Text>{label}</Text>
     <Select
@@ -329,7 +365,7 @@ const FormSelect = ({ label, value, onChange, options }) => (
   </Stack>
 );
 
-const FormFileInput = ({ label, onChange }) => (
+const FormFileInput = ({ label, onChange }: FormFileInputProps) => (
   <Stack>
     <Text>{label}</Text>
     <Input
