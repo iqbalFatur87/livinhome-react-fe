@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Button,
@@ -9,18 +8,21 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Stack,
   Text,
   VStack,
   HStack,
-  useColorModeValue,
   Grid,
   GridItem,
 } from "@chakra-ui/react";
 import Footer from "../Tenant/components/Footer";
 // import { SearchIcon } from '@chakra-ui/icons';
 
-const Feature = ({ title, description }) => (
+interface FeatureProps {
+  title: string;
+  description: string;
+}
+
+const Feature = ({ title, description }: FeatureProps) => (
   <VStack align="start" spacing={2}>
     <Heading as="h3" size="md" color="orange.500">
       {title}
@@ -30,10 +32,6 @@ const Feature = ({ title, description }) => (
 );
 
 const LivinhomeLandingPage = () => {
-  const bgGradient = useColorModeValue(
-    "linear(to-r, orange.400, red.500, purple.600)",
-    "linear(to-r, orange.600, red.700, purple.800)"
-  );
 
   return (
     <>
