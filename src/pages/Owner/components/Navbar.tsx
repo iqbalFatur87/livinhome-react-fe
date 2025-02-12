@@ -5,7 +5,6 @@ import { IoMdClose } from "react-icons/io";
 import { primaryTextColor, primaryTextTitleColor } from "../../../components/theme";
 import { LOCAL_STORAGE, logout } from "../../../utils/helper/helper";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,6 +50,8 @@ const Navbar = () => {
         boxShadow={scrolled ? "rgba(0, 0, 0, 0.16) 0px 1px 4px" : "none"}
         fontSize="14px"
         transition="background-color 0.3s ease, box-shadow 0.3s ease"
+        borderRadius="full"
+        margin="15px"
       >
         <Image src="/logo.png" />
 
@@ -74,9 +75,9 @@ const Navbar = () => {
               navigate("/owner/profil");
             }}
             cursor={"pointer"}
-            src={LOCAL_STORAGE()?.AVATAR || "/No_Image_Available.jpg"}
-            width={"50px"}
-            height={"50px"}
+            src={LOCAL_STORAGE()?.AVATAR || "https://ui-avatars.com/api/?background=random"}
+            width={"40px"}
+            height={"40px"}
             objectFit={"cover"}
             borderRadius={"100%"}
           />
@@ -118,7 +119,7 @@ const Navbar = () => {
                 setShowSidebar(false);
               }}
               cursor={"pointer"}
-              src={LOCAL_STORAGE()?.AVATAR || "/No_Image_Available.jpg"}
+              src={LOCAL_STORAGE()?.AVATAR || "https://ui-avatars.com/api/?background=random"}
               width={"50px"}
               height={"50px"}
               objectFit={"cover"}

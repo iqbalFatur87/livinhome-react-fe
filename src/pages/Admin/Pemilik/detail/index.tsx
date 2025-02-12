@@ -16,9 +16,23 @@ import axios from 'axios';
 import { CheckCircle } from 'react-feather';
 import { BASE_API } from '../../../../utils/constant/api';
 
+interface PropertyData {
+  nama: string;
+  deskripsi: string;
+  alamat: string;
+  harga_sewa_1_bulan: number | string;
+  lebar_tanah: number | string;
+  luas_kamar: number | string;
+  rules?: Array<{
+    id: number | string;
+    name: string;
+  }>;
+  image?: string[];
+}
+
 const DetailPemilik = () => {
   const { id } = useParams(); // Get the property ID from the URL
-  const [property, setProperty] = useState(null); // State to store property details
+  const [property, setProperty] = useState<PropertyData | null>(null); // State to store property details
   const [loading, setLoading] = useState(true); // State to handle loading
   const token = localStorage.getItem('token');
   useEffect(() => {
@@ -59,34 +73,26 @@ const DetailPemilik = () => {
       <SimpleGrid mt={6} width={900} gap={6} columns={{ base: 1, md: 2 }}>
         <Box>
           <Flex gap={2} direction="column">
-            <Flex gap={2}>
-              <Text fontWeight="bold" mr={8}>
+            <Flex gap={4} alignItems="center">
+              <Text width="200px" fontWeight="bold" mr={8}>
                 Nama Property:
               </Text>
               <Input maxW="sm" value={property.nama} readOnly />
             </Flex>
-            <Flex gap={2}>
-              <Text fontWeight="bold" mr={10}>
+            <Flex gap={4} alignItems="center">
+              <Text width="200px" fontWeight="bold" mr={10}>
                 Deskripsi:
               </Text>
               <Input maxW="sm" value={property.deskripsi} readOnly />
             </Flex>
-            <Flex gap={2}>
-              <Text fontWeight="bold" mr={14}>
+            <Flex gap={4} alignItems="center">
+              <Text width="200px" fontWeight="bold" mr={14}>
                 Alamat:
               </Text>
               <Input maxW="sm" value={property.alamat} readOnly />
             </Flex>
-            <Flex gap={2}>
-              <Text fontWeight="bold">Harga Sewa per Bulan:</Text>
-              <Input
-                maxW="sm"
-                value={`Rp ${property.harga_sewa_1_bulan}`}
-                readOnly
-              />
-            </Flex>
-            <Flex gap={2}>
-              <Text fontWeight="bold">Harga Sewa per Bulan:</Text>
+            <Flex gap={4} alignItems="center">
+              <Text width="200px" fontWeight="bold">Harga Sewa per Bulan:</Text>
               <Input
                 maxW="sm"
                 value={`Rp ${property.harga_sewa_1_bulan}`}

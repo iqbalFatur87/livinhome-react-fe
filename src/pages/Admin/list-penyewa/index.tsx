@@ -4,7 +4,7 @@ import DataTable from 'datatables.net-react';
 import 'datatables.net-responsive-dt';
 import 'datatables.net-select-dt';
 import { useEffect, useState } from 'react';
-import { MdDelete, MdPreview } from 'react-icons/md';
+import { MdPreview } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { BASE_API } from '../../../utils/constant/api';
 
@@ -42,7 +42,6 @@ const PemilikKost = () => {
 
     fetchData();
   }, []);
-
   return (
     <Table variant={'simple'}>
       <Tr>
@@ -65,11 +64,6 @@ const PemilikKost = () => {
             <Td>{kost.status}</Td>
             <Td>
               <Flex gap={4}>
-                <IconButton
-                  aria-label="Delete Property"
-                  icon={<MdDelete />}
-                  onClick={() => handleDelete(kost.id)} // Call delete handler
-                />
                 <Link to={`/admin/pesanan-detail/${kost.id}`}>
                   <IconButton aria-label="View Property" icon={<MdPreview />} />
                 </Link>

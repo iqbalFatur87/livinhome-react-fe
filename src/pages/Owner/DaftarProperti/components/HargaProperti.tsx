@@ -5,7 +5,56 @@ const HargaProperti = (props: { dataState: any; setDataState: any; submit: any }
   const formatter = new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   });
+
+  const formatToRupiah = (value: number): string => {
+    return formatter.format(value);
+  };
+
+  const parseFromRupiah = (value: string): number => {
+    return Number(value.replace(/[^\d,-]/g, ""));
+  };
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = parseFromRupiah(e.target.value);
+    if (!isNaN(rawValue)) {
+      if (props.dataState?.minimum_sewa == 1) {
+        props.setDataState((prev: any) => ({
+          ...prev,
+          harga_sewa_1_bulan: rawValue,
+          harga_sewa_3_bulan: 0,
+          harga_sewa_tahun: 0,
+        }));
+      } else if (props.dataState?.minimum_sewa == 3) {
+        props.setDataState((prev: any) => ({
+          ...prev,
+          harga_sewa_1_bulan: 0,
+          harga_sewa_3_bulan: rawValue,
+          harga_sewa_tahun: 0,
+        }));
+      } else if (props.dataState?.minimum_sewa == 12) {
+        props.setDataState((prev: any) => ({
+          ...prev,
+          harga_sewa_1_bulan: 0,
+          harga_sewa_3_bulan: 0,
+          harga_sewa_tahun: rawValue,
+        }));
+      }
+    }
+  };
+
+  const getCurrentValue = () => {
+    if (props.dataState?.minimum_sewa == 1) {
+      return formatToRupiah(props.dataState?.harga_sewa_1_bulan || 0);
+    } else if (props.dataState?.minimum_sewa == 3) {
+      return formatToRupiah(props.dataState?.harga_sewa_3_bulan || 0);
+    } else if (props.dataState?.minimum_sewa == 12) {
+      return formatToRupiah(props.dataState?.harga_sewa_tahun || 0);
+    }
+    return formatToRupiah(0);
+  };
 
   return (
     <Stack gap={"25px"}>
@@ -19,47 +68,12 @@ const HargaProperti = (props: { dataState: any; setDataState: any; submit: any }
             <Text color={primaryTextTitleColor()}>*Wajib diisi</Text>
           </HStack>
           <Input
-            type="number"
-            value={
-              props.dataState?.minimum_sewa == 1
-                ? props.dataState?.harga_sewa_1_bulan
-                : props.dataState?.minimum_sewa == 3
-                ? props.dataState?.harga_sewa_3_bulan
-                : props.dataState?.minimum_sewa == 12
-                ? props.dataState?.harga_sewa_tahun
-                : 0
-            }
-            onChange={(e) => {
-              if (!isNaN(Number(e.target.value))) {
-                if (props.dataState?.minimum_sewa == 1) {
-                  props.setDataState((prev: any) => ({
-                    ...prev,
-                    harga_sewa_1_bulan: Number(e.target.value),
-                    harga_sewa_3_bulan: 0,
-                    harga_sewa_tahun: 0,
-                  }));
-                } else if (props.dataState?.minimum_sewa == 3) {
-                  props.setDataState((prev: any) => ({
-                    ...prev,
-                    harga_sewa_1_bulan: 0,
-                    harga_sewa_3_bulan: Number(e.target.value),
-                    harga_sewa_tahun: 0,
-                  }));
-                } else if (props.dataState?.minimum_sewa == 12) {
-                  props.setDataState((prev: any) => ({
-                    ...prev,
-                    harga_sewa_1_bulan: 0,
-                    harga_sewa_3_bulan: 0,
-                    harga_sewa_tahun: Number(e.target.value),
-                  }));
-                }
-              }
-            }}
+            value={getCurrentValue()}
+    onChange={handlePriceChange}
             backgroundColor={inputBackgroundColor()}
             border={customBorder()}
             color={inputColor()}
           />
-          <Text>{formatter.format(props.dataState?.harga_sewa_1_bulan || 0)}</Text>
         </Stack>
       ) : null}
 
@@ -85,21 +99,6 @@ const HargaProperti = (props: { dataState: any; setDataState: any; submit: any }
       </Stack>
 
       <Stack>
-        <HStack flexWrap={"wrap"}>
-          <Text color={primaryTextColor()}>Nomor Rekening</Text>
-          <Text color={primaryTextTitleColor()}>*Wajib diisi</Text>
-        </HStack>
-        <Input
-          value={props.dataState?.rekening || 0}
-          onChange={(e) => {
-            if (!isNaN(Number(e.target.value))) {
-              props.setDataState((prev: any) => ({ ...prev, rekening: Number(e.target.value) }));
-            }
-          }}
-          backgroundColor={inputBackgroundColor()}
-          border={customBorder()}
-          color={inputColor()}
-        />
         <Button
           onClick={props.submit}
           color={"white"}

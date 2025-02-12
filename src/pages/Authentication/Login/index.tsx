@@ -7,33 +7,6 @@ import { ChooseRole } from "./Components/ChooseRole";
 
 const index = () => {
   const [loginState, setLoginState] = useState<string>("Choose Role");
-  // const login = async () => {
-  //   await axios
-  //     .post(`${BASE_API}/auth/login`, {
-  //       username: usernameInput,
-  //       password: passwordInput,
-  //     })
-  //     .then((res) => {
-  //       localStorage.setItem(TOKEN, res.data.dataTOKEN);
-  //       navigate(0);
-  //       toast({
-  //         description: res.data.message,
-  //         status: "success",
-  //         variant: "subtle",
-  //         duration: 9000,
-  //         isClosable: true,
-  //       });
-  //     })
-  //     .catch((e) => {
-  //       toast({
-  //         description: e.response.data,
-  //         status: "error",
-  //         variant: "subtle",
-  //         duration: 9000,
-  //         isClosable: true,
-  //       });
-  //     });
-  // };
   return (
     <Stack
       width={"100vw"}

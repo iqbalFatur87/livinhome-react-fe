@@ -1,8 +1,8 @@
 import { Button, HStack, Input, Stack, Text, useToast } from "@chakra-ui/react";
 import { borderRadius, primaryTextColor, primaryTextTitleColor, secondaryTextColor } from "../../../../components/theme";
 import {Link, useNavigate} from "react-router-dom";
-import axios, {AxiosError} from "axios";
-import { BASE_API } from "../../../../utils/constant/api";
+import {AxiosError} from "axios";
+// import { BASE_API } from "../../../../utils/constant/api";
 import { useState } from "react";
 import { DATA } from "../../../../utils/constant/localStorage";
 import { encrypt } from "../../../../utils/helper/helper";

@@ -7,28 +7,6 @@ const HargaProperti = (props: { dataState: any; setDataState: any; submit: any }
       <Text fontWeight={"bold"} color={primaryTextColor()} textAlign={"center"} fontSize={"xl"}>
         Lengkapi Informasi Harga Sewa Kontrakan Kamu
       </Text>
-      {/* <Stack>
-        <HStack flexWrap={"wrap"}>
-          <Text color={primaryTextColor()}>Jangka Waktu Minimum Sewa</Text>
-          <Text color={primaryTextTitleColor()}>*Wajib diisi</Text>
-        </HStack>
-        <RadioGroup
-          value={props.dataState?.minimum_sewa.toString()}
-          onChange={(e) => props.setDataState((prev: any) => ({ ...prev, minimum_sewa: e }))}
-        >
-          <Stack direction="row">
-            <Radio colorScheme="orange" value="1">
-              1 Bulan
-            </Radio>
-            <Radio colorScheme="orange" value="3">
-              3 Bulan
-            </Radio>
-            <Radio colorScheme="orange" value="12">
-              1 Tahun
-            </Radio>
-          </Stack>
-        </RadioGroup>
-      </Stack> */}
 
       {props.dataState?.minimum_sewa ? (
         <Stack>

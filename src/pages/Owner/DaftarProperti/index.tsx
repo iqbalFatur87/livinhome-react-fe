@@ -1,4 +1,5 @@
 import { Button, HStack, Stack, useToast } from "@chakra-ui/react";
+import Stepper from "./components/StepperDaftarProp";
 import DaftarProperti from "./components/DataProperty";
 import DataFoto from "./components/DataFoto";
 import { useEffect, useState } from "react";
@@ -75,6 +76,7 @@ const index = () => {
   ) : (
     <Stack paddingY={"20px"} paddingX={{ base: "8px", md: "50px" }} width={{ base: "100%", md: "70%" }} maxWidth={"1080px"}>
       {/* <pre>{JSON.stringify(dataState, null, 2)}</pre> */}
+      <Stepper currentStep={selectedState} />
       {pageState[selectedState] == "daftar properti" ? (
         <DaftarProperti dataState={dataState} setDataState={setDataState} listRules={listRules} indonesia={indonesia} />
       ) : pageState[selectedState] == "foto properti" ? (

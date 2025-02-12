@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaf
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useState } from "react";
-import { Checkbox, HStack, Input, Radio, RadioGroup, Select, Stack, Text, Textarea } from "@chakra-ui/react";
+import { Checkbox, HStack, Input, Radio, RadioGroup, Select, Stack, Text, Textarea, useToast } from "@chakra-ui/react";
 import { customBorder, inputBackgroundColor, inputColor, primaryTextColor, primaryTextTitleColor } from "../../../../components/theme";
 // import MultipleSelect from "./components/MultipleSelect";
 
@@ -34,6 +34,7 @@ const DaftarProperti = (props: { dataState: any; setDataState: any; listRules: a
     return null;
   };
 
+  const toast = useToast();
   return (
     <Stack gap={"25px"}>
       {/* <pre>{JSON.stringify(indonesia, null, 2)}</pre> */}
@@ -90,7 +91,23 @@ const DaftarProperti = (props: { dataState: any; setDataState: any; listRules: a
           border={customBorder()}
           color={inputColor()}
           value={props.dataState?.tanggal_dibuat}
-          onChange={(e) => props.setDataState((prev: any) => ({ ...prev, tanggal_dibuat: e.target.value }))}
+          onChange={(e) => {
+            props.setDataState((prev: any) => {
+              const newState = { ...prev, tanggal_dibuat: e.target.value };
+              if (newState.tanggal_mulai_sewa && newState.tanggal_mulai_sewa < e.target.value) {
+                newState.tanggal_mulai_sewa = e.target.value;
+                toast({
+                  title: "Tanggal disesuaikan",
+                  description: "Tanggal siap sewa telah disesuaikan dengan tanggal bangun",
+                  status: "info",
+                  duration: 3000,
+                  isClosable: true,
+                  position: "bottom"
+                });
+              }
+              return newState;
+            });
+          }}
         />
       </Stack>
 
@@ -107,7 +124,23 @@ const DaftarProperti = (props: { dataState: any; setDataState: any; listRules: a
           border={customBorder()}
           color={inputColor()}
           value={props.dataState?.tanggal_mulai_sewa}
-          onChange={(e) => props.setDataState((prev: any) => ({ ...prev, tanggal_mulai_sewa: e.target.value }))}
+          min={props.dataState?.tanggal_dibuat}
+          onChange={(e) => {
+            const selectedDate = e.target.value;
+            if (selectedDate >= (props.dataState?.tanggal_dibuat || '')) {
+              props.setDataState((prev: any) => ({ ...prev, tanggal_mulai_sewa: selectedDate }));
+            } else {
+              props.setDataState((prev: any) => ({ ...prev, tanggal_mulai_sewa: props.dataState?.tanggal_dibuat }));
+              toast({
+                title: "Tanggal tidak valid",
+                description: "Tanggal siap sewa tidak boleh lebih awal dari tanggal bangun",
+                status: "warning",
+                duration: 3000,
+                isClosable: true,
+                position: "bottom"
+              });
+            }
+          }}
         />
       </Stack>
 

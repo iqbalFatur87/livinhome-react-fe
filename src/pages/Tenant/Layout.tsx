@@ -1,7 +1,6 @@
 import { Stack } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import NavbarTenant from "../Tenant/components/Navbar";
-import Footer from "../Tenant/components/Footer";
 const LayoutTenant = () => {
   return (
     <Stack width={"100%"} justifyContent={"center"} alignItems={"center"}>
@@ -15,7 +14,6 @@ const LayoutTenant = () => {
           <Outlet />
 
         </Stack>
-        <Footer/>
       </Stack>
     </Stack>
   );

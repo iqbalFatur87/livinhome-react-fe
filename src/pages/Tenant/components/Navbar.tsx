@@ -68,6 +68,8 @@ const Navbar = () => {
         boxShadow={scrolled ? 'rgba(0, 0, 0, 0.16) 0px 1px 4px' : 'none'}
         fontSize="14px"
         transition="background-color 0.3s ease, box-shadow 0.3s ease"
+        borderRadius="full"
+        margin="15px"
       >
         <Image src="/logo.png" alt="Logo" />
 

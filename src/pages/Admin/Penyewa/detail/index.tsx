@@ -1,23 +1,35 @@
 import {
   Box,
   Flex,
-  HStack,
   Input,
-  List,
-  ListIcon,
-  ListItem,
-  SimpleGrid,
   Text,
 } from '@chakra-ui/react';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { CheckCircle } from 'react-feather';
 import { BASE_API } from '../../../../utils/constant/api';
 
-const DetailPemilik = () => {
+interface DetailPenyewa {
+  nama_lengkap: string;
+  phone_number: string;
+  alamat: string;
+  email: string;
+  birth_date: string;
+  city_of_origin: string;
+  job: string;
+  status: string;
+  education: string;
+  emergency_number: string;
+  property_name: string;
+  check_in_date: string;
+  gender: string;
+}
+
+
+
+const DetailPenyewa = () => {
   const { id } = useParams(); // Get the property ID from the URL
-  const [property, setProperty] = useState(null); // State to store property details
+  const [property, setProperty] = useState<DetailPenyewa | null>(null); // State to store property details
   const [loading, setLoading] = useState(true); // State to handle loading
   const token = localStorage.getItem('token');
 
@@ -58,87 +70,80 @@ const DetailPemilik = () => {
     <Box p={5}>
       <Link to="/">
         <Text fontSize="2xl" fontWeight="bold">
-          Detail Property
+          Identitas Penyewa
         </Text>
       </Link>
 
-      <SimpleGrid mt={6} width={900} gap={6} columns={{ base: 1, md: 2 }}>
-        <Box>
-          <Flex gap={4} direction="column">
-            <Flex>
-              <Text fontWeight="bold" mr={8}>
-                Nama Property:
-              </Text>
-              <Input maxW="sm" value={property.property_name || '-'} readOnly />
+        <Box maxW="600px" bg="white" borderRadius="lg" p={6}>
+          <Flex direction="column" gap={4}>
+            <Flex gap={4} alignItems="center">
+              <Text mb={2} width="200px" fontWeight="medium">Nama Lengkap</Text>
+              <Input flex={1} value={property.nama_lengkap} isReadOnly={true} />
             </Flex>
-            <Flex>
-              <Text fontWeight="bold" mr={10}>
-                Check In:
-              </Text>
-              <Input maxW="sm" value={property.checkin || '-'} readOnly />
+
+            <Flex gap={4} alignItems="center">
+              <Text mb={2} width="200px" fontWeight="medium">No Handphone</Text>
+              <Input flex={1} value={property.phone_number} isReadOnly={true} />
             </Flex>
-            <Flex>
-              <Text fontWeight="bold" mr={14}>
-                Nama:
-              </Text>
-              <Input
-                maxW="sm"
-                value={property.fullname_renter || '-'}
-                readOnly
-              />
+
+            <Flex gap={4} alignItems="center">
+              <Text mb={2} width="200px" fontWeight="medium">Alamat</Text>
+              <Input flex={1} value={property.alamat} isReadOnly={true} />
             </Flex>
-            {/* <Flex>
-              <Text fontWeight="bold">Harga Sewa per Bulan:</Text>
-              <Input
-                maxW="sm"
-                value={`Rp ${
-                  property.harga_sewa_1_bulan?.toLocaleString() || "0"
-                }`}
-                readOnly
-              />
-            </Flex> */}
-            <Flex>
-              <Text fontWeight="bold" gap={4} mr={4}>
-                Aturan Property:
-              </Text>
-              <List spacing={2}>
-                {property.rules?.length > 0 ? (
-                  property.rules.map((rule) => (
-                    <ListItem key={rule.id} className="flex items-center gap-2">
-                      <HStack>
-                        <ListIcon as={CheckCircle} color="green.500" />
-                        <Text>{rule.name}</Text>
-                      </HStack>
-                    </ListItem>
-                  ))
-                ) : (
-                  <Text>Tidak ada aturan.</Text>
-                )}
-              </List>
+
+            <Flex gap={4} alignItems="center">
+              <Text mb={2} width="200px" fontWeight="medium">Email</Text>
+              <Input flex={1} value={property.email} isReadOnly={true} />
             </Flex>
-            <SimpleGrid columns={{ md: 2 }} spacing={4}>
-              <Flex gap={2} mr={2}>
-                <Text fontWeight="bold">Lebar Tanah:</Text>
-                <Input
-                  maxW="sm"
-                  value={`${property.property_land_area || '0'} m`}
-                  readOnly
-                />
-              </Flex>
-              <Flex gap={2}>
-                <Text fontWeight="bold">Luas Kamar:</Text>
-                <Input
-                  maxW="sm"
-                  value={`${property.property_room_area || '0'} m²`}
-                  readOnly
-                />
-              </Flex>
-            </SimpleGrid>
+
+            <Flex gap={4} alignItems="center">
+              <Text mb={2} width="200px" fontWeight="medium">Tanggal Lahir</Text>
+              <Input flex={1} value={property.birth_date} isReadOnly={true} />
+            </Flex>
+
+            <Flex gap={4} alignItems="center">
+              <Text mb={2} width="200px" fontWeight="medium">Asal Kota</Text>
+              <Input flex={1} value={property.city_of_origin} isReadOnly={true} />
+            </Flex>
+
+            <Flex gap={4} alignItems="center">
+              <Text mb={2} width="200px" fontWeight="medium">Pekerjaan</Text>
+              <Input flex={1} value={property.job} isReadOnly={true} />
+            </Flex>
+
+            <Flex gap={4} alignItems="center">
+              <Text mb={2} width="200px" fontWeight="medium">Status</Text>
+              <Input flex={1} value={property.status} isReadOnly={true} />
+            </Flex>
+
+            <Flex gap={4} alignItems="center">
+              <Text mb={2} width="200px" fontWeight="medium">Pendidikan Terakhir</Text>
+              <Input flex={1} value={property.education} isReadOnly={true} />
+            </Flex>
+            
+            <Flex gap={4} alignItems="center">
+              <Text mb={2} width="200px" fontWeight="medium">No. Kontak Darurat</Text>
+              <Input flex={1} value={property.emergency_number} isReadOnly />
+            </Flex>
+
+            <Flex gap={4} alignItems="center">
+              <Text mb={2} width="200px" fontWeight="medium">Properti Yang Disewa</Text>
+              <Input flex={1} value={property.property_name} isReadOnly={true} />
+            </Flex>
+
+            <Flex gap={4} alignItems="center">
+              <Text mb={2} width="200px" fontWeight="medium">Tanggal Masuk</Text>
+              <Input flex={1} value={property.check_in_date} isReadOnly={true} />
+            </Flex>
+
+            <Flex gap={4} alignItems="center">
+              <Text mb={2} width="200px" fontWeight="medium">Jenis Kelamin</Text>
+              <Input flex={1} value={property.gender} isReadOnly={true} />
+            </Flex>
           </Flex>
         </Box>
-      </SimpleGrid>
     </Box>
   );
 };
 
-export default DetailPemilik;
+export default DetailPenyewa;

@@ -1,11 +1,11 @@
-import { Button, HStack, Input, Stack, Text, useToast } from "@chakra-ui/react";
-import { borderRadius, primaryTextColor, primaryTextTitleColor, secondaryTextColor } from "../../../../components/theme";
-import { Link } from "react-router-dom";
+import { Button, HStack, Input, Stack, Text, useToast, Container } from "@chakra-ui/react";
+import { borderRadius, primaryTextColor } from "../../../../components/theme";
 import axios from "axios";
 import { BASE_API } from "../../../../utils/constant/api";
 import { useState } from "react";
 import { DATA } from "../../../../utils/constant/localStorage";
 import { encrypt } from "../../../../utils/helper/helper";
+
 
 const FormAdmin = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -58,7 +58,13 @@ const FormAdmin = () => {
   };
 
   return (
-    <Stack
+    <Container maxW="container.xl" h="100vh">
+      <Stack
+        h="full"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Stack
       width={{ md: "100%", base: "95%" }}
       maxWidth={"530px"}
       boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
@@ -99,15 +105,6 @@ const FormAdmin = () => {
             Masuk
           </Button>
 
-          <HStack justifyContent={"space-between"}>
-            <Link to={"/auth/reset-password"}>
-              <Text color={secondaryTextColor()}>Lupa Kata Sandi</Text>
-            </Link>
-            <Link to={"/auth/register"}>
-              <Text color={secondaryTextColor()}>Buat Akun</Text>
-            </Link>
-          </HStack>
-
           <Stack marginTop={"40px"}>
             <Text textAlign={"center"} lineHeight={"4"} fontSize={"sm"} color={primaryTextColor()}>
               Kami tidak akan memberikan informasi pribadi Anda kepada siapapun
@@ -131,19 +128,11 @@ const FormAdmin = () => {
               </Text>
             </HStack>
           </Stack>
-          <Text
-            onClick={() => props.setLoginState("Login Penyewa")}
-            textAlign={"center"}
-            fontSize={"sm"}
-            color={primaryTextTitleColor()}
-            fontWeight={"bold"}
-            cursor={"pointer"}
-          >
-            Masuk sebagai Penyewa
-          </Text>
         </Stack>
       </form>
-    </Stack>
+      </Stack>
+      </Stack>
+    </Container>
   );
 };
 
