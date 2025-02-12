@@ -1,27 +1,72 @@
-# React + TypeScript + Vite
+# LivinHome React Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a frontend application for the LivinHome platform, built using React, TypeScript, and Vite. It provides a user interface for tenants, owners, and admins to manage properties, transactions, and profiles.
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Available Scripts](#available-scripts)
+- [ESLint Configuration](#eslint-configuration)
+- [Dependencies](#dependencies)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+To get started with the project, clone the repository and install the dependencies:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+```bash
+git clone https://github.com/iqbalFatur87/livinhome-react-fe.git
+cd livinhome-react-fe
+npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+To run the project locally, use:
+```bash
+npm run dev
+```
+
+## Project Structure
+
+The project is organized into several key directories:
+
+- src/pages: Contains the main pages of the application, organized by user roles such as Tenant, Owner, and Admin.
+- src/components: Reusable components used across different pages.
+- src/utils: Utility functions and constants.
+- src/assets: Static assets like images and styles.
+
+## Available Scripts
+
+- npm run dev: Starts the development server.
+- npm run build: Builds the application for production.
+- npm run lint: Runs ESLint to check for code quality issues.
+
+## ESLint Configuration
+
+The project uses ESLint with TypeScript support to ensure code quality. The configuration is set up to use type-aware linting rules. To expand the ESLint configuration, you can update the parserOptions in your ESLint configuration file:
+
+```js
+parserOptions: {
+  ecmaVersion: 'latest',
+  sourceType: 'module',
+  project: ['./tsconfig.json', './tsconfig.node.json'],
+  tsconfigRootDir: __dirname,
+},
+```
+
+Additionally, consider using the following plugins for enhanced linting:
+- plugin:@typescript-eslint/recommended-type-checked
+- plugin:react/recommended
+- plugin:react/jsx-runtime
+
+## Dependencies
+
+Key dependencies used in this project include:
+- React
+- TypeScript
+- Vite
+- Chakra UI for component styling
+- Axios for HTTP requests
+
+### P.S : For admin login, see note.txt
