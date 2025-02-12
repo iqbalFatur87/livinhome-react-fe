@@ -17,15 +17,12 @@ import axios from 'axios';
 import { AxiosError } from 'axios';
 import { BASE_API } from '../../../utils/constant/api';
 import {
-  authorityCheck,
   AUTHORIZATION_HEADERS,
 } from '../../../utils/helper/helper';
 import ModalUpdatePhotoProfil from './components/ModalUpdatePhotoProfile';
 import {
-  customBorder,
   inputBackgroundColor,
   inputColor,
-  primaryTextColor,
 } from '../../../components/theme';
 
 const ProfileUpdate = () => {
@@ -35,7 +32,6 @@ const ProfileUpdate = () => {
   const [listKota, setListKota] = useState<any>([]);
   const [idCardFile, setIdCardFile] = useState<File | null>(null); // State to manage KTP file upload
   const [photoFile, setphotoFile] = useState<File | null>(null); // State to manage KTP file upload
-  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
   const toast = useToast();
 
@@ -176,16 +172,9 @@ const ProfileUpdate = () => {
             objectFit="contain"
           />
           {/* File input for KTP upload */}
-          <Button
-            leftIcon={<TbCloudUpload />}
-            onClick={() => setIsPhotoModalOpen(true)}
-            variant="outline"
-          >
-            Upload Photo Profile
-          </Button>
-          <ModalUpdatePhotoProfil
-            onClose={() => setIsPhotoModalOpen(false)}
-            isOpen={isPhotoModalOpen}
+          <FormFileInput
+            label="Upload Photo Profile Anda (Upload File)"
+            onChange={handlephotoFileChange}
           />
         </Stack>
 
